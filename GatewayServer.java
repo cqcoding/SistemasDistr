@@ -10,13 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer{
-    //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente
+    //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes 
+    //consigam chamá-lo remotamente
     
-    private static final String ArquivoURLS = "urlsIndexados.txt";    //final faz com que a variável ArquivoURLS não possa ser alterada depois de inicializada. Ou seja, o valor "urlsIndexados.txt" será fixo
+    private static final String ArquivoURLS = "urlsIndexados.txt";    //final faz com que a variável ArquivoURLS não possa ser 
+    //alterada depois de inicializada. Ou seja, o valor "urlsIndexados.txt" será fixo
     //lista p/ armazenar os URLs na memória enquanto o servidor estiver ativo:
     private List<String> urlsIndexados;
 
-    protected GatewayServer() throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente
+    protected GatewayServer() throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
+        // pacote possam instanciar o objeto diretamente
         super();              //exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas
         this.urlsIndexados = new ArrayList<>();         //inicializa a lista de URLs
         carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
@@ -44,7 +47,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         List<String> resultados = new ArrayList<>();      //lista que armazena os resultados da pesquisa
 
         //ver cada URL na lista dos salvos
-        for (String url : urlsIndexados) {         //p/ cada elemento url na lista urlsIndexados, executa o código do loop - percorre todas as URLs armazenadas em urlsIndexados uma por uma
+        for (String url : urlsIndexados) {         //p/ cada elemento url na lista urlsIndexados,
+            // executa o código do loop - percorre todas as URLs armazenadas em urlsIndexados uma por uma
             //se o URL tem a palavra-chave, adiciona na lista de resultados
             if (url.contains(palavra)) {
                 resultados.add(url);
