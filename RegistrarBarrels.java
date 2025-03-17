@@ -10,7 +10,7 @@ public class RegistrarBarrels {
             // Criar e registrar os BarrelServers
             for (int i = 1; i <= 3; i++) {
                 BarrelServer barrel = new BarrelServer();
-                String barrelName = "rmi://localhost/barrel" + i;
+                String barrelName = "rmi://192.168.1.164/barrel" + i;
                 Naming.rebind(barrelName, barrel);
                 System.out.println("Barrel registrado: " + barrelName);
             }

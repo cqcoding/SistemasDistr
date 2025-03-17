@@ -49,7 +49,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         try {
             // Procurar os BarrelServers no RMI Registry
             for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
-                String barrelName = "rmi://localhost/barrel" + i;
+                String barrelName = "rmi://192.168.1.164/barrel" + i;
                 InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
                 barrels.add(barrel);
                 System.out.println("Conectado ao barrel: " + barrelName);
