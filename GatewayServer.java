@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -12,49 +13,58 @@ import java.util.List;
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer{
     //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes 
     //consigam chamá-lo remotamente
+
+    private List<InterfaceBarrel> barrels;
+
+    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
     
-    private static final String ArquivoURLS = "urlsIndexados.txt";    //final faz com que a variável ArquivoURLS não possa ser 
-    //alterada depois de inicializada. Ou seja, o valor "urlsIndexados.txt" será fixo
-    //lista p/ armazenar os URLs na memória enquanto o servidor estiver ativo:
-    private List<String> urlsIndexados;
 
     protected GatewayServer() throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
         // pacote possam instanciar o objeto diretamente
         super();              //exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas
-        this.urlsIndexados = new ArrayList<>();         //inicializa a lista de URLs
-        carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
+        this.barrels = new ArrayList<>();         //inicializa a lista de URLs
+        conectarBarrels();                                 //carrega os URLs existentes no arquivo (se tiver)
+    }
+
+    private void conectarBarrels() {
+        try {
+            // Procurar os BarrelServers no RMI Registry
+            for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
+                String barrelName = "rmi://localhost/barrel" + i;
+                InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
+                barrels.add(barrel);
+                System.out.println("Conectado ao barrel: " + barrelName);
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
     //   INDEXAR URL     = salvar
-    @Override     
+    @Override
     public void indexar_URL(String url) throws RemoteException {
-        //vê se o URL já não ta salvo
-        if (!urlsIndexados.contains(url)) {
-            urlsIndexados.add(url);             //add o URL à lista na memória
-            salvarURL(url);                     //chama o método para salvar o URL no arquivo
-            System.out.println("URL indexado: " + url);
-        } 
-        else {
-            System.out.println("URL já foi indexado.");
-        }      
+        // Distribuir a indexação para os barrels
+        for (InterfaceBarrel barrel : barrels) {
+            for (String palavra : palavras_chave){
+                barrel.indexar_URL(palavra, url); // Indexar a URL em cada barrel
+            }
+
+        }
+        System.out.println("URL indexada em todos os barrels: " + url);
     }
 
 
     //   PESQUISAR
-    @Override          //método p/ pesquisar URLs que contêm a palavra-chave
+    @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        List<String> resultados = new ArrayList<>();      //lista que armazena os resultados da pesquisa
-
-        //ver cada URL na lista dos salvos
-        for (String url : urlsIndexados) {         //p/ cada elemento url na lista urlsIndexados,
-            // executa o código do loop - percorre todas as URLs armazenadas em urlsIndexados uma por uma
-            //se o URL tem a palavra-chave, adiciona na lista de resultados
-            if (url.contains(palavra)) {
-                resultados.add(url);
-            }
+        List<String> resultados = new ArrayList<>();
+        // Consultar cada barrel e combinar os resultados
+        for (InterfaceBarrel barrel : barrels) {
+            List<String> barrelResultados = barrel.pesquisar(palavra);
+            resultados.addAll(barrelResultados);
         }
-        //retorna os resultados da pesquisa
         return resultados;
     }
 
