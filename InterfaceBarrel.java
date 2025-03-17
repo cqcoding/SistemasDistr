@@ -1,10 +1,10 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
+//import java.rmi.server.UnicastRemoteObject;
+//import java.util.ArrayList;
+//import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
 // Interface para o Barrel
 public interface InterfaceBarrel extends Remote {
