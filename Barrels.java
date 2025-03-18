@@ -25,4 +25,25 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     public List<String> pesquisar(String palavra) throws RemoteException {
         return urlsIndexados.getOrDefault(palavra, new ArrayList<>());
     }
+
+    @Override
+    public boolean confirmarRecebimento(String palavra, String url) throws RemoteException {
+        return urlsIndexados.containsKey(palavra) && urlsIndexados.get(palavra).contains(url);
+    }  //verifica se a palavra e a url estao indexadas corretamente 
+
+    @Override
+    public boolean estaAtivo() throws RemoteException {
+        return true; // Se o método for chamado com sucesso, o Barrel está ativo
+    }
+
+    @Override
+    public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException { //sincroniza dados entre os barrels
+        urlsIndexados.putAll(dados); //adiciona ou substitui os dados no mapa urlIndexados
+        System.out.println("Dados sincronizados com sucesso.");
+    }
+
+    @Override
+    public Map<String, List<String>> getIndexados() throws RemoteException {
+        return urlsIndexados;  //retorna o mapa de palavras + urls indexados
+    }
 }

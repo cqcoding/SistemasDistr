@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,20 +44,85 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         conectarBarrels();
         carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
+        iniciarMonitoramento();
+
     }
 
+    private List<String> barrelUrls = Arrays.asList( //lista de barrels disponíveis
+        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
+        "rmi://192.168.1.164/barrel2", 
+        "rmi://192.168.1.164/barrel3"
+    );
+
+
     private void conectarBarrels() {
-        try {
-            // Procurar os BarrelServers no RMI Registry
-            for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
-                String barrelName = "rmi://192.168.1.164/barrel" + i;
-                InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
-                barrels.add(barrel);
-                System.out.println("Conectado ao barrel: " + barrelName);
+
+        barrels.clear();
+
+        for(String barrelUrl: barrelUrls){
+            try { 
+                    // Conecta barrels usando a URL fornceida
+                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
+                    barrels.add(barrel);  // ADiciona o barrel conectado à lista de barrels
+                    System.out.println("Conectado ao barrel: " + barrelUrl);
+                
+            } catch (Exception e) {
+                System.err.println("Erro ao conectar aos barrels " + barrelUrl);
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
-            e.printStackTrace();
+        }
+    }
+
+    private void iniciarMonitoramento() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(5000); // Verifica a cada 5 segundos
+                    //System.out.println("Monitorando Barrels...");
+
+                    List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
+                    for (InterfaceBarrel barrel : barrels) {
+                        try {
+                            if (barrel.estaAtivo()) {  //verifica se cada barrel está ativo
+                                barrelsAtivos.add(barrel);  // adiciona barrels ativos à lista
+                            }
+                        } catch (RemoteException e) {
+                            System.err.println("Barrel inativo detectado!");  //quando o barrel está inativo manda aviso de erro
+                        }
+                    }
+
+                    barrels = barrelsAtivos;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public boolean reliableMulticast(String palavra, String url) { //garante que os dados estao replicadso entre os barrels
+        List<InterfaceBarrel> confirmados = new ArrayList<>();
+
+        try {
+            // Enviar para todos os barrels
+            for (InterfaceBarrel barrel : barrels) {
+                barrel.indexar_URL(palavra, url);
+            }
+
+            // Confirmar recebimento
+            for (InterfaceBarrel barrel : barrels) {
+                if (barrel.confirmarRecebimento(palavra, url)) {
+                    confirmados.add(barrel);
+                } else {
+                    System.err.println("Erro: Barrel não confirmou recebimento."); //se qualquer barrel nao confirmar, a operação falha
+                    return false;
+                }
+            }
+
+            System.out.println("Indexação concluída com sucesso!"); //quando todos confirmam, é sucesso
+            return true;
+        } catch (RemoteException e) {
+            System.err.println("Falha no Reliable Multicast: " + e.getMessage());
+            return false;
         }
     }
 
