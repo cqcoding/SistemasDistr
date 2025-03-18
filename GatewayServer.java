@@ -62,12 +62,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         for(String barrelUrl: barrelUrls){
             try { 
                     // Conecta barrels usando a URL fornceida
-                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
+                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
                     barrels.add(barrel);  // ADiciona o barrel conectado à lista de barrels
-                    System.out.println("Conectado ao barrel: " + barrelName);
+                    System.out.println("Conectado ao barrel: " + barrelUrl);
                 
             } catch (Exception e) {
-                System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
+                System.err.println("Erro ao conectar aos barrels " + barrelUrl);
                 e.printStackTrace();
             }
         }
