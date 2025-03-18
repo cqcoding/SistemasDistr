@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,20 +48,24 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     }
 
+    private List<String> barrelUrls = Arrays.asList(
+        "rmi://192.168.1.164/barrel1", 
+        "rmi://192.168.1.164/barrel2", 
+        "rmi://192.168.1.164/barrel3"
+    );
+
 
     private void conectarBarrels() {
 
         barrels.clear();
 
         for(String barrelUrl: barrelUrls){
-            try {
-                // Procurar os BarrelServers no RMI Registry
-                for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
-                    String barrelName = "rmi://192.168.1.164/barrel" + i;
+            try { 
+                    // Conecta barrels usando a URL fornceida
                     InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
-                    barrels.add(barrel);
+                    barrels.add(barrel);  // ADiciona o barrel conectado à lista de barrels
                     System.out.println("Conectado ao barrel: " + barrelName);
-                }
+                
             } catch (Exception e) {
                 System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
                 e.printStackTrace();
