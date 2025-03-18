@@ -78,7 +78,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             while (true) {
                 try {
                     Thread.sleep(5000); // Verifica a cada 5 segundos
-                    System.out.println("Monitorando Barrels...");
+                    //System.out.println("Monitorando Barrels...");
 
                     List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
                     for (InterfaceBarrel barrel : barrels) {
