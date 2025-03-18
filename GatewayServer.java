@@ -43,20 +43,81 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         conectarBarrels();
         carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
+        iniciarMonitoramento();
+
     }
 
+
     private void conectarBarrels() {
-        try {
-            // Procurar os BarrelServers no RMI Registry
-            for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
-                String barrelName = "rmi://192.168.1.164/barrel" + i;
-                InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
-                barrels.add(barrel);
-                System.out.println("Conectado ao barrel: " + barrelName);
+
+        barrels.clear();
+
+        for(String barrelUrl: barrelUrls){
+            try {
+                // Procurar os BarrelServers no RMI Registry
+                for (int i = 1; i <= 3; i++) { // Supondo 3 barrels
+                    String barrelName = "rmi://192.168.1.164/barrel" + i;
+                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelName);
+                    barrels.add(barrel);
+                    System.out.println("Conectado ao barrel: " + barrelName);
+                }
+            } catch (Exception e) {
+                System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            System.err.println("Erro ao conectar aos barrels: " + e.getMessage());
-            e.printStackTrace();
+        }
+    }
+
+    private void iniciarMonitoramento() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(5000); // Verifica a cada 5 segundos
+                    System.out.println("Monitorando Barrels...");
+
+                    List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
+                    for (InterfaceBarrel barrel : barrels) {
+                        try {
+                            if (barrel.estaAtivo()) {
+                                barrelsAtivos.add(barrel);
+                            }
+                        } catch (RemoteException e) {
+                            System.err.println("Barrel inativo detectado!");
+                        }
+                    }
+
+                    barrels = barrelsAtivos;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public boolean reliableMulticast(String palavra, String url) {
+        List<InterfaceBarrel> confirmados = new ArrayList<>();
+
+        try {
+            // Enviar para todos os barrels
+            for (InterfaceBarrel barrel : barrels) {
+                barrel.indexar_URL(palavra, url);
+            }
+
+            // Confirmar recebimento
+            for (InterfaceBarrel barrel : barrels) {
+                if (barrel.confirmarRecebimento(palavra, url)) {
+                    confirmados.add(barrel);
+                } else {
+                    System.err.println("Erro: Barrel não confirmou recebimento.");
+                    return false;
+                }
+            }
+
+            System.out.println("Indexação concluída com sucesso!");
+            return true;
+        } catch (RemoteException e) {
+            System.err.println("Falha no Reliable Multicast: " + e.getMessage());
+            return false;
         }
     }
 
