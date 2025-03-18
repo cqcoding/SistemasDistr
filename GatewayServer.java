@@ -48,8 +48,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     }
 
-    private List<String> barrelUrls = Arrays.asList(
-        "rmi://192.168.1.164/barrel1", 
+    private List<String> barrelUrls = Arrays.asList( //lista de barrels disponíveis
+        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
         "rmi://192.168.1.164/barrel2", 
         "rmi://192.168.1.164/barrel3"
     );
@@ -83,11 +83,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
                     for (InterfaceBarrel barrel : barrels) {
                         try {
-                            if (barrel.estaAtivo()) {
-                                barrelsAtivos.add(barrel);
+                            if (barrel.estaAtivo()) {  //verifica se cada barrel está ativo
+                                barrelsAtivos.add(barrel);  // adiciona barrels ativos à lista
                             }
                         } catch (RemoteException e) {
-                            System.err.println("Barrel inativo detectado!");
+                            System.err.println("Barrel inativo detectado!");  //quando o barrel está inativo manda aviso de erro
                         }
                     }
 
@@ -99,7 +99,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }).start();
     }
 
-    public boolean reliableMulticast(String palavra, String url) {
+    public boolean reliableMulticast(String palavra, String url) { //garante que os dados estao replicadso entre os barrels
         List<InterfaceBarrel> confirmados = new ArrayList<>();
 
         try {
@@ -113,12 +113,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 if (barrel.confirmarRecebimento(palavra, url)) {
                     confirmados.add(barrel);
                 } else {
-                    System.err.println("Erro: Barrel não confirmou recebimento.");
+                    System.err.println("Erro: Barrel não confirmou recebimento."); //se qualquer barrel nao confirmar, a operação falha
                     return false;
                 }
             }
 
-            System.out.println("Indexação concluída com sucesso!");
+            System.out.println("Indexação concluída com sucesso!"); //quando todos confirmam, é sucesso
             return true;
         } catch (RemoteException e) {
             System.err.println("Falha no Reliable Multicast: " + e.getMessage());
