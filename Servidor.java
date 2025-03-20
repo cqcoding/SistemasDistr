@@ -5,12 +5,12 @@ public class Servidor {
     public static void main(String[] args) {
         try{
             GatewayServer server = new GatewayServer();   //instancia o servidor  -- objeto que quer fornecer via rede
-            String objName = "rmi://192.168.1.164/server";    //associa esse objeto ao nome gatewayserver  -- cria nome para o objeto
+            String objName = "rmi://194.210.38.168/server";    //associa esse objeto ao nome gatewayserver  -- cria nome para o objeto
 
             System.out.println("Registrando objeto no RMIRegistry...");
 
             try{
-                LocateRegistry.createRegistry(1100);  //cria um registry RMI na porta 1099 (porta padrão do rmi), se não existir, se não ele avisa, por isso o tratamento de exceção
+                LocateRegistry.createRegistry(1099);  //cria um registry RMI na porta 1099 (porta padrão do rmi), se não existir, se não ele avisa, por isso o tratamento de exceção
                 System.out.println("Registry RMI criado na porta 1099.");
             } 
             catch(Exception e){

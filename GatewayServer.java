@@ -49,9 +49,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     }
 
     private List<String> barrelUrls = Arrays.asList( //lista de barrels disponíveis
-        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
-        "rmi://192.168.1.164/barrel2", 
-        "rmi://192.168.1.164/barrel3"
+        "rmi://194.210.38.168/barrel1", //ip do pc, deve ser alterado dependendo do teste
+        "rmi://194.210.38.168/barrel2", 
+        "rmi://194.210.38.168/barrel3"
     );
 
 

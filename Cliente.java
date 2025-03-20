@@ -6,13 +6,13 @@ public class Cliente {
     public static void main(String[] args) throws Exception {
         try {
             // Conectar ao GatewayServer via RMI
-            String objName = "rmi://192.168.1.164/server";      //quando for em outra maquina põe o ip ao invés do localhost
+            String objName = "rmi://194.210.38.168/server";      //quando for em outra maquina põe o ip ao invés do localhost
             InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(objName);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
             
             Scanner scanner = new Scanner(System.in);
             
             while (true) {            //enquanto não clicar no sair fica rodando
-                System.out.println("Cliente iniciado! \nEscolha a opção: \n1 - Para Pesquisar \n2 - Para Indexar \n3 - Ver as estatísticas \n4 - Para sair");
+                System.out.println("\n\n \nEscolha a opção: \n1 - Para Pesquisar \n2 - Para Indexar \n3 - Ver as estatísticas \n4 - Para sair");
 
                 int opcao = scanner.nextInt();
                 scanner.nextLine();              //quebra de linha
@@ -49,7 +49,7 @@ public class Cliente {
                     System.out.println("Estatísticas mostradas com sucesso!");      
                 }
 
-                else if (opcao == 3){
+                else if (opcao == 4){
                     System.out.println("Encerra cliente");
                     scanner.close();
                     break;                  
