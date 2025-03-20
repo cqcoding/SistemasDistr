@@ -12,7 +12,7 @@ public class Cliente {
             Scanner scanner = new Scanner(System.in);
             
             while (true) {            //enquanto não clicar no sair fica rodando
-                System.out.println("Cliente iniciado! \nEscolha a opção: \n1 - Para Pesquisar \n2 - Para Indexar \n3 - Para sair");
+                System.out.println("Cliente iniciado! \nEscolha a opção: \n1 - Para Pesquisar \n2 - Para Indexar \n3 - Ver as estatísticas \n4 - Para sair");
 
                 int opcao = scanner.nextInt();
                 scanner.nextLine();              //quebra de linha
@@ -42,6 +42,11 @@ public class Cliente {
 
                     gateway.indexar_URL(url);
                     System.out.println("URL indexada com sucesso!");      
+                }
+
+                else if (opcao == 3){
+                    gateway.pagina_estatisticas();
+                    System.out.println("Estatísticas mostradas com sucesso!");      
                 }
 
                 else if (opcao == 3){
