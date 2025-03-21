@@ -1,9 +1,3 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -16,9 +10,9 @@ import java.util.Map;
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer {
     //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes
     //consigam chamá-lo remotamente
+    
     private List<InterfaceBarrel> barrels;
-    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
-    private static final String ArquivoURLS = "urlsIndexados.txt";
+    //private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
     private List<String> urlsIndexados;
 
     //estruturas necessárias p/ armazenar as estatísticas
@@ -43,27 +37,26 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.paginaAtual = 0;                           //pags começam com 0
 
         conectarBarrels();
-        carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
         iniciarMonitoramento();
 
     }
 
-    private List<String> barrelUrls = Arrays.asList( //lista de barrels disponíveis
-        "rmi://194.210.38.168/barrel1", //ip do pc, deve ser alterado dependendo do teste
-        "rmi://194.210.38.168/barrel2", 
-        "rmi://194.210.38.168/barrel3"
+    private List<String> barrelUrls = Arrays.asList(            //lista de barrels disponíveis
+        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
+        "rmi://192.168.1.164/barrel2", 
+        "rmi://192.168.1.164/barrel3"
     );
 
 
     private void conectarBarrels() {
 
-        barrels.clear();
+        barrels.clear();    
 
         for(String barrelUrl: barrelUrls){
             try { 
-                    // Conecta barrels usando a URL fornceida
+                    //conecta barrels usando a URL fornceida
                     InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
-                    barrels.add(barrel);  // ADiciona o barrel conectado à lista de barrels
+                    barrels.add(barrel);       //add o barrel conectado à lista de barrels
                     System.out.println("Conectado ao barrel: " + barrelUrl);
                 
             } catch (Exception e) {
@@ -99,26 +92,27 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }).start();
     }
 
-    public boolean reliableMulticast(String palavra, String url) { //garante que os dados estao replicadso entre os barrels
+    // RELIABLE MULTICAST
+    public boolean reliableMulticast(String palavra, String url) {    //garante que os dados estao replicadso entre os barrels
         List<InterfaceBarrel> confirmados = new ArrayList<>();
 
         try {
-            // Enviar para todos os barrels
+            //enviar para todos os barrels
             for (InterfaceBarrel barrel : barrels) {
                 barrel.indexar_URL(palavra, url);
             }
 
-            // Confirmar recebimento
+            //confirmar recebimento
             for (InterfaceBarrel barrel : barrels) {
                 if (barrel.confirmarRecebimento(palavra, url)) {
                     confirmados.add(barrel);
                 } else {
-                    System.err.println("Erro: Barrel não confirmou recebimento."); //se qualquer barrel nao confirmar, a operação falha
+                    System.err.println("Erro: Barrel não confirmou recebimento.");    //se qualquer barrel nao confirmar, a operação falha
                     return false;
                 }
             }
 
-            System.out.println("Indexação concluída com sucesso!"); //quando todos confirmam, é sucesso
+            System.out.println("Indexação concluída com sucesso!");    //quando todos confirmam, é sucesso
             return true;
         } catch (RemoteException e) {
             System.err.println("Falha no Reliable Multicast: " + e.getMessage());
@@ -126,20 +120,32 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+    //MÉTODOS DOWNLOADER - PEGAR URL E COLOCAR NA FILA
+    //pegar a próxima URL para o Downloader
+    public String get_url() throws RemoteException {
+        return filaURLs.poll(); // Retorna a próxima URL da fila
+    }
+
+    //add uma nova URL à fila
+    public void put_url(String url) throws RemoteException {
+        filaURLs.add(url);
+        System.out.println("Nova URL adicionada à fila: " + url);
+    }
+
     // INDEXAR URL = salvar
     @Override
-    public void indexar_URL(String url) throws RemoteException {
+    public void indexar_URL(String palavra, String url) throws RemoteException {
         if (!urlsIndexados.contains(url)) {
-            // Distribuir a indexação para os barrels
+            
+            //distribui a indexação para os barrels
             for (InterfaceBarrel barrel : barrels) {
-                for (String palavra : palavras_chave) {
-                    barrel.indexar_URL(palavra, url); // Indexar a URL em cada barrel
-                }
+                    barrel.indexar_URL(palavra, url);      //indexar a URL em cada barrel
             }
+
             urlsIndexados.add(url);
-            salvarURL(url);
-            System.out.println("URL indexada em todos os barrels: " + url);
-        } else {
+            System.out.println("Palavra '" + palavra + "' indexada em todos os barrels com URL: " + url);
+        } 
+        else {
             System.out.println("URL já foi indexado.");
         }
     }
@@ -161,8 +167,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         //atualiza a contagem da palavra pesquisada
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
 
-        //simula atualização de tempo de resposta por Barrel (substituir pela lógica real)
-        String barrel = "Barrel1";  // Aqui você pode associar um Barrel real da busca
+        //atualização de tempo de resposta por Barrel 
+        String barrel = "Barrel1"; // Pega o nome real do Barrel usado
         temposResposta.putIfAbsent(barrel, new ArrayList<>());
         temposResposta.get(barrel).add(duracao);
 
@@ -170,35 +176,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.paginaAtual = 0;
 
         return resultados;
-    }
-
-    // SALVAR URL
-    //salvar um URL no arquivo de texto
-    private void salvarURL(String url) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ArquivoURLS, true))) {
-            //add o URL ao final do arquivo, com uma nova linha
-            writer.write(url);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace(); //mostra o erro se der ruim ao salvar
-        }
-    }
-
-    // CARREGAR URLS AO INICIAR SERV
-    //carregar os URLs já indexados ao iniciar o servidor
-    private void carregarURLs() {
-        File arquivo = new File(ArquivoURLS);
-        if (arquivo.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(ArquivoURLS))) {
-                String line;
-                //lê o arquivo linha por linha
-                while ((line = reader.readLine()) != null) {
-                    urlsIndexados.add(line); //adiciona à lista de URLs indexados
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

@@ -1,4 +1,14 @@
-https://www.youtube.com/
-https://www.uc.pt/
-
-oiii
+pt.wikipedia.org -> https://pt.wikipedia.org/wiki/Porquinho-da-%C3%ADndia
+ -> caracteres
+http: -> http://www.iana.org/
+http: -> http://www.iana.org/about/
+http: -> http://www.iana.org/domains
+http: -> http://www.iana.org/protocols
+http: -> http://www.iana.org/numbers
+http: -> http://www.iana.org/about
+http: -> http://www.iana.org/domains/
+http: -> http://www.iana.org/domains/root
+www.iana.org -> https://www.iana.org/domains/example
+exemplo -> https://example.com
+palavra2 -> https://example2.com
+example.com -> https://example.com

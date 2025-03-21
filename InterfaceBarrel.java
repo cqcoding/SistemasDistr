@@ -11,10 +11,8 @@ import java.util.Map;
 public interface InterfaceBarrel extends Remote {
     void indexar_URL(String palavra, String url) throws RemoteException;  //indexar novo url
     List<String> pesquisar(String palavra) throws RemoteException;        //pesquisar algo e retornar lista com resultados
-    boolean confirmarRecebimento(String palavra, String url) throws RemoteException;  // implementar reliable multicast com ACK
-    boolean estaAtivo() throws RemoteException; // Método para verificar se o Barrel está ativo
-    void sincronizarDados(Map<String, List<String>> dados) throws RemoteException; // Sincronização de dados
-    Map<String, List<String>> getIndexados() throws RemoteException; // Método para obter todos os dados indexados
-
-
+    boolean confirmarRecebimento(String palavra, String url) throws RemoteException;  //implementar reliable multicast com ACK
+    boolean estaAtivo() throws RemoteException;                           //método para verificar se o Barrel está ativo
+    void sincronizarDados(Map<String, List<String>> dados) throws RemoteException;    //sincronização de dados
+    Map<String, List<String>> getIndexados() throws RemoteException;      //método para obter todos os dados indexados
 }

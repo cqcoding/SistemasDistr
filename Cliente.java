@@ -6,8 +6,8 @@ public class Cliente {
     public static void main(String[] args) throws Exception {
         try {
             // Conectar ao GatewayServer via RMI
-            String objName = "rmi://194.210.38.168/server";      //quando for em outra maquina põe o ip ao invés do localhost
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(objName);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
+            String server = "rmi://192.168.1.164/server";      //quando for em outra maquina põe o ip ao invés do localhost
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
             
             Scanner scanner = new Scanner(System.in);
             
