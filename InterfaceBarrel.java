@@ -15,6 +15,8 @@ public interface InterfaceBarrel extends Remote {
     boolean estaAtivo() throws RemoteException; // Método para verificar se o Barrel está ativo
     void sincronizarDados(Map<String, List<String>> dados) throws RemoteException; // Sincronização de dados
     Map<String, List<String>> getIndexados() throws RemoteException; // Método para obter todos os dados indexados
-
+    void adicionarURLNaFila(String url) throws RemoteException;
+    String obterProximaURL() throws RemoteException;
+    int tamanhoFilaURLs() throws RemoteException;
 
 }

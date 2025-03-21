@@ -71,6 +71,38 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+    @Override
+    public void enviarURLParaProcessamento(String url) throws RemoteException {
+        if (barrels.isEmpty()) {
+            System.out.println("Nenhum Barrel disponível para processar a URL.");
+            return;
+        }
+
+        // Escolher um Barrel com menos URLs na fila
+        InterfaceBarrel melhorBarrel = null;
+        int menorFila = Integer.MAX_VALUE;
+
+        for (InterfaceBarrel barrel : barrels) {
+            try {
+                int tamanhoFila = barrel.tamanhoFilaURLs(); // Obtém o tamanho da fila de cada Barrel
+                if (tamanhoFila < menorFila) {
+                    menorFila = tamanhoFila;
+                    melhorBarrel = barrel;
+                }
+            } catch (RemoteException e) {
+                System.out.println("Erro ao verificar fila do Barrel: " + e.getMessage());
+            }
+        }
+
+        if (melhorBarrel != null) {
+            melhorBarrel.adicionarURLNaFila(url);
+            System.out.println("URL enviada para processamento no Barrel.");
+        } else {
+            System.out.println("Nenhum Barrel disponível para receber a URL.");
+        }
+    }
+
+
     private void iniciarMonitoramento() {
         new Thread(() -> {
             while (true) {

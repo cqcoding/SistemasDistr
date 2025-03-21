@@ -9,19 +9,23 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 // Implementação do Barrel Server
 class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private Map<String, List<String>> urlsIndexados;
-        private static final String ArquivoURLS = "urlsIndexados.txt";
+    private static final String ArquivoURLS = "urlsIndexados.txt";
+    private Queue<String> urlQueue;
 
 
     protected BarrelServer() throws RemoteException {
         super();
         urlsIndexados = new HashMap<>();        //estrutura de dados que guarda chave(palavra pesquisada) e valor(url)
+        urlQueue = new ArrayDeque<>(); // Inicializa a fila de URLs
         carregarURLs();
     }
 
@@ -59,6 +63,24 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         return urlsIndexados;  //retorna o mapa de palavras + urls indexados
     }
 
+       // Métodos para a fila de URLs
+    public void adicionarURLNaFila(String url) throws RemoteException {
+        urlQueue.add(url);
+        System.out.println("URL adicionada à fila: " + url);
+    }
+
+    public String obterProximaURL() throws RemoteException {
+        return urlQueue.poll();
+    }
+
+    public boolean filaVazia() throws RemoteException {
+        return urlQueue.isEmpty();
+    }
+
+    @Override
+    public int tamanhoFilaURLs() throws RemoteException {
+        return urlQueue.size();
+    }
        // SALVAR URL
     //salvar um URL no arquivo de texto
     private void salvarURLs() {
