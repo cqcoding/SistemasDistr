@@ -18,7 +18,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     //consigam chamá-lo remotamente
     private List<InterfaceBarrel> barrels;
     private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
-    private static final String ArquivoURLS = "urlsIndexados.txt";
     private List<String> urlsIndexados;
 
     //estruturas necessárias p/ armazenar as estatísticas
@@ -43,7 +42,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.paginaAtual = 0;                           //pags começam com 0
 
         conectarBarrels();
-        carregarURLs();                                 //carrega os URLs existentes no arquivo (se tiver)
         iniciarMonitoramento();
 
     }
@@ -137,7 +135,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 }
             }
             urlsIndexados.add(url);
-            salvarURL(url);
             System.out.println("URL indexada em todos os barrels: " + url);
         } else {
             System.out.println("URL já foi indexado.");
@@ -172,34 +169,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return resultados;
     }
 
-    // SALVAR URL
-    //salvar um URL no arquivo de texto
-    private void salvarURL(String url) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ArquivoURLS, true))) {
-            //add o URL ao final do arquivo, com uma nova linha
-            writer.write(url);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace(); //mostra o erro se der ruim ao salvar
-        }
-    }
-
-    // CARREGAR URLS AO INICIAR SERV
-    //carregar os URLs já indexados ao iniciar o servidor
-    private void carregarURLs() {
-        File arquivo = new File(ArquivoURLS);
-        if (arquivo.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(ArquivoURLS))) {
-                String line;
-                //lê o arquivo linha por linha
-                while ((line = reader.readLine()) != null) {
-                    urlsIndexados.add(line); //adiciona à lista de URLs indexados
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     @Override
     public String next_page() throws RemoteException {
