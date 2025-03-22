@@ -54,6 +54,6 @@ public class WebCrawler {
     public static void main(String[] args) {
         String gatewayUrl = "rmi://192.168.1.164/server";    //gatewayUrl guarda a URL do servidor RMI
         WebCrawler crawler = new WebCrawler(gatewayUrl);     //o obj WebCrawler é criado e recebe a gatewayUrl como parâmetro p/ ter acesso ao GATEWAYSERVER pela conexão RMI
-        crawler.crawl("https://pt.wikipedia.org/wiki/Elefante"); // URL inicial
+        crawler.crawl("https://mundoeducacao.uol.com.br/biologia/cavalo.htm"); // URL inicial
     }
 }
