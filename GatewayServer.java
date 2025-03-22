@@ -12,7 +12,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     //consigam chamá-lo remotamente
     
     private List<InterfaceBarrel> barrels;
-    //private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
+    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
     private List<String> urlsIndexados;
 
     //estruturas necessárias p/ armazenar as estatísticas
@@ -66,6 +66,41 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+    //MÉTODO PRA 
+    @Override
+    public void enviarURLParaProcessamento(String url) throws RemoteException {
+        if (barrels.isEmpty()) {
+            System.out.println("Nenhum Barrel disponível para processar a URL.");
+            return;
+        }
+
+        //escolher Barrel com menos URLs na fila
+        InterfaceBarrel melhorBarrel = null;
+        int menorFila = Integer.MAX_VALUE;
+
+        for (InterfaceBarrel barrel : barrels) {
+            try {
+                int tamanhoFila = barrel.tamanhoFilaURLs(); // Obtém o tamanho da fila de cada Barrel
+                if (tamanhoFila < menorFila) {
+                    menorFila = tamanhoFila;
+                    melhorBarrel = barrel;
+                }
+            } 
+            catch (RemoteException e) {
+                System.out.println("Erro ao verificar fila do Barrel: " + e.getMessage());
+            }
+        }
+
+        if (melhorBarrel != null) {
+            melhorBarrel.adicionarURLNaFila(url);
+            System.out.println("URL enviada para processamento no Barrel.");
+        } 
+        else {
+            System.out.println("Nenhum Barrel disponível para receber a URL.");
+        }
+    }
+
+    //MONITORAMENTO DO BARRELS
     private void iniciarMonitoramento() {
         new Thread(() -> {
             while (true) {
@@ -73,11 +108,17 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     Thread.sleep(5000); // Verifica a cada 5 segundos
                     //System.out.println("Monitorando Barrels...");
 
+                    //barrelsAtivos.clear();                          //limpa o mapa antes de atualizar - isso é pras estatísticas
+
                     List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
                     for (InterfaceBarrel barrel : barrels) {
                         try {
-                            if (barrel.estaAtivo()) {  //verifica se cada barrel está ativo
-                                barrelsAtivos.add(barrel);  // adiciona barrels ativos à lista
+                            if (barrel.estaAtivo()) {               //verifica se cada barrel está ativo
+                                barrelsAtivos.add(barrel);          //add barrels ativos à lista
+                            
+                                //pega o tamanho do índice do barrel - estatisticas
+                                //int tamanhoIndice = barrel.obterTamanhoIndice(); 
+                                //barrelsAtivos.put(barrel.toString(), tamanhoIndice);
                             }
                         } catch (RemoteException e) {
                             System.err.println("Barrel inativo detectado!");  //quando o barrel está inativo manda aviso de erro
@@ -120,30 +161,20 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    //MÉTODOS DOWNLOADER - PEGAR URL E COLOCAR NA FILA
-    //pegar a próxima URL para o Downloader
-    public String get_url() throws RemoteException {
-        return filaURLs.poll(); // Retorna a próxima URL da fila
-    }
-
-    //add uma nova URL à fila
-    public void put_url(String url) throws RemoteException {
-        filaURLs.add(url);
-        System.out.println("Nova URL adicionada à fila: " + url);
-    }
-
     // INDEXAR URL = salvar
     @Override
-    public void indexar_URL(String palavra, String url) throws RemoteException {
+    public void indexar_URL(String url) throws RemoteException {
         if (!urlsIndexados.contains(url)) {
             
             //distribui a indexação para os barrels
             for (InterfaceBarrel barrel : barrels) {
+                for (String palavra : palavras_chave) {
                     barrel.indexar_URL(palavra, url);      //indexar a URL em cada barrel
+                }
             }
 
             urlsIndexados.add(url);
-            System.out.println("Palavra '" + palavra + "' indexada em todos os barrels com URL: " + url);
+            System.out.println("URL indexada em todos os barrels: " + url);
         } 
         else {
             System.out.println("URL já foi indexado.");
@@ -164,7 +195,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         long duracao = (System.nanoTime() - inicio) / 100000;
 
-        //atualiza a contagem da palavra pesquisada
+        //atualiza a contagem da palavra pesquisada - ESTATÍSTICAS
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
 
         //atualização de tempo de resposta por Barrel 
@@ -210,47 +241,62 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     @Override
     public String pagina_estatisticas() throws RemoteException {
-        StringBuilder relatorioEstatisticas = new StringBuilder();  //cira objeto stringbuilder
+        StringBuilder relatorioEstatisticas = new StringBuilder();  //cria objeto stringbuilder
 
+        relatorioEstatisticas.append("---- ESTATÍSTICAS ----\n");
+        
+        // Verifica o conteúdo do mapa pesquisasFrequentes
+        System.out.println("Pesquisas frequentes: " + pesquisasFrequentes);
+        
         //TOP 10 PESQUISAS + comuns
         relatorioEstatisticas.append("Top 10 pesquisas mais comuns:\n");     //append -> add texto na stringbuilder, nesse caso um título pro nosso relatório
  
- 
-        pesquisasFrequentes.entrySet().stream()  // Converte o mapa pesquisasFrequentes (palavra -> quantidade) em um fluxo de dados.
-            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))  // Ordena os resultados do maior para o menor número de pesquisas.
-            .limit(10)  // Mantém apenas os 10 mais pesquisados.
-            .forEach(entry -> relatorioEstatisticas.append(entry.getKey())  // Para cada entrada, adiciona a palavra pesquisada...
-                                .append(": ")  // Adiciona um separador.
-                                .append(entry.getValue())  // Adiciona o número de vezes que foi pesquisada.
-                                .append("\n"));  // Pula para a próxima linha.
 
-         //LISTA DE BARRELS ATIVOS e tamanhos do índice
-        relatorioEstatisticas.append("\nBarrels ativos e tamanho do índice:\n"); //titulo
+        pesquisasFrequentes.entrySet().stream()                             //converte o mapa pesquisasFrequentes (palavra -> quantidade) em um fluxo de dados.
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))         //ordena os resultados do maior para o menor número de pesquisas.
+            .limit(10)                                              //mantém só os 10 + pesquisados
+            .forEach(entry -> relatorioEstatisticas.append(entry.getKey())  //p/ cada entrada, adiciona a palavra pesquisada...
+                                .append(": ")          //add um separador
+                                .append(entry.getValue())  //add nº de vezes que foi pesquisada
+                                .append("\n"));        //pula para a próxima linha
+
+        
+        // Verifica o conteúdo do mapa barrelsAtivos
+        System.out.println("Barrels ativos: " + barrelsAtivos);
+        
+        //LISTA DE BARRELS ATIVOS e tamanhos do índice
+        relatorioEstatisticas.append("\nBarrels ativos e tamanho do índice:\n");                          //titulo
 
 
-        barrelsAtivos.forEach((barrel, tamanho) ->  // Percorre o mapa barrelsAtivos (Barrel -> tamanho do índice).
-        relatorioEstatisticas.append(barrel)  // Adiciona o nome do Barrel.
-                .append(": ")  // Adiciona um separador.
-                .append(tamanho)  // Adiciona o tamanho do índice (número de URLs indexados).
-                .append(" URLs\n"));  // Especifica que o valor representa URLs e pula para a próxima linha.
+        barrelsAtivos.forEach((barrel, tamanho) ->        //percorre o mapa barrelsAtivos (Barrel -> tamanho do índice)
+        relatorioEstatisticas.append(barrel)              //add o nome do Barrel
+                .append(": ")                         
+                .append(tamanho)                          //add o tamanho do índice (número de URLs indexados)
+                .append(" URLs\n"));                  //especifica que o valor representa URLs e pula para a próxima linha
 
-        relatorioEstatisticas.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n"); //titulo
-        for (var entry : temposResposta.entrySet()) { // Percorre o mapa temposResposta (Barrel -> lista de tempos de resposta).
-            String barrel = entry.getKey(); // Obtém o nome do Barrel.
-            List<Long> tempos = entry.getValue(); // Obtém a lista de tempos de resposta para esse Barrel.
+
+        // Verifica o conteúdo do mapa temposResposta
+        System.out.println("Tempos de resposta por Barrel: " + temposResposta);
+
+
+        //TEMPO MÉDIO DE RESPOSTA DOS BARRELS
+        relatorioEstatisticas.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");      //titulo
+        for (var entry : temposResposta.entrySet()) {      //percorre o mapa temposResposta (Barrel -> lista de tempos de resposta)
+            String barrel = entry.getKey();                //pega o nome do Barrel
+            List<Long> tempos = entry.getValue();          //pega a lista de tempos de resposta para esse Barrel
             
-            long media = tempos.stream()  // Converte a lista de tempos de resposta em um fluxo de dados.
-                            .mapToLong(Long::longValue)  // Converte a lista de objetos Long para primitivos long.
-                            .sum() / tempos.size();  // Calcula a média somando todos os valores e dividindo pelo total.
+            long media = tempos.stream()                   //converte a lista de tempos de resposta em um fluxo de dados
+                        .mapToLong(Long::longValue)    //converte a lista de objetos Long para primitivos long
+                        .sum() / tempos.size();        //calcula a média somando todos os valores e dividindo pelo total
 
             
-            relatorioEstatisticas.append(barrel)  // Adiciona o nome do Barrel.
-                .append(": ")  // Adiciona um separador.
-                .append(media)  // Adiciona o tempo médio de resposta.
-                .append("\n");  // Pula para a próxima linha.
+            relatorioEstatisticas.append(barrel)           
+                .append(": ")                          
+                .append(media)                             //add o tempo médio de resposta
+                .append("\n");                         
         }
 
-        return relatorioEstatisticas.toString();  //Retorna o relatório final como string
+        return relatorioEstatisticas.toString();           //retorna o relatório final como string
     }
 
     //sempre que indexar algo no barrel ele atualiza o tamanho

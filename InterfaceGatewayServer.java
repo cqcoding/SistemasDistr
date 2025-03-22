@@ -6,11 +6,9 @@ import java.util.*;
 public interface InterfaceGatewayServer extends Remote {
     void indexar_URL(String url) throws RemoteException;          //indexar novo url
     List<String> pesquisar(String palavra) throws RemoteException;    //pesquisar algo e retornar lista com resultados
+    void enviarURLParaProcessamento(String url) throws RemoteException; // envia url pra queue no barrel
     String next_page() throws RemoteException;                  //ir p/ próxima página de resultados
     String previous_page() throws RemoteException;              //voltar p/ página anterior
     List<String> links_to_page() throws RemoteException;        //retornar links associados à página atual
     String pagina_estatisticas() throws RemoteException;        //retornar estatísticas da pesquisa
-
-    public String get_url() throws java.rmi.RemoteException;    //retorna a próxima URL a ser baixada pelo downloader
-    public void put_url(String url) throws java.rmi.RemoteException;  //add uma nova URL à fila do index, permitindo que o downloader envie novos links encontrados
 }

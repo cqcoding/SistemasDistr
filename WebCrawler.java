@@ -19,8 +19,8 @@ public class WebCrawler {
             this.gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);    //conecta ao GATEWAYSERVER via RMI
             //this.gateway recebe a interface remota - deixa chamar métodos no servidor 
             //Naming.lookup(gatewayUrl) faz uma busca no registro RMI pelo serviço disponível no endereço lá embaixo citado
-
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.err.println("Erro ao conectar ao GatewayServer.");
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class WebCrawler {
             Elements links = doc.select("a[href]");   //encontra todos os links na página
 
             //enviar URL p/ o GATEWAYSERVER p/ indexar
-            gateway.indexar_URL(url);
+            gateway.enviarURLParaProcessamento(url);
 
             for (Element link : links) {
                 String nextUrl = link.absUrl("href");
@@ -54,6 +54,6 @@ public class WebCrawler {
     public static void main(String[] args) {
         String gatewayUrl = "rmi://192.168.1.164/server";    //gatewayUrl guarda a URL do servidor RMI
         WebCrawler crawler = new WebCrawler(gatewayUrl);     //o obj WebCrawler é criado e recebe a gatewayUrl como parâmetro p/ ter acesso ao GATEWAYSERVER pela conexão RMI
-        crawler.crawl("https://example.com"); // URL inicial
+        crawler.crawl("https://pt.wikipedia.org/wiki/Elefante"); // URL inicial
     }
 }

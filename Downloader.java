@@ -1,5 +1,7 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Random;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -7,22 +9,34 @@ import org.jsoup.nodes.Element;
 
 
 public class Downloader {
-    InterfaceGatewayServer gateway;  //conexão com o GatewayServer
+    InterfaceBarrel barrel;  //conexão com o barrel
 
     public Downloader() throws RemoteException {
+        try {
+            String[] barrelUrls = {
+            "rmi://192.168.1.164/barrel1",
+            "rmi://192.168.1.164/barrel2",
+            "rmi://192.168.1.164/barrel3"
+            };
 
+            //escolhe um barrel aleatório p se conectar
+            Random rand = new Random();
+            String barrelUrl = barrelUrls[rand.nextInt(barrelUrls.length)]; // Escolhe um aleatório
+
+            System.out.println("Tentando conectar ao Barrel em: " + barrelUrl);
+            this.barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
+            System.out.println("Conectado ao Barrel!");
+        } 
+        catch (Exception e) {
+            System.err.println("Erro ao conectar ao Barrel.");
+            e.printStackTrace();
+        }
     }
 
     public void executar(){
         try {
-            //
-            String server = "rmi://192.168.1.164/server"; 
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server); //conecta a gateway p indexar palavras e urls
-           
-            System.out.println("Conectado no Servidor");
-            
             while (true) {
-                String url = gateway.get_url();             // pega a próxima URL para baixar
+                String url = barrel.get_url();             // pega a próxima URL para baixar
                 if (url == null){ 
                     System.out.println("Nenhuma URL disponível");
                     break;                                 // se aquela url for nula, n tiver nenhum link, daí sai do loop
@@ -36,7 +50,7 @@ public class Downloader {
                 for (Element anchor : anchors) {
                     String href = anchor.attr("href");
                     if (!href.isEmpty()) {                 // se a url encontrada não estiver vazia daí adiciona pra indexar
-                    gateway.put_url(href);
+                    barrel.put_url(href);
                 }
             }
 
@@ -45,7 +59,7 @@ public class Downloader {
                 for (String palavra : palavras) {
                     palavra = palavra.trim();
                     if (palavra.length() > 3) {                // filtra as palavras curtas
-                        gateway.indexar_URL(palavra, url);     // envia palavra e url p/ gateway
+                        barrel.indexar_URL(palavra, url);     // envia palavra e url p/ gateway
                     }
                 }
 
