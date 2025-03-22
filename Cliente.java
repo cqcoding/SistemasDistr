@@ -6,8 +6,8 @@ public class Cliente {
     public static void main(String[] args) throws Exception {
         try {
             // Conectar ao GatewayServer via RMI
-            String objName = "rmi://192.168.1.164/server";      //quando for em outra maquina põe o ip ao invés do localhost
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(objName);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
+            String server = "rmi://192.168.1.164/server";      //quando for em outra maquina põe o ip ao invés do localhost
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
             
             Scanner scanner = new Scanner(System.in);
             
@@ -40,12 +40,14 @@ public class Cliente {
                     System.out.println("URL para indexar:  ");
                     String url = scanner.nextLine();
 
-                    gateway.indexar_URL(url);
+                    gateway.enviarURLParaProcessamento(url);       //adiciona url à lista de processamento dos barrels
                     System.out.println("URL indexada com sucesso!");      
                 }
 
                 else if (opcao == 3){
-                    gateway.pagina_estatisticas();
+                    String estatisticas = gateway.pagina_estatisticas();  //pega as estatísticas
+                    System.out.println(estatisticas);                     //e imprime no cliente
+                    
                     System.out.println("Estatísticas mostradas com sucesso!");      
                 }
 

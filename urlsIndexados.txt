@@ -1,5 +1,26 @@
 pt.wikipedia.org -> https://pt.wikipedia.org/wiki/Porquinho-da-%C3%ADndia
  -> caracteres
+ -> https://pt.wikipedia.org/wiki/Porquinho-da-%C3%ADndia
+ -> https://example.com
+ -> https://www.iana.org/domains/example
+ -> http://www.iana.org/
+ -> http://www.iana.org/about/
+ -> http://www.iana.org/domains
+ -> http://www.iana.org/protocols
+ -> http://www.iana.org/numbers
+ -> http://www.iana.org/about
+ -> http://www.iana.org/domains/
+ -> http://www.iana.org/domains/root
+ -> https://example.com
+ -> https://www.iana.org/domains/example
+ -> http://www.iana.org/
+ -> http://www.iana.org/about/
+ -> http://www.iana.org/domains
+ -> http://www.iana.org/protocols
+ -> http://www.iana.org/numbers
+ -> http://www.iana.org/about
+ -> http://www.iana.org/domains/
+ -> http://www.iana.org/domains/root
 http: -> http://www.iana.org/
 http: -> http://www.iana.org/about/
 http: -> http://www.iana.org/domains
@@ -10,5 +31,6 @@ http: -> http://www.iana.org/domains/
 http: -> http://www.iana.org/domains/root
 www.iana.org -> https://www.iana.org/domains/example
 exemplo -> https://example.com
+elefante -> https://www.google.com/search?q=elefante&rlz=1C1ONGR_pt-PTBR1090BR1091&oq=elefante&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTINCAEQLhivARjHARiABDIQCAIQLhivARjHARixAxiABDIHCAMQABiABDIKCAQQLhjUAhiABDIKCAUQLhjUAhiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABNIBCDE2ODhqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 palavra2 -> https://example2.com
 example.com -> https://example.com

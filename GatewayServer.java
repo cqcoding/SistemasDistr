@@ -12,7 +12,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     //consigam chamá-lo remotamente
     
     private List<InterfaceBarrel> barrels;
-    //private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
+    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
     private List<String> urlsIndexados;
 
     //estruturas necessárias p/ armazenar as estatísticas
@@ -66,6 +66,39 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+    //MÉTODO PRA PODER USAR O INDEXAR NOS DOWNLOADERS
+    @Override
+    public void enviarURLParaProcessamento(String url) throws RemoteException {
+        if (barrels.isEmpty()) {
+            System.out.println("Nenhum Barrel disponível para processar a URL.");
+            return;
+        }
+
+        // Escolher um Barrel com menos URLs na fila
+        InterfaceBarrel melhorBarrel = null;
+        int menorFila = Integer.MAX_VALUE;
+
+        for (InterfaceBarrel barrel : barrels) {
+            try {
+                int tamanhoFila = barrel.tamanhoFilaURLs(); // Obtém o tamanho da fila de cada Barrel
+                if (tamanhoFila < menorFila) {
+                    menorFila = tamanhoFila;
+                    melhorBarrel = barrel;
+                }
+            } catch (RemoteException e) {
+                System.out.println("Erro ao verificar fila do Barrel: " + e.getMessage());
+            }
+        }
+
+        if (melhorBarrel != null) {
+            melhorBarrel.adicionarURLNaFila(url);
+            System.out.println("URL enviada para processamento no Barrel.");
+        } else {
+            System.out.println("Nenhum Barrel disponível para receber a URL.");
+        }
+    }
+
+    //MONITORAMENTO DO BARRELS
     private void iniciarMonitoramento() {
         new Thread(() -> {
             while (true) {
@@ -127,7 +160,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             
             //distribui a indexação para os barrels
             for (InterfaceBarrel barrel : barrels) {
-                for (String palavra : extrairPalavrasChave(url)) {
+                for (String palavra : palavras_chave) {
                     barrel.indexar_URL(palavra, url);      //indexar a URL em cada barrel
                 }
             }
@@ -138,11 +171,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         else {
             System.out.println("URL já foi indexado.");
         }
-    }
-
-    private List<String> extrairPalavrasChave(String url) {
-        // Simulação de extração de palavras-chave da URL////////////////////////////////////////////
-        return Arrays.asList(url.replace("https://", "").split("/")[0].split("-"));
     }
 
     // PESQUISAR

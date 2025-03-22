@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WebCrawler {
-    private Set<String> visitedLinks = new HashSet<>(); // Armazena links visitados
-    private static final int MAX_PAGES = 10; // Limite de páginas para evitar loops infinitos
+    private Set<String> visitedLinks = new HashSet<>();      //guarda os links visitados
+    private static final int MAX_PAGES = 10;                 //limite de páginas para evitar loops infinitos
 
     private InterfaceGatewayServer gateway;       //interface p/ comunicar com o GATEWAYSERVER
 
@@ -34,8 +34,8 @@ public class WebCrawler {
             System.out.println("Visitando: " + url);
             visitedLinks.add(url);
 
-            Document doc = Jsoup.connect(url).get(); // Faz requisição HTTP e baixa a página
-            Elements links = doc.select("a[href]"); // Encontra todos os links na página
+            Document doc = Jsoup.connect(url).get();           //faz requisição HTTP e baixa a página
+            Elements links = doc.select("a[href]");   //encontra todos os links na página
 
             //enviar URL p/ o GATEWAYSERVER p/ indexar
             gateway.indexar_URL(url);
