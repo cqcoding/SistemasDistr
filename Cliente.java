@@ -40,7 +40,7 @@ public class Cliente {
                     System.out.println("URL para indexar:  ");
                     String url = scanner.nextLine();
 
-                    gateway.indexar_URL(url);
+                    gateway.enviarURLParaProcessamento(url);  //adiciona url à lista de processamento dos barrels
                     System.out.println("URL indexada com sucesso!");      
                 }
 
