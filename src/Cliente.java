@@ -45,23 +45,13 @@ public class Cliente {
                 }
 
                 else if (opcao == 3){
-                    System.out.println("Pulou para a próxima página!"); 
-                    gateway.next_page();       //vai pra próxima página de resultados     
-                }
-
-                else if (opcao == 4){
-                    System.out.println("Voltou para a página anterior!");  
-                    gateway.previous_page();       //volta pra página anterior de resultados    
-                }
-
-                else if (opcao == 5){
                     String estatisticas = gateway.pagina_estatisticas();  //pega as estatísticas
                     System.out.println(estatisticas);                     //e imprime no cliente
                     
                     System.out.println("Estatísticas mostradas com sucesso!");      
                 }
 
-                else if (opcao == 6){
+                else if (opcao == 4){
                     System.out.println("Encerra cliente");
                     scanner.close();
                     break;                  
