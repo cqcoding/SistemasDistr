@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 
+// downloader obtém URLs do index e envia palavras para o barrel
 
 public class Downloader {
     DownIndex index;
@@ -31,7 +32,7 @@ public class Downloader {
                 System.out.println("Nenhuma URL disponível");
                    break; // se aquela url for nula, n tiver nenhum link, daí sai do loop
 
-                System.out.println("Baixando: " + url);
+                //System.out.println("Baixando: " + url);
                 Document doc = Jsoup.connect(url).get(); // carrega a url que está no jsoup
                 Elements anchors = doc.select("a");
 
