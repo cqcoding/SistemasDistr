@@ -28,7 +28,7 @@ public class WebCrawler {
 
     public void crawl(String url) {
         if (visitedLinks.size() >= MAX_PAGES) return;     //p/ depois de atingir o limite
-        if (visitedLinks.contains(url)) return;           //não deixa visitar a mesma página
+        if (visitedLinks.contains(url)) return;           //não deixa visitar a mesma página - evita duplicação
 
         try {
             System.out.println("Visitando: " + url);
