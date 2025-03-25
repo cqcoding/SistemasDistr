@@ -12,13 +12,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Downloader {
     InterfaceBarrel barrel;  //conexão com o barrel
     private Set<String> urlsProcessadas;
     private Set<String> palavrasProcessadas;
     private Map<String, Integer> contagemPalavras;
+    private Set<String> stopWords;
+
 
 
     public Downloader() throws RemoteException {
@@ -26,7 +30,10 @@ public class Downloader {
         this.urlsProcessadas = new HashSet<>();
         this.palavrasProcessadas = new HashSet<>();
         this.contagemPalavras = new HashMap<>();
+        this.stopWords = new HashSet<>();
+        carregarStopWords();
 
+       
 
         try {
             String[] barrelUrls = {
@@ -48,6 +55,16 @@ public class Downloader {
             e.printStackTrace();
         }
     }
+
+    private void carregarStopWords() {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("stopwords.txt"));
+            stopWords.addAll(lines);
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar stop words: " + e.getMessage());
+        }
+    }
+
 
     private void atualizarStopWords() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("stopwords.txt", true))) {
@@ -108,6 +125,12 @@ public class Downloader {
                 String[] palavras = Jsoup.parse(doc.html()).wholeText().split(" ");
                 for (String palavra : palavras) {
                     palavra = palavra.trim().toLowerCase();  //remove espaços e converte para minúsculas
+
+                     // Verifica se a palavra é uma stop word
+                     if (stopWords.contains(palavra)) {
+                        continue; // Pula a palavra se for uma stop word
+                    }
+
                     contagemPalavras.put(palavra, contagemPalavras.getOrDefault(palavra, 0) + 1);
 
                      // Cria uma chave única para palavra+URL
