@@ -3,10 +3,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.PrimitiveIterator;
 import java.util.Random;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -17,11 +18,15 @@ public class Downloader {
     InterfaceBarrel barrel;  //conexão com o barrel
     private Set<String> urlsProcessadas;
     private Set<String> palavrasProcessadas;
+    private Map<String, Integer> contagemPalavras;
+
 
     public Downloader() throws RemoteException {
         // Inicializar os Sets no construtor
         this.urlsProcessadas = new HashSet<>();
         this.palavrasProcessadas = new HashSet<>();
+        this.contagemPalavras = new HashMap<>();
+
 
         try {
             String[] barrelUrls = {
@@ -41,6 +46,24 @@ public class Downloader {
         catch (Exception e) {
             System.err.println("Erro ao conectar ao Barrel.");
             e.printStackTrace();
+        }
+    }
+
+    private void atualizarStopWords() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("stopwords.txt", true))) {
+            // Filtra palavras que aparecem mais de um certo número de vezes, por exemplo, 100
+            contagemPalavras.entrySet().stream()
+                .filter(entry -> entry.getValue() > 100)
+                .forEach(entry -> {
+                    try {
+                        writer.write(entry.getKey() + "\n");
+                        palavrasProcessadas.add(entry.getKey());
+                    } catch (IOException e) {
+                        System.err.println("Erro ao atualizar stop words: " + e.getMessage());
+                    }
+                });
+        } catch (IOException e) {
+            System.err.println("Erro ao abrir arquivo de stop words: " + e.getMessage());
         }
     }
 
@@ -85,6 +108,8 @@ public class Downloader {
                 String[] palavras = Jsoup.parse(doc.html()).wholeText().split(" ");
                 for (String palavra : palavras) {
                     palavra = palavra.trim().toLowerCase();  //remove espaços e converte para minúsculas
+                    contagemPalavras.put(palavra, contagemPalavras.getOrDefault(palavra, 0) + 1);
+
                      // Cria uma chave única para palavra+URL
                      String chaveUnica = palavra + "_" + url;
                      if (palavra.length() > 3 && !palavrasProcessadas.contains(chaveUnica)) {
@@ -93,6 +118,8 @@ public class Downloader {
                          salvarURLNoArquivo(palavra, url);
                      }
                 }
+
+                atualizarStopWords();
 
                 System.out.println("Página processada e enviada ao Barrel.");
                 Thread.sleep(1000);                    //p evita sobrecarga do servidor
