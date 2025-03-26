@@ -19,6 +19,10 @@ public interface InterfaceBarrel extends Remote {
     String obterProximaURL() throws RemoteException;
     int tamanhoFilaURLs() throws RemoteException;       //quantas URLs ainda estão aguardando indexação
     
+    String getNomeBarrel() throws RemoteException;      //método para identificar os barrels pq se não no cliente aparece o nome do proxy RMI em vez do nome do barrel
+    int getTamanhoIndice() throws RemoteException;      //pras estatisticas - mostrar tamanho indice
+
+
     public String get_url() throws java.rmi.RemoteException;    //retorna a próxima URL a ser baixada pelo downloader
     public void put_url(String url) throws java.rmi.RemoteException;  //add uma nova URL à fila do index, permitindo que o downloader envie novos links encontrados
 }
