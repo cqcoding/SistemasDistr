@@ -1,11 +1,21 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Properties;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.rmi.registry.LocateRegistry;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer {
     //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes
@@ -13,6 +23,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     
     private List<InterfaceBarrel> barrels;
     private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
+    private static final String ArquivoURLS = "urlsIndexados.txt";
     private List<String> urlsIndexados;
 
     //estruturas necessárias p/ armazenar as estatísticas
@@ -25,7 +36,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     private int paginaAtual;                                 //indice da pág atual
     private static final int TAMANHO_PAGINA = 10;            //nº de resultados por pág
 
-    protected GatewayServer() throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
+    protected GatewayServer(String serverIp) throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
         // pacote possam instanciar o objeto diretamente
         super();              //exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas
         this.barrels = new ArrayList<>();
@@ -37,19 +48,52 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;                           //pags começam com 0
 
-        conectarBarrels();
+        // Lista de barrels disponíveis
+        List<String> barrelUrls = Arrays.asList(
+            "rmi://" + serverIp + "/barrel1",
+            "rmi://" + serverIp + "/barrel2",
+            "rmi://" + serverIp + "/barrel3"
+        );
+
+        conectarBarrels(barrelUrls);
+        carregarURLs();
         iniciarMonitoramento();
 
     }
 
-    private List<String> barrelUrls = Arrays.asList(            //lista de barrels disponíveis
-        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
-        "rmi://192.168.1.164/barrel2", 
-        "rmi://192.168.1.164/barrel3"
-    );
+        public static void main(String[] args) {
+            try {
+                // Carregar propriedades do arquivo
+                Properties properties = new Properties();
+                try (InputStream input = new FileInputStream("config.properties")) {
+                    properties.load(input);
+                }
+    
+                // Obter o IP do servidor a partir das propriedades
+                String serverIp = properties.getProperty("server.ip", "localhost");
+                String objName = "rmi://" + serverIp + "/server";
+    
+                GatewayServer server = new GatewayServer(serverIp);   // Instancia o servidor
+    
+                System.out.println("Registrando objeto no RMIRegistry...");
+    
+                try {
+                    LocateRegistry.createRegistry(1099);  // Cria um registry RMI na porta 1099
+                    System.out.println("Registry RMI criado na porta 1099.");
+                } catch (Exception e) {
+                    System.out.println("Registry RMI já existente.");
+                }
+    
+                Naming.rebind(objName, server);  // Registra o objeto remoto no RMI Registry
+    
+                System.out.println("Servidor RMI pronto...");
+            } catch (Exception e) {
+                e.printStackTrace();  // Caso dê erro, ele será impresso
+            }
+        }
 
 
-    private void conectarBarrels() {
+    private void conectarBarrels(List<String> barrelUrls) {
 
         barrels.clear();    
 
@@ -319,4 +363,16 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     public void atualizarTamanhoBarrel(String barrel, int tamanho) {
         barrelsAtivos.put(barrel, tamanho);
     }
+
+    private void carregarURLs() {
+        try (BufferedReader br = new BufferedReader(new FileReader(ArquivoURLS))) {
+            String url;
+            while ((url = br.readLine()) != null) {
+                urlsIndexados.add(url);
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
+        }
+    }
+
 }

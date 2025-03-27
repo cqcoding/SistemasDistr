@@ -67,6 +67,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     }
 
     @Override
+    public synchronized boolean isQueueEmpty() throws RemoteException {
+        return urlQueue.isEmpty();
+    }
+
+    @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
         return urlsIndexados.getOrDefault(palavra, new ArrayList<>());
     }

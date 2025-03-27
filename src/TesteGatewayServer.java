@@ -8,7 +8,7 @@ public class TesteGatewayServer {
     public static void main(String[] args) throws MalformedURLException {
         try {
             // URL do BarrelServer
-            String gatewayUrl = "rmi://192.168.1.164/server";
+            String gatewayUrl = "rmi://localhost/server";
             
             // Conectar ao BarrelServer via RMI
             InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);

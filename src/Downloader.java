@@ -15,6 +15,8 @@ import org.jsoup.nodes.Element;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
+import java.io.InputStream;
 
 public class Downloader {
     InterfaceBarrel barrel;  //conexão com o barrel
@@ -36,15 +38,27 @@ public class Downloader {
        
 
         try {
+            // Carregar propriedades usando o ClassLoader
+            Properties properties = new Properties();
+            try (InputStream input = Downloader.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    System.out.println("Desculpe, não foi possível encontrar config.properties");
+                    return;
+                }
+                properties.load(input);
+            }
+
+            // Obter o IP do servidor a partir das propriedades
+            String serverIp = properties.getProperty("server.ip", "localhost");
             String[] barrelUrls = {
-            "rmi://192.168.1.164/barrel1",
-            "rmi://192.168.1.164/barrel2",
-            "rmi://192.168.1.164/barrel3"
+                "rmi://" + serverIp + "/barrel1",
+                "rmi://" + serverIp + "/barrel2",
+                "rmi://" + serverIp + "/barrel3"
             };
 
-            //escolhe um barrel aleatório p se conectar
+            // Escolhe um barrel aleatório para se conectar
             Random rand = new Random();
-            String barrelUrl = barrelUrls[rand.nextInt(barrelUrls.length)]; // Escolhe um aleatório
+            String barrelUrl = barrelUrls[rand.nextInt(barrelUrls.length)];
 
             System.out.println("Tentando conectar ao Barrel em: " + barrelUrl);
             this.barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
@@ -86,12 +100,19 @@ public class Downloader {
 
     //isso é pra salvar o que o cliente colocar de url pra INDEXAR, entra na fila e o downloader vai pegar da fila 
     private void salvarURLNoArquivo(String palavra, String url) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
-            writer.write(palavra + " -> " + url + "\n");  // Salva a palavra e a URL no arquivo
-            System.out.println("URL salva: " + palavra + " -> " + url);
-        } 
-        catch (IOException e) {
-            System.err.println("Erro ao salvar URL no arquivo: " + e.getMessage());
+        // Cria uma chave única para palavra+URL
+        String chaveUnica = palavra + "_" + url;
+        
+        // Verifica se a combinação já foi processada
+        if (!palavrasProcessadas.contains(chaveUnica)) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
+                writer.write(palavra + " -> " + url + "\n");  // Salva a palavra e a URL no arquivo
+                System.out.println("URL salva: " + palavra + " -> " + url);
+                palavrasProcessadas.add(chaveUnica);  // Marca a combinação como processada
+            } 
+            catch (IOException e) {
+                System.err.println("Erro ao salvar URL no arquivo: " + e.getMessage());
+            }
         }
     }
 
@@ -102,8 +123,14 @@ public class Downloader {
             while (true) {
                 String url = barrel.get_url();             // pega a próxima URL para baixar
 
-                if (url == null || urlsProcessadas.contains(url)) {                 // Verifica se a URL já foi processada
-                    System.out.println("URL nula ou já processada: " + url);
+                if (url == null) {                 // Verifica se a URL já foi processada
+                    System.out.println("Nenhuma URL disponível para processasmento");
+                    Thread.sleep(1000);
+                    continue;
+                }
+
+                if (urlsProcessadas.contains(url)) {
+                    System.out.println("URL já processada: " + url);
                     continue;
                 }
 
@@ -115,11 +142,11 @@ public class Downloader {
                 // envia novas URLs encontradas para indexar
                 for (Element anchor : anchors) {
                     String href = anchor.attr("href");
-                   // Só adiciona URLs que ainda não foram processadas
-                   if (!href.isEmpty() && !urlsProcessadas.contains(href)) {
-                    barrel.put_url(href);
+                    // Verifica se a URL é absoluta e não foi processada
+                    if (!href.isEmpty() && !urlsProcessadas.contains(href) && (href.startsWith("http://") || href.startsWith("https://"))) {
+                        barrel.put_url(href);
+                    }
                 }
-            }
 
                 // processa palavras e envia ao gateway
                 String[] palavras = Jsoup.parse(doc.html()).wholeText().split(" ");
@@ -149,6 +176,18 @@ public class Downloader {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void verificarFila() {
+        try {
+            if (barrel.isQueueEmpty()) {
+                System.out.println("A fila de URLs está vazia.");
+            } else {
+                System.out.println("A fila de URLs contém elementos.");
+            }
+        } catch (RemoteException e) {
+            System.err.println("Erro ao verificar a fila: " + e.getMessage());
         }
     }
 

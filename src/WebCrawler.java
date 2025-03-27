@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Properties;
+import java.io.InputStream;
 
 public class WebCrawler {
     private Set<String> visitedLinks = new HashSet<>();      //guarda os links visitados
@@ -26,11 +28,25 @@ public class WebCrawler {
     private InterfaceGatewayServer gateway;       //interface p/ comunicar com o GATEWAYSERVER
 
     //conectar ao gatewayserver
-    public WebCrawler(String gatewayUrl) {
+    public WebCrawler() {
         try {
-            this.gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);    //conecta ao GATEWAYSERVER via RMI
-            //this.gateway recebe a interface remota - deixa chamar métodos no servidor 
-            //Naming.lookup(gatewayUrl) faz uma busca no registro RMI pelo serviço disponível no endereço lá embaixo citado
+            // Carregar propriedades usando o ClassLoader
+            Properties properties = new Properties();
+            try (InputStream input = WebCrawler.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    System.out.println("Desculpe, não foi possível encontrar config.properties");
+                    return;
+                }
+                properties.load(input);
+            }
+
+            // Obter o IP do servidor a partir das propriedades
+            String serverIp = properties.getProperty("server.ip", "localhost");
+            String gatewayUrl = "rmi://" + serverIp + "/server";
+
+            System.out.println("Tentando conectar ao Crawler em: " + gatewayUrl);
+            this.gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);
+            System.out.println("Conectado ao Crawler!");
 
             //Carrega os dados de treinamento do arquivo ARFF e treina o modelo
             /*DataSource source = new DataSource("stopWords.arff");
@@ -142,8 +158,7 @@ public class WebCrawler {
     }
 
     public static void main(String[] args) {
-        String gatewayUrl = "rmi://192.168.1.164/server";            //gatewayUrl guarda a URL do servidor RMI
-        WebCrawler crawler = new WebCrawler(gatewayUrl);             //o obj WebCrawler é criado e recebe a gatewayUrl como parâmetro p/ ter acesso ao GATEWAYSERVER pela conexão RMI
+        WebCrawler crawler = new WebCrawler();             //o obj WebCrawler é criado e recebe a gatewayUrl como parâmetro p/ ter acesso ao GATEWAYSERVER pela conexão RMI
         crawler.crawl("https://oglobo.globo.com/"); // URL inicial
     }
 }

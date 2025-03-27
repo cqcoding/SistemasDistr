@@ -9,7 +9,7 @@ public class TesteBarrels {
     public static void main(String[] args) throws MalformedURLException {
         try {
             // URL do BarrelServer
-            String barrelUrl = "rmi://192.168.1.164/barrel1";
+            String barrelUrl = "rmi://localhost/barrel1";
             
             // Conectar ao BarrelServer via RMI
             InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);

@@ -1,13 +1,27 @@
 import java.rmi.Naming;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Properties;
+import java.io.InputStream;
 
 public class Cliente {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
-            // Conectar ao GatewayServer via RMI
-            String server = "rmi://192.168.1.164/server";      //quando for em outra maquina põe o ip ao invés do localhost
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);     //o cliente precisa estar ciente dos métodos da interface por isso chamamos a interface
+            // Carregar propriedades usando o ClassLoader
+            Properties properties = new Properties();
+            try (InputStream input = Cliente.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    System.out.println("Desculpe, não foi possível encontrar config.properties");
+                    return;
+                }
+                properties.load(input);
+            }
+
+            // Obter o IP do servidor a partir das propriedades
+            String serverIp = properties.getProperty("server.ip", "localhost");
+            String server = "rmi://" + serverIp + "/server";
+
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
             
             Scanner scanner = new Scanner(System.in);
             
