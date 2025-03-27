@@ -280,4 +280,19 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     public void atualizarTamanhoBarrel(String barrel, int tamanho) {
         barrelsAtivos.put(barrel, tamanho);
     }
+
+    @Override
+    public void enviarURLParaProcessamento(String url) throws RemoteException {
+        if (!urlsIndexados.contains(url)) {
+            for (InterfaceBarrel barrel : barrels) {
+                barrel.put_url(url);
+            }
+            urlsIndexados.add(url);
+            salvarURL(url);
+            System.out.println("URL enviada para processamento: " + url);
+        } else {
+            System.out.println("URL já foi enviada para processamento.");
+        }
+    }
 }
+
