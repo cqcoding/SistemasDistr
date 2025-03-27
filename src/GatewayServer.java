@@ -109,23 +109,35 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     Thread.sleep(5000); // Verifica a cada 5 segundos
                     //System.out.println("Monitorando Barrels...");
 
-                    List<InterfaceBarrel> barrelsAtivos = new ArrayList<>();
+                    // Limpa apenas os barrels inativos do mapa
+                    barrelsAtivos.entrySet().removeIf(entry -> !barrelAindaAtivo(entry.getKey()));
                     for (InterfaceBarrel barrel : barrels) {
                         try {
                             if (barrel.estaAtivo()) {               //verifica se cada barrel está ativo
-                                barrelsAtivos.add(barrel);          //add barrels ativos à lista
+                                String nomeBarrel = barrel.getNomeBarrel();
+                                int tamanhoIndice = barrel.getTamanhoIndice();        //pega o total INDEXADO
+                                atualizarTamanhoBarrel(nomeBarrel, tamanhoIndice);
                             }
                         } catch (RemoteException e) {
                             System.err.println("Barrel inativo detectado!");  //quando o barrel está inativo manda aviso de erro
                         }
                     }
-
-                    barrels = barrelsAtivos;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }).start();                //isso é o que realmente faz a thread começar a rodar
+    }
+
+
+    //Método pra pegaros barrels que estão ativos
+    private boolean barrelAindaAtivo(String nome) {
+        for (InterfaceBarrel barrel : barrels) {
+            if (barrel.toString().equals(nome)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // RELIABLE MULTICAST
@@ -179,24 +191,25 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     // PESQUISAR
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        long inicio = System.nanoTime();
         List<String> resultados = new ArrayList<>();
 
         //consultar cada barrel e combina os resultados
         for (InterfaceBarrel barrel : barrels) {
+            long inicio = System.nanoTime();
+            
             List<String> barrelResultados = barrel.pesquisar(palavra);
             resultados.addAll(barrelResultados);
-        }
 
-        long duracao = (System.nanoTime() - inicio) / 100000;
+            long duracao = (System.nanoTime() - inicio) / 100000;   //calcula tempo para este Barrel
+
+            //atualização de tempo de resposta no mapa por Barrel 
+            String nomeBarrel = barrel.getNomeBarrel();            //pega o nome real do Barrel usado
+            temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
+            temposResposta.get(nomeBarrel).add(duracao);
+        }
 
         //atualiza a contagem da palavra pesquisada - ESTATÍSTICAS
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
-
-        //atualização de tempo de resposta por Barrel 
-        String barrel = "Barrel1";                          // Pega o nome real do Barrel usado
-        temposResposta.putIfAbsent(barrel, new ArrayList<>());
-        temposResposta.get(barrel).add(duracao);
 
         this.resultadosPesquisa = resultados;
         this.paginaAtual = 0;
@@ -280,15 +293,23 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             String barrel = entry.getKey();                //pega o nome do Barrel
             List<Long> tempos = entry.getValue();          //pega a lista de tempos de resposta para esse Barrel
             
-            long media = tempos.stream()                   //converte a lista de tempos de resposta em um fluxo de dados
-                        .mapToLong(Long::longValue)        //converte a lista de objetos Long para primitivos long
-                        .sum() / tempos.size();            //calcula a média somando todos os valores e dividindo pelo total
+            // Verifica se há tempos registrados para o Barrel
+            if (tempos.isEmpty()) {
+                relatorioEstatisticas.append(barrel).append(": Sem dados\n");                             // Exibe "Sem dados" caso não haja tempos
+            } 
+            else {
+                long media = tempos.stream()                   //converte a lista de tempos de resposta em um fluxo de dados
+                            .mapToLong(Long::longValue)        //converte a lista de objetos Long para primitivos long
+                            .sum() / tempos.size();            //calcula a média somando todos os valores e dividindo pelo total
 
-            
-            relatorioEstatisticas.append(barrel)           
-                .append(": ")                          
-                .append(media)                             //add o tempo médio de resposta
-                .append("\n");                         
+                // Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo)
+                long mediaEmMicrosegundos = media / 1000;
+
+                relatorioEstatisticas.append(barrel)           
+                    .append(": ")                          
+                    .append(mediaEmMicrosegundos)                        //add o tempo médio de resposta
+                    .append("\n");   
+            }                      
         }
 
         return relatorioEstatisticas.toString();           //retorna o relatório final como string

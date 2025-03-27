@@ -18,14 +18,34 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private Map<String, List<String>> urlsIndexados;
     private static final String ArquivoURLS = "urlsIndexados.txt";
     private Queue<String> urlQueue;
+    private String nome;       //pra poder dar os nomes certinho e aparecer nas estatisticas
 
 
-    protected BarrelServer() throws RemoteException {
+    protected BarrelServer(String nome) throws RemoteException {
         super();
+        this.nome = nome;
         urlsIndexados = new HashMap<>();        //estrutura de dados que guarda chave(palavra pesquisada) e valor(url)
         urlQueue = new ArrayDeque<>(); // Inicializa a fila de URLs
         carregarURLs();
     }
+
+    //Método que retorna o nome do barrel - pras esatisticas
+    @Override
+    public String getNomeBarrel() throws RemoteException {
+        return nome;
+    }
+
+
+    //Método pra retornar o tamanho do índice - pras estisticas - pra mostrar o que já ta indexado
+    @Override
+    public int getTamanhoIndice() throws RemoteException {
+        int total = 0;
+        for (List<String> urls : urlsIndexados.values()) {
+            total += urls.size(); // Conta todas as URLs indexadas
+        }
+        return total;
+    }
+
 
     @Override
     public void indexar_URL(String palavra, String url) throws RemoteException {

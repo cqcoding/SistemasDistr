@@ -145,7 +145,7 @@ public class Downloader {
                 atualizarStopWords();
 
                 System.out.println("Página processada e enviada ao Barrel.");
-                Thread.sleep(1000);                    //p evita sobrecarga do servidor
+                Thread.sleep(1000);                    //p evitar sobrecarga do servidor
             }
         } catch (Exception e) {
             e.printStackTrace();
