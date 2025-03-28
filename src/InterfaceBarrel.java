@@ -42,19 +42,12 @@ public interface InterfaceBarrel extends Remote {
     Map<String, List<String>> getIndexados() throws RemoteException;
     void adicionarURLNaFila(String url) throws RemoteException;
     String obterProximaURL() throws RemoteException;
+    int tamanhoFilaURLs() throws RemoteException;       //quantas URLs ainda estão aguardando indexação
+    
+    String getNomeBarrel() throws RemoteException;      //método para identificar os barrels pq se não no cliente aparece o nome do proxy RMI em vez do nome do barrel
+    int getTamanhoIndice() throws RemoteException;      //pras estatisticas - mostrar tamanho indice
 
-    /** Quantas URLs ainda estão aguardando indexação. */
-    int tamanhoFilaURLs() throws RemoteException;
-
-    /** Método para identificar os Barrels porque se não, no cliente, irá aparecer o nome do proxy RMI no lugar do nome do Barrel. */
-    String getNomeBarrel() throws RemoteException;      
-
-    /** Para as estatísticas - mostra o tamanho do índice. */
-    int getTamanhoIndice() throws RemoteException;    
-
-    /** Retorna a próxima URL a ser baixada pelo Downloader. */
-    public String get_url() throws java.rmi.RemoteException;    
-
-    /** Adiciona uma nova URL à fila do index, permitindo que o Downloader envie novos links encontrados. */
-    public void put_url(String url) throws java.rmi.RemoteException;
+    String get_url() throws RemoteException;
+    void put_url(String url) throws RemoteException;
+    boolean isQueueEmpty() throws RemoteException;
 }

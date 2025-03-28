@@ -1,5 +1,7 @@
+import java.io.InputStream;
 import java.rmi.Naming;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -7,16 +9,23 @@ import java.util.Scanner;
  * Permite pesquisar URLs indexadas, enviar URLs para indexação e visualizar estatísticas do servidor, opções dispostas em um menu.
  */
 public class Cliente {
-    /**
-     * Método principal que executa o cliente.
-     * Conecta ao servidor via RMI e permite ao usuário interagir com as funcionalidades disponíveis.
-     *
-     * @throws Exception -> caso ocorrer um erro de comunicação RMI.
-     */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
-            String server = "rmi://192.168.1.164/server";      // note: quando for em outra máquina, colocar o IP ao invés do localhost.
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);     // o cliente precisa estar ciente dos métodos da interface, por isso a interface é chamada.
+            // Carregar propriedades usando o ClassLoader
+            Properties properties = new Properties();
+            try (InputStream input = Cliente.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    System.out.println("Desculpe, não foi possível encontrar config.properties");
+                    return;
+                }
+                properties.load(input);
+            }
+
+            // Obter o IP do servidor a partir das propriedades
+            String serverIp = properties.getProperty("server.ip", "localhost");
+            String server = "rmi://" + serverIp + "/server";
+
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
             
             Scanner scanner = new Scanner(System.in);
             
