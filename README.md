@@ -4,10 +4,13 @@
 
 ## 👥 Equipe
 - **Cecília Ernesto Silva Quaresma** - 2024245307
-- **Bruna Dewes**
-- **Heloísa Centenaro**
+- **Bruna Dewes** - 2024243221
+- **Heloísa Centenaro** - 2024246775
 
 ---
+### Antes de iniciar:
+
+O código está configurado para rodar em localhost, caso queira testar em duas máquinas diferentes, basta alterar o código `/src/config.properties` com o número de IP do computador que hospedará o servidor.
 
 ## Como rodar o projeto:
 
