@@ -7,57 +7,84 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * O {@code GatewayServer} é responsável por gerenciar a comunicação entre os clientes e os servidores Barrel.
+ * Distribui URLs para processamento, realiza buscas distribuídas, monitora a atividade dos Barrels e mantém estatísticas de uso.
+ * Essa classe implementa a interface {@code InterfaceGatewayServer} e estende {@code UnicastRemoteObject}, permitindo chamadas remotas via remota.
+ */
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer {
-    //precisa do -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes
-    //consigam chamá-lo remotamente
+// é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
+    /** Lista de Barrels conectados ao Gateway. */
     private List<InterfaceBarrel> barrels;
-    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
+
+    /** Lista de palavras-chave utilizadas para indexação. */
+    private static final String[] palavras_chave = {""};
+
+    /** Lista de URLs que já foram indexadas. */
     private List<String> urlsIndexados;
 
-    //estruturas necessárias p/ armazenar as estatísticas
+    // Estruturas necessárias para armazenar estatísticas
+    /** Contagem das pesquisas mais comuns. */
     private final Map<String, Integer> pesquisasFrequentes;  //contador das pesquisas + comuns
+    
+    /** Mapeia os Barrels ativos e o tamanho do índice de cada um. */
     private final Map<String, Integer> barrelsAtivos;        //lista de Barrels ativos e tamanhos de índice
+    
+    /** Mapeia cada Barrel ao tempo médio de resposta. */
     private final Map<String, List<Long>> temposResposta;    //tempo médio de resposta por Barrel
 
-    //estruturas necessárias p nextpage, previous e link
-    private List<String> resultadosPesquisa;                 //resultados da última pesquisa feita - list pois não precisa estar associada a uma chave, são só urls
-    private int paginaAtual;                                 //indice da pág atual
-    private static final int TAMANHO_PAGINA = 10;            //nº de resultados por pág
+    /** Lista contendo os resultados da última pesquisa. */
+    // estruturas necessárias para nextpage, previous e link.
+    private List<String> resultadosPesquisa;                 // resultados da última pesquisa feita - usado list porque não precisa estar associada a uma chave, são só URLs.
+    
+    /** Índice da página atual de resultados. */
+    private int paginaAtual;
+    
+    /** Número de resultados exibidos por página. */                                
+    private static final int TAMANHO_PAGINA = 10;      
 
-    protected GatewayServer() throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
-        // pacote possam instanciar o objeto diretamente
-        super();              //exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas
+    /**
+     * Construtor da classe {@code GatewayServer}.
+     * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
+     * Protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
+    protected GatewayServer() throws RemoteException {    
+        super();              // exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas.
         this.barrels = new ArrayList<>();
-        this.urlsIndexados = new ArrayList<>();         //inicializa a lista de URLs
-        //inicia os maps das estatísticas
+        this.urlsIndexados = new ArrayList<>();         // inicializa a lista de URLs.
+        // inicia os maps das estatísticas.
         this.pesquisasFrequentes = new HashMap<>();     
         this.barrelsAtivos = new HashMap<>();
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
-        this.paginaAtual = 0;                           //pags começam com 0
+        this.paginaAtual = 0;                           
 
         conectarBarrels();
         iniciarMonitoramento();
 
     }
 
-    private List<String> barrelUrls = Arrays.asList(            //lista de barrels disponíveis
-        "rmi://192.168.1.164/barrel1", //ip do pc, deve ser alterado dependendo do teste
+    /** Lista de Barrels disponíveis para conexão. */
+    private List<String> barrelUrls = Arrays.asList(            
+        "rmi://192.168.1.164/barrel1",
         "rmi://192.168.1.164/barrel2", 
         "rmi://192.168.1.164/barrel3"
     );
 
-
+    /**
+     * Estabelece a conexão com os servidores Barrel.
+     */
     private void conectarBarrels() {
 
         barrels.clear();    
 
         for(String barrelUrl: barrelUrls){
             try { 
-                    //conecta barrels usando a URL fornceida
+                    // conecta os Barrels usando a URL fornecida.
                     InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
-                    barrels.add(barrel);       //add o barrel conectado à lista de barrels
+                    barrels.add(barrel);       // adiciona o Barrel conectado à lista de Barrels.
                     System.out.println("Conectado ao barrel: " + barrelUrl);
                 
             } catch (Exception e) {
@@ -67,7 +94,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    //MÉTODO PRA colocar a url na fila
+    /**
+     * Envia uma URL para um Barrel processá-la.
+     *
+     * @param url URL a ser enviada para processamento.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public void enviarURLParaProcessamento(String url) throws RemoteException {
         if (barrels.isEmpty()) {
@@ -75,13 +107,13 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             return;
         }
 
-        //escolher Barrel com menos URLs na fila
+        // escolher Barrel com menos URLs na fila.
         InterfaceBarrel melhorBarrel = null;
         int menorFila = Integer.MAX_VALUE;
 
         for (InterfaceBarrel barrel : barrels) {
             try {
-                int tamanhoFila = barrel.tamanhoFilaURLs(); // Obtém o tamanho da fila de cada Barrel
+                int tamanhoFila = barrel.tamanhoFilaURLs(); // obtém o tamanho da fila de cada Barrel.
                 if (tamanhoFila < menorFila) {
                     menorFila = tamanhoFila;
                     melhorBarrel = barrel;
@@ -101,36 +133,42 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    //MONITORAMENTO DO BARRELS
+    /**
+     * Inicia um monitoramento contínuo dos Barrels para verificar sua atividade.
+     */
     private void iniciarMonitoramento() {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(5000); // Verifica a cada 5 segundos
+                    Thread.sleep(5000); // verifica a cada 5 segundos.
                     //System.out.println("Monitorando Barrels...");
 
-                    // Limpa apenas os barrels inativos do mapa
+                    /** Limpa apenas os Barrels inativos do mapa. */
                     barrelsAtivos.entrySet().removeIf(entry -> !barrelAindaAtivo(entry.getKey()));
                     for (InterfaceBarrel barrel : barrels) {
                         try {
-                            if (barrel.estaAtivo()) {               //verifica se cada barrel está ativo
+                            if (barrel.estaAtivo()) {               // verifica se cada Barrel está ativo.
                                 String nomeBarrel = barrel.getNomeBarrel();
-                                int tamanhoIndice = barrel.getTamanhoIndice();        //pega o total INDEXADO
+                                int tamanhoIndice = barrel.getTamanhoIndice();        // obtém o total indexado.
                                 atualizarTamanhoBarrel(nomeBarrel, tamanhoIndice);
                             }
                         } catch (RemoteException e) {
-                            System.err.println("Barrel inativo detectado!");  //quando o barrel está inativo manda aviso de erro
+                            System.err.println("Barrel inativo detectado!");
                         }
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();                //isso é o que realmente faz a thread começar a rodar
+        }).start();                // isso é o que realmente faz a thread começar a compilar.
     }
 
-
-    //Método pra pegaros barrels que estão ativos
+    /**
+     * Verifica se um determinado Barrel ainda está ativo e o obtém.
+     *
+     * @param nome 
+     * @return true se o Barrel estiver ativo, false caso contrário.
+     */
     private boolean barrelAindaAtivo(String nome) {
         for (InterfaceBarrel barrel : barrels) {
             if (barrel.toString().equals(nome)) {
@@ -140,27 +178,35 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return false;
     }
 
-    // RELIABLE MULTICAST
-    public boolean reliableMulticast(String palavra, String url) {    //garante que os dados estao replicadso entre os barrels
+    /**
+     * Executa um Reliable Multicast para garantir que os dados sejam replicados entre os Barrels.
+     * O método envia a URL a ser indexada para todos os Barrels disponíveis e aguarda confirmação de recebimento.
+     * Se qualquer um dos Barrels não confirmar o recebimento, a operação é considerada falha.
+     * @param palavra palavra-chave associada à URL que será indexada.
+     * @param url URL a ser indexada nos Barrels.
+     * @return true se todos os Barrels confirmarem a indexação com sucesso, false caso contrário.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
+    public boolean reliableMulticast(String palavra, String url) {
         List<InterfaceBarrel> confirmados = new ArrayList<>();
 
         try {
-            //enviar para todos os barrels
+            // faz o envio da URL para os Barrels disponíveis.
             for (InterfaceBarrel barrel : barrels) {
                 barrel.indexar_URL(palavra, url);
             }
 
-            //confirmar recebimento
+            // confirma o recebimento ou a operação falha caso qualquer Barrel não confirmar.
             for (InterfaceBarrel barrel : barrels) {
                 if (barrel.confirmarRecebimento(palavra, url)) {
                     confirmados.add(barrel);
                 } else {
-                    System.err.println("Erro: Barrel não confirmou recebimento.");    //se qualquer barrel nao confirmar, a operação falha
+                    System.err.println("Erro: Barrel não confirmou recebimento."); 
                     return false;
                 }
             }
 
-            System.out.println("Indexação concluída com sucesso!");    //quando todos confirmam, é sucesso
+            System.out.println("Indexação concluída com sucesso!");
             return true;
         } catch (RemoteException e) {
             System.err.println("Falha no Reliable Multicast: " + e.getMessage());
@@ -168,15 +214,20 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    // INDEXAR URL = salvar
+    /**
+     * Indexa uma URL em todos os Barrels disponíveis - indexar = salvar.
+     *
+     * @param url URL a ser indexada.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public void indexar_URL(String url) throws RemoteException {
         if (!urlsIndexados.contains(url)) {
             
-            //distribui a indexação para os barrels
+            /** Distribui a indexação para os Barrels. */
             for (InterfaceBarrel barrel : barrels) {
                 for (String palavra : palavras_chave) {
-                    barrel.indexar_URL(palavra, url);      //indexar a URL em cada barrel
+                    barrel.indexar_URL(palavra, url);      // indexar a URL em cada Barrel.
                 }
             }
 
@@ -188,27 +239,33 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    // PESQUISAR
+    /**
+     * Realiza uma pesquisa distribuída nos Barrels.
+     *
+     * @param palavra palavra-chave da pesquisa.
+     * @return uma lista de URLs resultantes da pesquisa.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
         List<String> resultados = new ArrayList<>();
 
-        //consultar cada barrel e combina os resultados
+        /** Consultar cada Barrel e combinar os resultados. */
         for (InterfaceBarrel barrel : barrels) {
             long inicio = System.nanoTime();
             
             List<String> barrelResultados = barrel.pesquisar(palavra);
             resultados.addAll(barrelResultados);
 
-            long duracao = (System.nanoTime() - inicio) / 100000;   //calcula tempo para este Barrel
+            long duracao = (System.nanoTime() - inicio) / 100000; 
 
-            //atualização de tempo de resposta no mapa por Barrel 
-            String nomeBarrel = barrel.getNomeBarrel();            //pega o nome real do Barrel usado
+            /** Atualização de tempo de resposta no mapa por Barrel. */
+            String nomeBarrel = barrel.getNomeBarrel();            // obtém o nome real do Barrel usado.
             temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
             temposResposta.get(nomeBarrel).add(duracao);
         }
 
-        //atualiza a contagem da palavra pesquisada - ESTATÍSTICAS
+        /** Atualiza a contagem da palavra pesquisada - estatísticas. */
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
 
         this.resultadosPesquisa = resultados;
@@ -217,6 +274,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return resultados;
     }
 
+    /**
+     * Avança para a próxima página de resultados da pesquisa, se disponível.
+     *
+     * @return uma mensagem indicando que não há mais resultados ou uma string contendo os resultados da próxima página.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public String next_page() throws RemoteException {
         if (resultadosPesquisa.isEmpty()) {
@@ -228,6 +291,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return String.join("\n", getResultadosPaginaAtual());
     }
 
+    /**
+     * Retorna para a página anterior de resultados da pesquisa, se disponível.
+     *
+     * @return string contendo os resultados da página anterior.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public String previous_page() throws RemoteException {
         if (paginaAtual > 0) {
@@ -236,86 +305,103 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return String.join("\n", getResultadosPaginaAtual());
     }
 
+    /**
+     * Obtém os links da página atual de resultados da pesquisa.
+     *
+     * @return lista contendo os links da página atual.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public List<String> links_to_page() throws RemoteException {
         return getResultadosPaginaAtual();
     }
 
+    /**
+     * Obtém os resultados da página atual com base no índice da página.
+     *
+     * @return sublista dos resultados da pesquisa, correspondente à página atual.
+     */
     private List<String> getResultadosPaginaAtual() {
         int inicio = paginaAtual * TAMANHO_PAGINA;
         int fim = Math.min(inicio + TAMANHO_PAGINA, resultadosPesquisa.size());
         return resultadosPesquisa.subList(inicio, fim);
     }
 
+    /**
+     * Gera um relatório contendo estatísticas do sistema, incluindo:
+     * - As 10 pesquisas mais frequentes.
+     * - Lista de barrels ativos e o tamanho de seus índices.
+     * - Tempo médio de resposta de cada barrel.
+     * @return string formatada contendo o relatório de estatísticas.
+     * @throws RemoteException  -> caso ocorrer um erro de comunicação remota.
+     */
     @Override
     public String pagina_estatisticas() throws RemoteException {
-        StringBuilder relatorioEstatisticas = new StringBuilder();  //cria objeto stringbuilder
+        StringBuilder relatorioEstatisticas = new StringBuilder();
 
         relatorioEstatisticas.append("---- ESTATÍSTICAS ----\n");
-        
-        //vê o conteúdo do mapa pesquisasFrequentes e printa no TERMINAL do servidor
+
+        /** Visualiza o conteúdo do mapa pesquisasFrequentes e mostra no terminal do servidor. */
         System.out.println("Pesquisas frequentes: " + pesquisasFrequentes);
-        
-        //TOP 10 PESQUISAS + comuns
-        relatorioEstatisticas.append("Top 10 pesquisas mais comuns:\n");     //append -> add texto na stringbuilder, nesse caso um título pro nosso relatório
+
+         /** append -> adiciona texto na stringbuilder, nesse caso um título para o relatório. */
+        relatorioEstatisticas.append("Top 10 pesquisas mais comuns:\n");     
  
-        pesquisasFrequentes.entrySet().stream()                             //converte pesquisasFrequentes (palavra -> quantidade) em um fluxo de dados
-            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))         //ordena os resultados do maior para o menor número de pesquisas
-            .limit(10)                                              //mantém só os 10 + pesquisados
-            .forEach(entry -> relatorioEstatisticas.append(entry.getKey())  //p/ cada entrada, adiciona a palavra pesquisada
-                                .append(": ")          //add um separador
-                                .append(entry.getValue())  //add nº de vezes que foi pesquisada
-                                .append("\n"));        //pula para a próxima linha
+        pesquisasFrequentes.entrySet().stream()                             // converte pesquisasFrequentes (palavra -> quantidade) em um fluxo de dados.
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))         // ordena os resultados do maior para o menor número de pesquisas.
+            .limit(10)                                              // mantém só os 10 + pesquisados.
+            .forEach(entry -> relatorioEstatisticas.append(entry.getKey())  // para cada entrada, adiciona a palavra pesquisada.
+                                .append(": ")          // adiciona um separador.
+                                .append(entry.getValue())  // adiciona o número de vezes que foi pesquisada.
+                                .append("\n"));        // pula para a próxima linha.
 
-        
-
-        //vê o conteúdo do mapa barrelsAtivos e printa no TERMINAL do servidor
         System.out.println("Barrels ativos: " + barrelsAtivos);
-        
-        //LISTA DE BARRELS ATIVOS e tamanhos do índice
-        relatorioEstatisticas.append("\nBarrels ativos e tamanho do índice:\n");                          //titulo
+    
+        /** Lista de Barrels ativos e tamanhos do índice. */
+        relatorioEstatisticas.append("\nBarrels ativos e tamanho do índice:\n");                          
 
-        barrelsAtivos.forEach((barrel, tamanho) ->        //percorre barrelsAtivos (Barrel -> tamanho do índice)
-        relatorioEstatisticas.append(barrel)              //add o nome do Barrel
+        barrelsAtivos.forEach((barrel, tamanho) ->        // percorre barrelsAtivos (Barrel -> tamanho do índice).
+        relatorioEstatisticas.append(barrel)              // adiciona o nome do Barrel.
                 .append(": ")                         
-                .append(tamanho)                          //add o tamanho do índice (número de URLs indexados)
-                .append(" URLs\n"));                  //especifica que o valor representa URLs e pula para a próxima linha
+                .append(tamanho)                          // adiciona o tamanho do índice (número de URLs indexados).
+                .append(" URLs\n"));                  // especifica que o valor representa URLs e pula para a próxima linha.
 
-
-        
-        //vê o conteúdo do mapa temposResposta e printa no TERMINAL do servidor
         System.out.println("Tempos de resposta por Barrel: " + temposResposta);
 
-        //TEMPO MÉDIO DE RESPOSTA DOS BARRELS
-        relatorioEstatisticas.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");      //titulo
+        relatorioEstatisticas.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");  
         
-        for (var entry : temposResposta.entrySet()) {      //percorre temposResposta (Barrel -> lista de tempos de resposta)
-            String barrel = entry.getKey();                //pega o nome do Barrel
-            List<Long> tempos = entry.getValue();          //pega a lista de tempos de resposta para esse Barrel
-            
-            // Verifica se há tempos registrados para o Barrel
+        for (var entry : temposResposta.entrySet()) {      // percorre temposResposta (Barrel -> lista de tempos de resposta).
+            String barrel = entry.getKey();                // obtém o nome do Barrel.
+            List<Long> tempos = entry.getValue();          // obtém a lista de tempos de resposta para esse Barrel.
+        
+            /** Verifica se há tempos registrados para o Barrel. */
             if (tempos.isEmpty()) {
-                relatorioEstatisticas.append(barrel).append(": Sem dados\n");                             // Exibe "Sem dados" caso não haja tempos
+                relatorioEstatisticas.append(barrel).append(": Sem dados\n");    // exibe "Sem dados" caso não haja tempos.
             } 
             else {
-                long media = tempos.stream()                   //converte a lista de tempos de resposta em um fluxo de dados
-                            .mapToLong(Long::longValue)        //converte a lista de objetos Long para primitivos long
-                            .sum() / tempos.size();            //calcula a média somando todos os valores e dividindo pelo total
+                long media = tempos.stream()                   // converte a lista de tempos de resposta em um fluxo de dados.
+                            .mapToLong(Long::longValue)        // converte a lista de objetos Long para primitivos long.
+                            .sum() / tempos.size();            // calcula a média somando todos os valores e dividindo pelo total.
 
-                // Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo)
+                /** Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo). */
                 long mediaEmMicrosegundos = media / 1000;
 
                 relatorioEstatisticas.append(barrel)           
                     .append(": ")                          
-                    .append(mediaEmMicrosegundos)                        //add o tempo médio de resposta
+                    .append(mediaEmMicrosegundos)          // adiciona o tempo médio de resposta.
                     .append("\n");   
             }                      
         }
 
-        return relatorioEstatisticas.toString();           //retorna o relatório final como string
+        return relatorioEstatisticas.toString();           // retorna o relatório final como string.
     }
 
-    //sempre que indexar algo no barrel ele atualiza o tamanho
+    /**
+     * Sempre que indexar algo no Barrel é atualizado o tamanho.
+     *
+     * @param barrel nome do barrel cujo tamanho será atualizado.
+     * @param tamanho novo tamanho do índice do barrel.
+     */
     public void atualizarTamanhoBarrel(String barrel, int tamanho) {
         barrelsAtivos.put(barrel, tamanho);
     }
