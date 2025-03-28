@@ -16,6 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Classe responsável por baixar páginas da web, processar palavras e indexar URLs em um servidor Barrel via remota.
+ */
 public class Downloader {
     InterfaceBarrel barrel;  //conexão com o barrel
     private Set<String> urlsProcessadas;
@@ -23,17 +26,19 @@ public class Downloader {
     private Map<String, Integer> contagemPalavras;
     private Set<String> stopWords;
 
-
-
+/**
+     * Construtor da classe Downloader.
+     * Inicializa as estruturas de dados e estabelece conexão com um servidor Barrel aleatório via remota.
+     *
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
     public Downloader() throws RemoteException {
-        // Inicializar os Sets no construtor
+        // inicializar os Sets no construtor.
         this.urlsProcessadas = new HashSet<>();
         this.palavrasProcessadas = new HashSet<>();
         this.contagemPalavras = new HashMap<>();
         this.stopWords = new HashSet<>();
         carregarStopWords();
-
-       
 
         try {
             String[] barrelUrls = {
@@ -42,9 +47,9 @@ public class Downloader {
             "rmi://192.168.1.164/barrel3"
             };
 
-            //escolhe um barrel aleatório p se conectar
+            // escolhe um Barrel aleatório para se conectar.
             Random rand = new Random();
-            String barrelUrl = barrelUrls[rand.nextInt(barrelUrls.length)]; // Escolhe um aleatório
+            String barrelUrl = barrelUrls[rand.nextInt(barrelUrls.length)];
 
             System.out.println("Tentando conectar ao Barrel em: " + barrelUrl);
             this.barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
@@ -56,6 +61,9 @@ public class Downloader {
         }
     }
 
+    /**
+     * Carrega as stop words a partir de um arquivo externo, no caso o txt.
+     */
     private void carregarStopWords() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("stopwords.txt"));
@@ -65,10 +73,13 @@ public class Downloader {
         }
     }
 
-
+    /**
+     * Atualiza o arquivo de stop words adicionando palavras que apareçam com alta frequência.
+     * Palavras que aparecem mais de 100 vezes são adicionadas ao arquivo.
+     */
     private void atualizarStopWords() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("stopwords.txt", true))) {
-            // Filtra palavras que aparecem mais de um certo número de vezes, por exemplo, 100
+            // realiza a filtragem das palavras.
             contagemPalavras.entrySet().stream()
                 .filter(entry -> entry.getValue() > 100)
                 .forEach(entry -> {
@@ -84,10 +95,15 @@ public class Downloader {
         }
     }
 
-    //isso é pra salvar o que o cliente colocar de url pra INDEXAR, entra na fila e o downloader vai pegar da fila 
+    /**
+     * Salva o que o cliente inserir de URL para indexar.
+     * Entra na fila e o Downloader coleta da fila.
+     * @param palavra Palavra associada à URL.
+     * @param url URL a ser salva.
+     */
     private void salvarURLNoArquivo(String palavra, String url) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
-            writer.write(palavra + " -> " + url + "\n");  // Salva a palavra e a URL no arquivo
+            writer.write(palavra + " -> " + url + "\n");  // salva a palavra e a URL no arquivo.
             System.out.println("URL salva: " + palavra + " -> " + url);
         } 
         catch (IOException e) {
@@ -95,45 +111,47 @@ public class Downloader {
         }
     }
 
-   
-
+   /**
+     * Executa o processo de download, extração e indexação de páginas da web.
+     * As URLs são obtidas do Barrel, processadas e novas URLs são enviadas para indexação.
+     */
     public void executar(){
         try {
             while (true) {
-                String url = barrel.get_url();             // pega a próxima URL para baixar
+                String url = barrel.get_url();             // obtém a próxima URL para baixar.
 
-                if (url == null || urlsProcessadas.contains(url)) {                 // Verifica se a URL já foi processada
+                if (url == null || urlsProcessadas.contains(url)) {                 // verifica se a URL já foi processada.
                     System.out.println("URL nula ou já processada: " + url);
                     continue;
                 }
 
                 System.out.println("Baixando: " + url);
-                urlsProcessadas.add(url);  //marca URL como processada
-                Document doc = Jsoup.connect(url).get();   // carrega a url que está no jsoup
+                urlsProcessadas.add(url);  // marca a URL como processada.
+                Document doc = Jsoup.connect(url).get();   // carrega a URL que está no Jsoup.
                 Elements anchors = doc.select("a");
 
-                // envia novas URLs encontradas para indexar
+                // envia novas URLs encontradas para indexar.
                 for (Element anchor : anchors) {
                     String href = anchor.attr("href");
-                   // Só adiciona URLs que ainda não foram processadas
+                   // só adiciona URLs que ainda não foram processadas.
                    if (!href.isEmpty() && !urlsProcessadas.contains(href)) {
                     barrel.put_url(href);
                 }
             }
 
-                // processa palavras e envia ao gateway
+                // processa palavras e envia ao Gateway.
                 String[] palavras = Jsoup.parse(doc.html()).wholeText().split(" ");
                 for (String palavra : palavras) {
-                    palavra = palavra.trim().toLowerCase();  //remove espaços e converte para minúsculas
+                    palavra = palavra.trim().toLowerCase();  // remove espaços e converte para minúsculas.
 
-                     // Verifica se a palavra é uma stop word
+                     // verifica se a palavra é uma stop word.
                      if (stopWords.contains(palavra)) {
-                        continue; // Pula a palavra se for uma stop word
+                        continue; // pula a palavra se for uma stop word.
                     }
 
                     contagemPalavras.put(palavra, contagemPalavras.getOrDefault(palavra, 0) + 1);
 
-                     // Cria uma chave única para palavra+URL
+                     // cria uma chave única para a palavra + URL.
                      String chaveUnica = palavra + "_" + url;
                      if (palavra.length() > 3 && !palavrasProcessadas.contains(chaveUnica)) {
                          barrel.indexar_URL(palavra, url);
@@ -145,13 +163,16 @@ public class Downloader {
                 atualizarStopWords();
 
                 System.out.println("Página processada e enviada ao Barrel.");
-                Thread.sleep(1000);                    //p evitar sobrecarga do servidor
+                Thread.sleep(1000);                    // para evitar sobrecarga do servidor.
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Método principal para iniciar o Downloader.
+     */
     public static void main(String[] args) {
         Downloader down;
         try {

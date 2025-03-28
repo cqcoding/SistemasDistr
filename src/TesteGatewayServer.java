@@ -4,23 +4,29 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * Classe de teste para a comunicação com um servidor Gateway via RMI.
+ * Esta classe testa funcionalidades expostas pela interface remota da Gateway.
+ */
 public class TesteGatewayServer {
     public static void main(String[] args) throws MalformedURLException {
         try {
-            // URL do BarrelServer
+            /** URL do BarrelServer. */
             String gatewayUrl = "rmi://192.168.1.164/server";
             
-            // Conectar ao BarrelServer via RMI
+            /** Conectar ao BarrelServer via RMI. */
             InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);
             
-            //testar métodos RMI
-            //URL que vai ser indexada
-            String urlParaIndexar = "https://example.com";
+            /** Para testar métodos RMI. */
+            String urlParaIndexar = "https://example.com";  // URL que será indexada.
 
             gateway.indexar_URL(urlParaIndexar);
             System.out.println("URL indexada: " + urlParaIndexar);
             
+            /** Palavra-chave usada para pesquisar. */
             String palavraParaPesquisar = "Bruna";
+
+            /** Realiza uma pesquisa no Gateway. */
             List<String> resultados = gateway.pesquisar(palavraParaPesquisar);
             System.out.println("Resultados da pesquisa para '" + palavraParaPesquisar + "': " + resultados);
             
