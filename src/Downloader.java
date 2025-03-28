@@ -106,7 +106,7 @@ public class Downloader {
             // Verificar se a URL já foi salva
             String novaEntrada = palavra + " -> " + url;
             if (linhas.contains(novaEntrada)) {
-                System.out.println("URL já salva, ignorando: " + novaEntrada);
+                //System.out.println("URL já salva, ignorando: " + novaEntrada);
                 return; // Evita escrever duplicado
             }
     

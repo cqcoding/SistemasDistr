@@ -4,7 +4,7 @@ import java.util.*;
 
 public class FiltrarDuplicatas {
     public static void main(String[] args) {
-        String nomeArquivo = "C:\\Users\\UsuarioPC\\Projeto-SD\\MiniGoogle\\urlsIndexados.txt"; // Altere para o nome do seu arquivo
+        String nomeArquivo = "/home/cecilia/SD-FCTUC/PROJETO/SistemasDistr/urlsIndexados.txt"; // Altere para o nome do seu arquivo
 
         try {
             // Lê todas as linhas do arquivo
