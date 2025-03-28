@@ -52,7 +52,6 @@ cidades -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 aberta, -> https://oglobo.globo.com/mundo/
 lei, -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 juridiquês -> https://oglobo.globo.com/politica/
-juridiquês -> https://oglobo.globo.com/politica/
 campeão -> https://oglobo.globo.com/
 minas -> https://oglobo.globo.com/
 minas -> https://oglobo.globo.com/ultimas-noticias/#
@@ -62,7 +61,6 @@ minas -> https://oglobo.globo.com/ultimas-noticias/
 minas -> https://oglobo.globo.com/100-anos/#
 minas -> https://oglobo.globo.com/politica/eleicoes-2024/
 minas -> https://oglobo.globo.com/100-anos/
-minas -> https://oglobo.globo.com/politica/
 minas -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 minas -> https://oglobo.globo.com/blogs/pulso/
 minas -> https://oglobo.globo.com/brasil/
@@ -115,7 +113,6 @@ pauta -> https://oglobo.globo.com/ultimas-noticias/
 pauta -> https://oglobo.globo.com/100-anos/#
 pauta -> https://oglobo.globo.com/politica/eleicoes-2024/
 pauta -> https://oglobo.globo.com/100-anos/
-pauta -> https://oglobo.globo.com/politica/
 pauta -> https://oglobo.globo.com/blogs/pulso/
 pauta -> https://oglobo.globo.com/brasil/
 pauta -> https://oglobo.globo.com/brasil/educacao/
@@ -156,7 +153,6 @@ impressa -> https://oglobo.globo.com/ultimas-noticias/
 impressa -> https://oglobo.globo.com/100-anos/#
 impressa -> https://oglobo.globo.com/politica/eleicoes-2024/
 impressa -> https://oglobo.globo.com/100-anos/
-impressa -> https://oglobo.globo.com/politica/
 impressa -> https://oglobo.globo.com/blogs/pulso/
 impressa -> https://oglobo.globo.com/brasil/
 impressa -> https://oglobo.globo.com/brasil/educacao/
@@ -212,7 +208,6 @@ brasileiros -> https://oglobo.globo.com/politica/
 brasileiros -> https://oglobo.globo.com/ultimas-noticias/
 brasileiros -> https://oglobo.globo.com/100-anos/#
 brasileiros -> https://oglobo.globo.com/100-anos/
-brasileiros -> https://oglobo.globo.com/politica/
 brasileiros -> https://oglobo.globo.com/blogs/pulso/
 brasileiros -> https://oglobo.globo.com/brasil/
 brasileiros -> https://oglobo.globo.com/mundo/
@@ -227,7 +222,6 @@ blogs -> https://oglobo.globo.com/ultimas-noticias/
 blogs -> https://oglobo.globo.com/100-anos/#
 blogs -> https://oglobo.globo.com/politica/eleicoes-2024/
 blogs -> https://oglobo.globo.com/100-anos/
-blogs -> https://oglobo.globo.com/politica/
 blogs -> https://oglobo.globo.com/blogs/pulso/
 blogs -> https://oglobo.globo.com/brasil/
 blogs -> https://oglobo.globo.com/brasil/educacao/
@@ -306,7 +300,6 @@ construção -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 últimas -> https://oglobo.globo.com/100-anos/#
 últimas -> https://oglobo.globo.com/politica/eleicoes-2024/
 últimas -> https://oglobo.globo.com/100-anos/
-últimas -> https://oglobo.globo.com/politica/
 últimas -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 últimas -> https://oglobo.globo.com/blogs/pulso/
 últimas -> https://oglobo.globo.com/brasil/
@@ -343,7 +336,6 @@ minha -> https://oglobo.globo.com/ultimas-noticias/
 minha -> https://oglobo.globo.com/100-anos/#
 minha -> https://oglobo.globo.com/politica/eleicoes-2024/
 minha -> https://oglobo.globo.com/100-anos/
-minha -> https://oglobo.globo.com/politica/
 minha -> https://oglobo.globo.com/blogs/pulso/
 minha -> https://oglobo.globo.com/brasil/
 minha -> https://oglobo.globo.com/brasil/educacao/
@@ -378,7 +370,6 @@ fruta, -> https://oglobo.globo.com/
 'terceiro -> https://oglobo.globo.com/politica/eleicoes-2024/#
 'terceiro -> https://oglobo.globo.com/politica/eleicoes-2024/
 abalado -> https://oglobo.globo.com/politica/
-abalado -> https://oglobo.globo.com/politica/
 licenciou -> https://oglobo.globo.com/brasil/minas-gerais/
 realizado -> https://oglobo.globo.com/
 realizado -> https://oglobo.globo.com/brasil/educacao/
@@ -392,7 +383,6 @@ total, -> https://oglobo.globo.com/brasil/meio-ambiente/
 camboriú -> https://oglobo.globo.com/politica/
 camboriú -> https://oglobo.globo.com/politica/eleicoes-2024/#
 camboriú -> https://oglobo.globo.com/politica/eleicoes-2024/
-camboriú -> https://oglobo.globo.com/politica/
 biógrafa -> https://oglobo.globo.com/100-anos/#
 biógrafa -> https://oglobo.globo.com/100-anos/
 entidade -> https://oglobo.globo.com/rio/carnaval/
@@ -443,7 +433,6 @@ qual -> https://oglobo.globo.com/
 qual -> https://oglobo.globo.com/politica/
 qual -> https://oglobo.globo.com/politica/eleicoes-2024/#
 qual -> https://oglobo.globo.com/politica/eleicoes-2024/
-qual -> https://oglobo.globo.com/politica/
 noite -> https://oglobo.globo.com/rio/carnaval/
 rosa -> https://oglobo.globo.com/rio/web-summit-rio/
 upm: -> https://oglobo.globo.com/rio/carnaval/
@@ -466,7 +455,6 @@ consolida -> https://oglobo.globo.com/rio/web-summit-rio/
 vereador -> https://oglobo.globo.com/politica/
 vereador -> https://oglobo.globo.com/politica/eleicoes-2024/#
 vereador -> https://oglobo.globo.com/politica/eleicoes-2024/
-vereador -> https://oglobo.globo.com/politica/
 fundadas -> https://oglobo.globo.com/rio/web-summit-rio/
 próprio -> https://oglobo.globo.com/brasil/
 próprio -> https://oglobo.globo.com/brasil/educacao/
@@ -512,7 +500,6 @@ lados -> https://oglobo.globo.com/ultimas-noticias/
 lados -> https://oglobo.globo.com/100-anos/#
 lados -> https://oglobo.globo.com/politica/eleicoes-2024/
 lados -> https://oglobo.globo.com/100-anos/
-lados -> https://oglobo.globo.com/politica/
 lados -> https://oglobo.globo.com/blogs/pulso/
 lados -> https://oglobo.globo.com/brasil/
 lados -> https://oglobo.globo.com/brasil/educacao/
@@ -558,7 +545,6 @@ carnavalesco, -> https://oglobo.globo.com/ultimas-noticias/
 carnavalesco, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 próstata -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 lauro -> https://oglobo.globo.com/
-lauro -> https://oglobo.globo.com/politica/
 lauro -> https://oglobo.globo.com/politica/
 lauro -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 custa -> https://oglobo.globo.com/mundo/
@@ -609,7 +595,6 @@ quem -> https://oglobo.globo.com/ultimas-noticias/
 quem -> https://oglobo.globo.com/100-anos/#
 quem -> https://oglobo.globo.com/politica/eleicoes-2024/
 quem -> https://oglobo.globo.com/100-anos/
-quem -> https://oglobo.globo.com/politica/
 quem -> https://oglobo.globo.com/blogs/pulso/
 quem -> https://oglobo.globo.com/brasil/
 quem -> https://oglobo.globo.com/brasil/educacao/
@@ -646,7 +631,6 @@ princípios -> https://oglobo.globo.com/ultimas-noticias/
 princípios -> https://oglobo.globo.com/100-anos/#
 princípios -> https://oglobo.globo.com/politica/eleicoes-2024/
 princípios -> https://oglobo.globo.com/100-anos/
-princípios -> https://oglobo.globo.com/politica/
 princípios -> https://oglobo.globo.com/blogs/pulso/
 princípios -> https://oglobo.globo.com/brasil/
 princípios -> https://oglobo.globo.com/brasil/educacao/
@@ -668,7 +652,6 @@ princípios -> https://oglobo.globo.com/mundo/
 princípios -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 princípios -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 poucos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
-fertilizantes -> https://oglobo.globo.com/politica/
 fertilizantes -> https://oglobo.globo.com/politica/
 habitantes -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 agendada -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -707,7 +690,6 @@ marcaram -> https://oglobo.globo.com/brasil/direitos-humanos/
 vitrine -> https://oglobo.globo.com/brasil/educacao/
 próxima -> https://oglobo.globo.com/
 próxima -> https://oglobo.globo.com/politica/
-próxima -> https://oglobo.globo.com/politica/
 próxima -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 próxima -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 importante -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -720,7 +702,6 @@ colunistas -> https://oglobo.globo.com/ultimas-noticias/
 colunistas -> https://oglobo.globo.com/100-anos/#
 colunistas -> https://oglobo.globo.com/politica/eleicoes-2024/
 colunistas -> https://oglobo.globo.com/100-anos/
-colunistas -> https://oglobo.globo.com/politica/
 colunistas -> https://oglobo.globo.com/blogs/pulso/
 colunistas -> https://oglobo.globo.com/brasil/
 colunistas -> https://oglobo.globo.com/brasil/educacao/
@@ -786,7 +767,6 @@ nasceu -> https://oglobo.globo.com/100-anos/
 decisão -> https://oglobo.globo.com/
 decisão -> https://oglobo.globo.com/rio/carnaval/
 economia, -> https://oglobo.globo.com/politica/
-economia, -> https://oglobo.globo.com/politica/
 economia, -> https://oglobo.globo.com/blogs/pulso/
 reginaldo -> https://oglobo.globo.com/politica/eleicoes-2024/#
 reginaldo -> https://oglobo.globo.com/politica/eleicoes-2024/
@@ -814,7 +794,6 @@ reclamação -> https://oglobo.globo.com/ultimas-noticias/
 reclamação -> https://oglobo.globo.com/100-anos/#
 reclamação -> https://oglobo.globo.com/politica/eleicoes-2024/
 reclamação -> https://oglobo.globo.com/100-anos/
-reclamação -> https://oglobo.globo.com/politica/
 reclamação -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 reclamação -> https://oglobo.globo.com/blogs/pulso/
 reclamação -> https://oglobo.globo.com/brasil/
@@ -841,7 +820,6 @@ trás -> https://oglobo.globo.com/
 broches -> https://oglobo.globo.com/brasil/sao-paulo/
 relacionou -> https://oglobo.globo.com/ultimas-noticias/
 mostrou -> https://oglobo.globo.com/politica/
-mostrou -> https://oglobo.globo.com/politica/
 'grande -> https://oglobo.globo.com/blogs/pulso/
 'grande -> https://oglobo.globo.com/rio/carnaval/
 apostou -> https://oglobo.globo.com/100-anos/#
@@ -854,7 +832,6 @@ redes -> https://oglobo.globo.com/ultimas-noticias/
 redes -> https://oglobo.globo.com/100-anos/#
 redes -> https://oglobo.globo.com/politica/eleicoes-2024/
 redes -> https://oglobo.globo.com/100-anos/
-redes -> https://oglobo.globo.com/politica/
 redes -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 redes -> https://oglobo.globo.com/blogs/pulso/
 redes -> https://oglobo.globo.com/brasil/
@@ -898,7 +875,6 @@ gabarito -> https://oglobo.globo.com/ultimas-noticias/
 gabarito -> https://oglobo.globo.com/100-anos/#
 gabarito -> https://oglobo.globo.com/politica/eleicoes-2024/
 gabarito -> https://oglobo.globo.com/100-anos/
-gabarito -> https://oglobo.globo.com/politica/
 gabarito -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 gabarito -> https://oglobo.globo.com/blogs/pulso/
 gabarito -> https://oglobo.globo.com/brasil/
@@ -936,7 +912,6 @@ sexualmente -> https://oglobo.globo.com/ultimas-noticias/#
 roberto -> https://oglobo.globo.com/politica/
 roberto -> https://oglobo.globo.com/100-anos/#
 roberto -> https://oglobo.globo.com/100-anos/
-roberto -> https://oglobo.globo.com/politica/
 renunciar -> https://oglobo.globo.com/politica/eleicoes-2024/#
 renunciar -> https://oglobo.globo.com/politica/eleicoes-2024/
 pago -> https://oglobo.globo.com/ultimas-noticias/#
@@ -945,12 +920,10 @@ agentes -> https://oglobo.globo.com/rio/bairros/
 agentes -> https://oglobo.globo.com/mundo/
 orientações -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 fecha -> https://oglobo.globo.com/politica/
-fecha -> https://oglobo.globo.com/politica/
 entidades -> https://oglobo.globo.com/brasil/direitos-humanos/
 geopolítico -> https://oglobo.globo.com/mundo/
 assume -> https://oglobo.globo.com/
 assume -> https://oglobo.globo.com/brasil/minas-gerais/
-dinâmico -> https://oglobo.globo.com/politica/
 dinâmico -> https://oglobo.globo.com/politica/
 senhas -> https://oglobo.globo.com/
 cleitinho -> https://oglobo.globo.com/brasil/
@@ -971,8 +944,6 @@ disse -> https://oglobo.globo.com/brasil/minas-gerais/
 disse -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 embarque -> https://oglobo.globo.com/mundo/
 salvamento -> https://oglobo.globo.com/politica/
-salvamento -> https://oglobo.globo.com/politica/
-advogados -> https://oglobo.globo.com/politica/
 advogados -> https://oglobo.globo.com/politica/
 convidados -> https://oglobo.globo.com/ultimas-noticias/
 convidados -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -1034,7 +1005,6 @@ dourados' -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 estônia -> https://oglobo.globo.com/dialogos-rj/
 estônia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 lindbergh -> https://oglobo.globo.com/politica/
-lindbergh -> https://oglobo.globo.com/politica/
 regulação -> https://oglobo.globo.com/rio/web-summit-rio/
 infraestrutura -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 infraestrutura -> https://oglobo.globo.com/dialogos-rj/
@@ -1049,7 +1019,6 @@ clima -> https://oglobo.globo.com/ultimas-noticias/
 clima -> https://oglobo.globo.com/100-anos/#
 clima -> https://oglobo.globo.com/politica/eleicoes-2024/
 clima -> https://oglobo.globo.com/100-anos/
-clima -> https://oglobo.globo.com/politica/
 clima -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 clima -> https://oglobo.globo.com/blogs/pulso/
 clima -> https://oglobo.globo.com/brasil/
@@ -1077,7 +1046,6 @@ merenda -> https://oglobo.globo.com/brasil/educacao/
 comunidades -> https://oglobo.globo.com/brasil/direitos-humanos/
 entes -> https://oglobo.globo.com/brasil/educacao/
 expungir -> https://oglobo.globo.com/politica/
-expungir -> https://oglobo.globo.com/politica/
 brasileiro -> https://oglobo.globo.com/
 celebridades -> https://oglobo.globo.com/
 rubens -> https://oglobo.globo.com/rio/bairros/
@@ -1093,7 +1061,6 @@ tecnologia -> https://oglobo.globo.com/ultimas-noticias/
 tecnologia -> https://oglobo.globo.com/100-anos/#
 tecnologia -> https://oglobo.globo.com/politica/eleicoes-2024/
 tecnologia -> https://oglobo.globo.com/100-anos/
-tecnologia -> https://oglobo.globo.com/politica/
 tecnologia -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 tecnologia -> https://oglobo.globo.com/blogs/pulso/
 tecnologia -> https://oglobo.globo.com/brasil/
@@ -1116,7 +1083,6 @@ tecnologia -> https://oglobo.globo.com/mundo/
 tecnologia -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 tecnologia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 negócios, -> https://oglobo.globo.com/politica/
-negócios, -> https://oglobo.globo.com/politica/
 milhares -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 guarujá -> https://oglobo.globo.com/brasil/
 guarujá -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -1128,7 +1094,6 @@ s/a. -> https://oglobo.globo.com/ultimas-noticias/
 s/a. -> https://oglobo.globo.com/100-anos/#
 s/a. -> https://oglobo.globo.com/politica/eleicoes-2024/
 s/a. -> https://oglobo.globo.com/100-anos/
-s/a. -> https://oglobo.globo.com/politica/
 s/a. -> https://oglobo.globo.com/blogs/pulso/
 s/a. -> https://oglobo.globo.com/brasil/
 s/a. -> https://oglobo.globo.com/brasil/educacao/
@@ -1161,7 +1126,6 @@ planeta -> https://oglobo.globo.com/ultimas-noticias/
 planeta -> https://oglobo.globo.com/100-anos/#
 planeta -> https://oglobo.globo.com/politica/eleicoes-2024/
 planeta -> https://oglobo.globo.com/100-anos/
-planeta -> https://oglobo.globo.com/politica/
 planeta -> https://oglobo.globo.com/blogs/pulso/
 planeta -> https://oglobo.globo.com/brasil/
 planeta -> https://oglobo.globo.com/brasil/educacao/
@@ -1198,7 +1162,6 @@ facilmente -> https://oglobo.globo.com/
 1996 -> https://oglobo.globo.com/100-anos/#
 1996 -> https://oglobo.globo.com/politica/eleicoes-2024/
 1996 -> https://oglobo.globo.com/100-anos/
-1996 -> https://oglobo.globo.com/politica/
 1996 -> https://oglobo.globo.com/blogs/pulso/
 1996 -> https://oglobo.globo.com/brasil/
 1996 -> https://oglobo.globo.com/brasil/educacao/
@@ -1224,7 +1187,6 @@ atingimento -> https://oglobo.globo.com/brasil/educacao/
 centro -> https://oglobo.globo.com/
 centro -> https://oglobo.globo.com/politica/
 centro -> https://oglobo.globo.com/ultimas-noticias/
-centro -> https://oglobo.globo.com/politica/
 centro -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 centro -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 centro -> https://oglobo.globo.com/rio/
@@ -1245,7 +1207,6 @@ publicado, -> https://oglobo.globo.com/ultimas-noticias/
 publicado, -> https://oglobo.globo.com/100-anos/#
 publicado, -> https://oglobo.globo.com/politica/eleicoes-2024/
 publicado, -> https://oglobo.globo.com/100-anos/
-publicado, -> https://oglobo.globo.com/politica/
 publicado, -> https://oglobo.globo.com/blogs/pulso/
 publicado, -> https://oglobo.globo.com/brasil/
 publicado, -> https://oglobo.globo.com/brasil/educacao/
@@ -1274,7 +1235,6 @@ direitos -> https://oglobo.globo.com/ultimas-noticias/
 direitos -> https://oglobo.globo.com/100-anos/#
 direitos -> https://oglobo.globo.com/politica/eleicoes-2024/
 direitos -> https://oglobo.globo.com/100-anos/
-direitos -> https://oglobo.globo.com/politica/
 direitos -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 direitos -> https://oglobo.globo.com/blogs/pulso/
 direitos -> https://oglobo.globo.com/brasil/
@@ -1303,7 +1263,6 @@ pipeline -> https://oglobo.globo.com/ultimas-noticias/
 pipeline -> https://oglobo.globo.com/100-anos/#
 pipeline -> https://oglobo.globo.com/politica/eleicoes-2024/
 pipeline -> https://oglobo.globo.com/100-anos/
-pipeline -> https://oglobo.globo.com/politica/
 pipeline -> https://oglobo.globo.com/blogs/pulso/
 pipeline -> https://oglobo.globo.com/brasil/
 pipeline -> https://oglobo.globo.com/brasil/educacao/
@@ -1342,7 +1301,6 @@ paulo -> https://oglobo.globo.com/ultimas-noticias/
 paulo -> https://oglobo.globo.com/100-anos/#
 paulo -> https://oglobo.globo.com/politica/eleicoes-2024/
 paulo -> https://oglobo.globo.com/100-anos/
-paulo -> https://oglobo.globo.com/politica/
 paulo -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 paulo -> https://oglobo.globo.com/blogs/pulso/
 paulo -> https://oglobo.globo.com/brasil/
@@ -1390,7 +1348,6 @@ cadastre-se -> https://oglobo.globo.com/ultimas-noticias/
 cadastre-se -> https://oglobo.globo.com/100-anos/#
 cadastre-se -> https://oglobo.globo.com/politica/eleicoes-2024/
 cadastre-se -> https://oglobo.globo.com/100-anos/
-cadastre-se -> https://oglobo.globo.com/politica/
 cadastre-se -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 cadastre-se -> https://oglobo.globo.com/blogs/pulso/
 cadastre-se -> https://oglobo.globo.com/brasil/
@@ -1438,7 +1395,6 @@ injustiças -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/notici
 terror, -> https://oglobo.globo.com/ultimas-noticias/
 terror, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 multimídia -> https://oglobo.globo.com/politica/
-multimídia -> https://oglobo.globo.com/politica/
 biden, -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 esplanada, -> https://oglobo.globo.com/blogs/pulso/
 esplanada, -> https://oglobo.globo.com/brasil/educacao/
@@ -1467,7 +1423,6 @@ editora -> https://oglobo.globo.com/ultimas-noticias/
 editora -> https://oglobo.globo.com/100-anos/#
 editora -> https://oglobo.globo.com/politica/eleicoes-2024/
 editora -> https://oglobo.globo.com/100-anos/
-editora -> https://oglobo.globo.com/politica/
 editora -> https://oglobo.globo.com/blogs/pulso/
 editora -> https://oglobo.globo.com/brasil/
 editora -> https://oglobo.globo.com/brasil/educacao/
@@ -1504,7 +1459,6 @@ tema -> https://oglobo.globo.com/blogs/pulso/
 tema -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 tema -> https://oglobo.globo.com/rio/carnaval/
 importantes -> https://oglobo.globo.com/politica/
-importantes -> https://oglobo.globo.com/politica/
 divulgação -> https://oglobo.globo.com/
 divulgação -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 criticam -> https://oglobo.globo.com/
@@ -1523,7 +1477,6 @@ infográficos -> https://oglobo.globo.com/ultimas-noticias/
 infográficos -> https://oglobo.globo.com/100-anos/#
 infográficos -> https://oglobo.globo.com/politica/eleicoes-2024/
 infográficos -> https://oglobo.globo.com/100-anos/
-infográficos -> https://oglobo.globo.com/politica/
 infográficos -> https://oglobo.globo.com/blogs/pulso/
 infográficos -> https://oglobo.globo.com/brasil/
 infográficos -> https://oglobo.globo.com/brasil/educacao/
@@ -1545,7 +1498,6 @@ infográficos -> https://oglobo.globo.com/mundo/
 infográficos -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 infográficos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 política, -> https://oglobo.globo.com/politica/
-política, -> https://oglobo.globo.com/politica/
 política, -> https://oglobo.globo.com/mundo/
 azul. -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 resgatados -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -1554,14 +1506,12 @@ reconhecimento -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 'nossa -> https://oglobo.globo.com/
 schetinger -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 ex-presidente -> https://oglobo.globo.com/politica/
-ex-presidente -> https://oglobo.globo.com/politica/
 ex-presidente -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 ex-presidente -> https://oglobo.globo.com/brasil/minas-gerais/
 diálogo' -> https://oglobo.globo.com/brasil/educacao/
 reconhecer -> https://oglobo.globo.com/politica/
 reconhecer -> https://oglobo.globo.com/politica/eleicoes-2024/#
 reconhecer -> https://oglobo.globo.com/politica/eleicoes-2024/
-reconhecer -> https://oglobo.globo.com/politica/
 presidente -> https://oglobo.globo.com/politica/eleicoes-2024/#
 presidente -> https://oglobo.globo.com/politica/eleicoes-2024/
 presidente -> https://oglobo.globo.com/brasil/educacao/
@@ -1599,11 +1549,9 @@ oposição -> https://oglobo.globo.com/
 oposição -> https://oglobo.globo.com/politica/
 oposição -> https://oglobo.globo.com/politica/eleicoes-2024/#
 oposição -> https://oglobo.globo.com/politica/eleicoes-2024/
-oposição -> https://oglobo.globo.com/politica/
 oposição -> https://oglobo.globo.com/mundo/
 documentário -> https://oglobo.globo.com/100-anos/#
 documentário -> https://oglobo.globo.com/100-anos/
-inflação -> https://oglobo.globo.com/politica/
 inflação -> https://oglobo.globo.com/politica/
 inflação -> https://oglobo.globo.com/blogs/pulso/
 servidores -> https://oglobo.globo.com/rio/
@@ -1616,7 +1564,6 @@ instituições -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 instituições -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 operação -> https://oglobo.globo.com/politica/
 operação -> https://oglobo.globo.com/ultimas-noticias/
-operação -> https://oglobo.globo.com/politica/
 operação -> https://oglobo.globo.com/brasil/
 operação -> https://oglobo.globo.com/brasil/seguranca-publica/
 câmaras -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -1643,7 +1590,6 @@ acervo -> https://oglobo.globo.com/ultimas-noticias/
 acervo -> https://oglobo.globo.com/100-anos/#
 acervo -> https://oglobo.globo.com/politica/eleicoes-2024/
 acervo -> https://oglobo.globo.com/100-anos/
-acervo -> https://oglobo.globo.com/politica/
 acervo -> https://oglobo.globo.com/blogs/pulso/
 acervo -> https://oglobo.globo.com/brasil/
 acervo -> https://oglobo.globo.com/brasil/educacao/
@@ -1693,7 +1639,6 @@ reservados -> https://oglobo.globo.com/ultimas-noticias/
 reservados -> https://oglobo.globo.com/100-anos/#
 reservados -> https://oglobo.globo.com/politica/eleicoes-2024/
 reservados -> https://oglobo.globo.com/100-anos/
-reservados -> https://oglobo.globo.com/politica/
 reservados -> https://oglobo.globo.com/blogs/pulso/
 reservados -> https://oglobo.globo.com/brasil/
 reservados -> https://oglobo.globo.com/brasil/educacao/
@@ -1744,7 +1689,6 @@ facção -> https://oglobo.globo.com/brasil/seguranca-publica/
 assuntos -> https://oglobo.globo.com/ultimas-noticias/#
 assuntos -> https://oglobo.globo.com/politica/
 assuntos -> https://oglobo.globo.com/ultimas-noticias/
-assuntos -> https://oglobo.globo.com/politica/
 assuntos -> https://oglobo.globo.com/brasil/
 assuntos -> https://oglobo.globo.com/rio/
 assuntos -> https://oglobo.globo.com/mundo/
@@ -1767,7 +1711,6 @@ sobre -> https://oglobo.globo.com/politica/
 sobre -> https://oglobo.globo.com/politica/eleicoes-2024/#
 sobre -> https://oglobo.globo.com/ultimas-noticias/
 sobre -> https://oglobo.globo.com/politica/eleicoes-2024/
-sobre -> https://oglobo.globo.com/politica/
 sobre -> https://oglobo.globo.com/blogs/pulso/
 sobre -> https://oglobo.globo.com/brasil/
 sobre -> https://oglobo.globo.com/brasil/educacao/
@@ -1804,7 +1747,6 @@ conselho -> https://oglobo.globo.com/brasil/educacao/
 maca -> https://oglobo.globo.com/
 assinatura -> https://oglobo.globo.com/brasil/sao-paulo/
 merval -> https://oglobo.globo.com/politica/
-merval -> https://oglobo.globo.com/politica/
 altos -> https://oglobo.globo.com/brasil/meio-ambiente/
 altos -> https://oglobo.globo.com/brasil/sao-paulo/
 autoesporte -> https://oglobo.globo.com/
@@ -1814,7 +1756,6 @@ autoesporte -> https://oglobo.globo.com/ultimas-noticias/
 autoesporte -> https://oglobo.globo.com/100-anos/#
 autoesporte -> https://oglobo.globo.com/politica/eleicoes-2024/
 autoesporte -> https://oglobo.globo.com/100-anos/
-autoesporte -> https://oglobo.globo.com/politica/
 autoesporte -> https://oglobo.globo.com/blogs/pulso/
 autoesporte -> https://oglobo.globo.com/brasil/
 autoesporte -> https://oglobo.globo.com/brasil/educacao/
@@ -1843,7 +1784,6 @@ diálogos -> https://oglobo.globo.com/ultimas-noticias/
 diálogos -> https://oglobo.globo.com/100-anos/#
 diálogos -> https://oglobo.globo.com/politica/eleicoes-2024/
 diálogos -> https://oglobo.globo.com/100-anos/
-diálogos -> https://oglobo.globo.com/politica/
 diálogos -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 diálogos -> https://oglobo.globo.com/blogs/pulso/
 diálogos -> https://oglobo.globo.com/brasil/
@@ -1932,7 +1872,6 @@ mira -> https://oglobo.globo.com/
 mira -> https://oglobo.globo.com/politica/
 mira -> https://oglobo.globo.com/politica/eleicoes-2024/#
 mira -> https://oglobo.globo.com/politica/eleicoes-2024/
-mira -> https://oglobo.globo.com/politica/
 negociações -> https://oglobo.globo.com/
 constitucional -> https://oglobo.globo.com/brasil/direitos-humanos/
 alexandre -> https://oglobo.globo.com/ultimas-noticias/#
@@ -1940,7 +1879,6 @@ alexandre -> https://oglobo.globo.com/politica/
 alexandre -> https://oglobo.globo.com/politica/eleicoes-2024/#
 alexandre -> https://oglobo.globo.com/ultimas-noticias/
 alexandre -> https://oglobo.globo.com/politica/eleicoes-2024/
-alexandre -> https://oglobo.globo.com/politica/
 alexandre -> https://oglobo.globo.com/blogs/pulso/
 alexandre -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 alexandre -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -1952,7 +1890,6 @@ seguro -> https://oglobo.globo.com/ultimas-noticias/
 seguro -> https://oglobo.globo.com/100-anos/#
 seguro -> https://oglobo.globo.com/politica/eleicoes-2024/
 seguro -> https://oglobo.globo.com/100-anos/
-seguro -> https://oglobo.globo.com/politica/
 seguro -> https://oglobo.globo.com/blogs/pulso/
 seguro -> https://oglobo.globo.com/brasil/
 seguro -> https://oglobo.globo.com/brasil/educacao/
@@ -1982,7 +1919,6 @@ newsletter -> https://oglobo.globo.com/ultimas-noticias/
 newsletter -> https://oglobo.globo.com/100-anos/#
 newsletter -> https://oglobo.globo.com/politica/eleicoes-2024/
 newsletter -> https://oglobo.globo.com/100-anos/
-newsletter -> https://oglobo.globo.com/politica/
 newsletter -> https://oglobo.globo.com/blogs/pulso/
 newsletter -> https://oglobo.globo.com/brasil/
 newsletter -> https://oglobo.globo.com/brasil/educacao/
@@ -2024,7 +1960,6 @@ espaço -> https://oglobo.globo.com/ultimas-noticias/#
 espaço -> https://oglobo.globo.com/politica/
 espaço -> https://oglobo.globo.com/100-anos/#
 espaço -> https://oglobo.globo.com/100-anos/
-espaço -> https://oglobo.globo.com/politica/
 espaço -> https://oglobo.globo.com/brasil/
 espaço -> https://oglobo.globo.com/brasil/educacao/
 espaço -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -2054,7 +1989,6 @@ filmes -> https://oglobo.globo.com/ultimas-noticias/
 filmes -> https://oglobo.globo.com/100-anos/#
 filmes -> https://oglobo.globo.com/politica/eleicoes-2024/
 filmes -> https://oglobo.globo.com/100-anos/
-filmes -> https://oglobo.globo.com/politica/
 filmes -> https://oglobo.globo.com/blogs/pulso/
 filmes -> https://oglobo.globo.com/brasil/
 filmes -> https://oglobo.globo.com/brasil/educacao/
@@ -2089,7 +2023,6 @@ portugal -> https://oglobo.globo.com/ultimas-noticias/
 portugal -> https://oglobo.globo.com/100-anos/#
 portugal -> https://oglobo.globo.com/politica/eleicoes-2024/
 portugal -> https://oglobo.globo.com/100-anos/
-portugal -> https://oglobo.globo.com/politica/
 portugal -> https://oglobo.globo.com/blogs/pulso/
 portugal -> https://oglobo.globo.com/brasil/
 portugal -> https://oglobo.globo.com/brasil/educacao/
@@ -2111,7 +2044,6 @@ portugal -> https://oglobo.globo.com/mundo/
 portugal -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 portugal -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 assinantes -> https://oglobo.globo.com/
-direita? -> https://oglobo.globo.com/politica/
 direita? -> https://oglobo.globo.com/politica/
 dinâmica -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 thales -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -2138,7 +2070,6 @@ cotado -> https://oglobo.globo.com/brasil/minas-gerais/
 conseguem -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 pesquisa -> https://oglobo.globo.com/ultimas-noticias/#
 pesquisa -> https://oglobo.globo.com/politica/
-pesquisa -> https://oglobo.globo.com/politica/
 pesquisa -> https://oglobo.globo.com/blogs/pulso/
 pesquisa -> https://oglobo.globo.com/brasil/educacao/
 pesquisa -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
@@ -2149,7 +2080,6 @@ hackeado -> https://oglobo.globo.com/
 centenas -> https://oglobo.globo.com/mundo/
 acirramento -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 bernardo -> https://oglobo.globo.com/
-bernardo -> https://oglobo.globo.com/politica/
 bernardo -> https://oglobo.globo.com/politica/
 bernardo -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 doenças -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -2169,7 +2099,6 @@ mais -> https://oglobo.globo.com/ultimas-noticias/
 mais -> https://oglobo.globo.com/100-anos/#
 mais -> https://oglobo.globo.com/politica/eleicoes-2024/
 mais -> https://oglobo.globo.com/100-anos/
-mais -> https://oglobo.globo.com/politica/
 mais -> https://oglobo.globo.com/blogs/pulso/
 mais -> https://oglobo.globo.com/brasil/
 mais -> https://oglobo.globo.com/brasil/educacao/
@@ -2204,7 +2133,6 @@ oglobo -> https://oglobo.globo.com/ultimas-noticias/
 oglobo -> https://oglobo.globo.com/100-anos/#
 oglobo -> https://oglobo.globo.com/politica/eleicoes-2024/
 oglobo -> https://oglobo.globo.com/100-anos/
-oglobo -> https://oglobo.globo.com/politica/
 oglobo -> https://oglobo.globo.com/blogs/pulso/
 oglobo -> https://oglobo.globo.com/brasil/
 oglobo -> https://oglobo.globo.com/brasil/educacao/
@@ -2278,7 +2206,6 @@ cruzadas -> https://oglobo.globo.com/ultimas-noticias/
 cruzadas -> https://oglobo.globo.com/100-anos/#
 cruzadas -> https://oglobo.globo.com/politica/eleicoes-2024/
 cruzadas -> https://oglobo.globo.com/100-anos/
-cruzadas -> https://oglobo.globo.com/politica/
 cruzadas -> https://oglobo.globo.com/blogs/pulso/
 cruzadas -> https://oglobo.globo.com/brasil/
 cruzadas -> https://oglobo.globo.com/brasil/educacao/
@@ -2309,7 +2236,6 @@ rádio -> https://oglobo.globo.com/ultimas-noticias/
 rádio -> https://oglobo.globo.com/100-anos/#
 rádio -> https://oglobo.globo.com/politica/eleicoes-2024/
 rádio -> https://oglobo.globo.com/100-anos/
-rádio -> https://oglobo.globo.com/politica/
 rádio -> https://oglobo.globo.com/blogs/pulso/
 rádio -> https://oglobo.globo.com/brasil/
 rádio -> https://oglobo.globo.com/brasil/educacao/
@@ -2362,7 +2288,6 @@ telescópio -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 maquininha -> https://oglobo.globo.com/ultimas-noticias/#
 maquininha -> https://oglobo.globo.com/rio/
 políticos -> https://oglobo.globo.com/politica/
-políticos -> https://oglobo.globo.com/politica/
 políticos -> https://oglobo.globo.com/brasil/minas-gerais/
 instagram -> https://oglobo.globo.com/brasil/sao-paulo/
 brancas -> https://oglobo.globo.com/ultimas-noticias/
@@ -2390,7 +2315,6 @@ delas, -> https://oglobo.globo.com/100-anos/#
 delas, -> https://oglobo.globo.com/100-anos/
 malu -> https://oglobo.globo.com/
 malu -> https://oglobo.globo.com/politica/
-malu -> https://oglobo.globo.com/politica/
 malu -> https://oglobo.globo.com/brasil/direitos-humanos/
 todo, -> https://oglobo.globo.com/ultimas-noticias/
 todo, -> https://oglobo.globo.com/brasil/
@@ -2399,7 +2323,6 @@ todo, -> https://oglobo.globo.com/rio/
 agnes -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 amadores -> https://oglobo.globo.com/rio/
 ministro -> https://oglobo.globo.com/
-ministro -> https://oglobo.globo.com/politica/
 ministro -> https://oglobo.globo.com/politica/
 ministro -> https://oglobo.globo.com/brasil/direitos-humanos/
 existência -> https://oglobo.globo.com/mundo/
@@ -2414,7 +2337,6 @@ negócios -> https://oglobo.globo.com/ultimas-noticias/
 negócios -> https://oglobo.globo.com/100-anos/#
 negócios -> https://oglobo.globo.com/politica/eleicoes-2024/
 negócios -> https://oglobo.globo.com/100-anos/
-negócios -> https://oglobo.globo.com/politica/
 negócios -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 negócios -> https://oglobo.globo.com/blogs/pulso/
 negócios -> https://oglobo.globo.com/brasil/
@@ -2465,7 +2387,6 @@ texto -> https://oglobo.globo.com/brasil/direitos-humanos/
 transição -> https://oglobo.globo.com/dialogos-rj/
 faça -> https://oglobo.globo.com/
 faça -> https://oglobo.globo.com/politica/
-faça -> https://oglobo.globo.com/politica/
 todos -> https://oglobo.globo.com/
 todos -> https://oglobo.globo.com/ultimas-noticias/#
 todos -> https://oglobo.globo.com/politica/
@@ -2474,7 +2395,6 @@ todos -> https://oglobo.globo.com/ultimas-noticias/
 todos -> https://oglobo.globo.com/100-anos/#
 todos -> https://oglobo.globo.com/politica/eleicoes-2024/
 todos -> https://oglobo.globo.com/100-anos/
-todos -> https://oglobo.globo.com/politica/
 todos -> https://oglobo.globo.com/blogs/pulso/
 todos -> https://oglobo.globo.com/brasil/
 todos -> https://oglobo.globo.com/brasil/educacao/
@@ -2504,13 +2424,11 @@ litoral -> https://oglobo.globo.com/brasil/direitos-humanos/
 litoral -> https://oglobo.globo.com/brasil/sao-paulo/
 continente, -> https://oglobo.globo.com/brasil/
 linguagem -> https://oglobo.globo.com/politica/
-linguagem -> https://oglobo.globo.com/politica/
 descabida -> https://oglobo.globo.com/
 bolsonaro -> https://oglobo.globo.com/
 bolsonaro -> https://oglobo.globo.com/politica/
 bolsonaro -> https://oglobo.globo.com/politica/eleicoes-2024/#
 bolsonaro -> https://oglobo.globo.com/politica/eleicoes-2024/
-bolsonaro -> https://oglobo.globo.com/politica/
 bolsonaro -> https://oglobo.globo.com/blogs/pulso/
 bolsonaro -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 bolsonaro -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -2526,7 +2444,6 @@ monet -> https://oglobo.globo.com/ultimas-noticias/
 monet -> https://oglobo.globo.com/100-anos/#
 monet -> https://oglobo.globo.com/politica/eleicoes-2024/
 monet -> https://oglobo.globo.com/100-anos/
-monet -> https://oglobo.globo.com/politica/
 monet -> https://oglobo.globo.com/blogs/pulso/
 monet -> https://oglobo.globo.com/brasil/
 monet -> https://oglobo.globo.com/brasil/educacao/
@@ -2552,7 +2469,6 @@ stf, -> https://oglobo.globo.com/politica/
 stf, -> https://oglobo.globo.com/politica/eleicoes-2024/#
 stf, -> https://oglobo.globo.com/ultimas-noticias/
 stf, -> https://oglobo.globo.com/politica/eleicoes-2024/
-stf, -> https://oglobo.globo.com/politica/
 stf, -> https://oglobo.globo.com/blogs/pulso/
 stf, -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 stf, -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -2565,7 +2481,6 @@ botafogo -> https://oglobo.globo.com/ultimas-noticias/
 botafogo -> https://oglobo.globo.com/100-anos/#
 botafogo -> https://oglobo.globo.com/politica/eleicoes-2024/
 botafogo -> https://oglobo.globo.com/100-anos/
-botafogo -> https://oglobo.globo.com/politica/
 botafogo -> https://oglobo.globo.com/blogs/pulso/
 botafogo -> https://oglobo.globo.com/brasil/
 botafogo -> https://oglobo.globo.com/brasil/educacao/
@@ -2591,7 +2506,6 @@ telescópios -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 único -> https://oglobo.globo.com/politica/
 único -> https://oglobo.globo.com/politica/eleicoes-2024/#
 único -> https://oglobo.globo.com/politica/eleicoes-2024/
-único -> https://oglobo.globo.com/politica/
 único -> https://oglobo.globo.com/brasil/meio-ambiente/
 chuvas -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 chuvas -> https://oglobo.globo.com/rio/
@@ -2608,7 +2522,6 @@ acontece -> https://oglobo.globo.com/ultimas-noticias/
 acontece -> https://oglobo.globo.com/100-anos/#
 acontece -> https://oglobo.globo.com/politica/eleicoes-2024/
 acontece -> https://oglobo.globo.com/100-anos/
-acontece -> https://oglobo.globo.com/politica/
 acontece -> https://oglobo.globo.com/blogs/pulso/
 acontece -> https://oglobo.globo.com/brasil/
 acontece -> https://oglobo.globo.com/brasil/educacao/
@@ -2630,7 +2543,6 @@ acontece -> https://oglobo.globo.com/mundo/
 acontece -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 acontece -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 análises -> https://oglobo.globo.com/politica/
-análises -> https://oglobo.globo.com/politica/
 análises -> https://oglobo.globo.com/mundo/
 peça, -> https://oglobo.globo.com/ultimas-noticias/
 peça, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -2645,7 +2557,6 @@ galileu -> https://oglobo.globo.com/ultimas-noticias/
 galileu -> https://oglobo.globo.com/100-anos/#
 galileu -> https://oglobo.globo.com/politica/eleicoes-2024/
 galileu -> https://oglobo.globo.com/100-anos/
-galileu -> https://oglobo.globo.com/politica/
 galileu -> https://oglobo.globo.com/blogs/pulso/
 galileu -> https://oglobo.globo.com/brasil/
 galileu -> https://oglobo.globo.com/brasil/educacao/
@@ -2678,7 +2589,6 @@ serão -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 serão -> https://oglobo.globo.com/brasil/direitos-humanos/
 serão -> https://oglobo.globo.com/rio/bairros/
 lançar -> https://oglobo.globo.com/politica/
-lançar -> https://oglobo.globo.com/politica/
 engenheiro -> https://oglobo.globo.com/brasil/meio-ambiente/
 engenheiro -> https://oglobo.globo.com/rio/bairros/
 chuva, -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -2702,7 +2612,6 @@ denunciados -> https://oglobo.globo.com/politica/
 denunciados -> https://oglobo.globo.com/politica/eleicoes-2024/#
 denunciados -> https://oglobo.globo.com/ultimas-noticias/
 denunciados -> https://oglobo.globo.com/politica/eleicoes-2024/
-denunciados -> https://oglobo.globo.com/politica/
 míssil -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 aguardando -> https://oglobo.globo.com/rio/carnaval/
 hajjar -> https://oglobo.globo.com/
@@ -2764,7 +2673,6 @@ jogos -> https://oglobo.globo.com/ultimas-noticias/
 jogos -> https://oglobo.globo.com/100-anos/#
 jogos -> https://oglobo.globo.com/politica/eleicoes-2024/
 jogos -> https://oglobo.globo.com/100-anos/
-jogos -> https://oglobo.globo.com/politica/
 jogos -> https://oglobo.globo.com/blogs/pulso/
 jogos -> https://oglobo.globo.com/brasil/
 jogos -> https://oglobo.globo.com/brasil/educacao/
@@ -2816,11 +2724,9 @@ quarta, -> https://oglobo.globo.com/rio/carnaval/
 comparação -> https://oglobo.globo.com/blogs/pulso/
 comparação -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 descubra -> https://oglobo.globo.com/politica/
-descubra -> https://oglobo.globo.com/politica/
 quarta-feira, -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 chacra: -> https://oglobo.globo.com/mundo/
 defendem -> https://oglobo.globo.com/blogs/pulso/
-esquerda, -> https://oglobo.globo.com/politica/
 esquerda, -> https://oglobo.globo.com/politica/
 combate -> https://oglobo.globo.com/brasil/meio-ambiente/
 combate -> https://oglobo.globo.com/mundo/
@@ -2865,11 +2771,9 @@ atuação -> https://oglobo.globo.com/politica/
 atuação -> https://oglobo.globo.com/politica/eleicoes-2024/#
 atuação -> https://oglobo.globo.com/ultimas-noticias/
 atuação -> https://oglobo.globo.com/politica/eleicoes-2024/
-atuação -> https://oglobo.globo.com/politica/
 férias -> https://oglobo.globo.com/
 férias -> https://oglobo.globo.com/ultimas-noticias/
 férias -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
-evita -> https://oglobo.globo.com/politica/
 evita -> https://oglobo.globo.com/politica/
 ucrânia” -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 urca -> https://oglobo.globo.com/rio/
@@ -2881,7 +2785,6 @@ palavras -> https://oglobo.globo.com/ultimas-noticias/
 palavras -> https://oglobo.globo.com/100-anos/#
 palavras -> https://oglobo.globo.com/politica/eleicoes-2024/
 palavras -> https://oglobo.globo.com/100-anos/
-palavras -> https://oglobo.globo.com/politica/
 palavras -> https://oglobo.globo.com/blogs/pulso/
 palavras -> https://oglobo.globo.com/brasil/
 palavras -> https://oglobo.globo.com/brasil/educacao/
@@ -2912,7 +2815,6 @@ newsletters -> https://oglobo.globo.com/ultimas-noticias/
 newsletters -> https://oglobo.globo.com/100-anos/#
 newsletters -> https://oglobo.globo.com/politica/eleicoes-2024/
 newsletters -> https://oglobo.globo.com/100-anos/
-newsletters -> https://oglobo.globo.com/politica/
 newsletters -> https://oglobo.globo.com/blogs/pulso/
 newsletters -> https://oglobo.globo.com/brasil/
 newsletters -> https://oglobo.globo.com/brasil/educacao/
@@ -2938,7 +2840,6 @@ tomar -> https://oglobo.globo.com/politica/eleicoes-2024/
 mercado, -> https://oglobo.globo.com/rio/web-summit-rio/
 divulgada, -> https://oglobo.globo.com/brasil/seguranca-publica/
 narrativas -> https://oglobo.globo.com/politica/
-narrativas -> https://oglobo.globo.com/politica/
 promete -> https://oglobo.globo.com/rio/carnaval/
 investigadas; -> https://oglobo.globo.com/brasil/seguranca-publica/
 páscoa; -> https://oglobo.globo.com/
@@ -2956,7 +2857,6 @@ este -> https://oglobo.globo.com/ultimas-noticias/
 este -> https://oglobo.globo.com/100-anos/#
 este -> https://oglobo.globo.com/politica/eleicoes-2024/
 este -> https://oglobo.globo.com/100-anos/
-este -> https://oglobo.globo.com/politica/
 este -> https://oglobo.globo.com/blogs/pulso/
 este -> https://oglobo.globo.com/brasil/
 este -> https://oglobo.globo.com/brasil/educacao/
@@ -2980,7 +2880,6 @@ este -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 periferias, -> https://oglobo.globo.com/brasil/meio-ambiente/
 cuba, -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 world" -> https://oglobo.globo.com/politica/
-world" -> https://oglobo.globo.com/politica/
 world" -> https://oglobo.globo.com/blogs/pulso/
 esta -> https://oglobo.globo.com/politica/eleicoes-2024/#
 esta -> https://oglobo.globo.com/100-anos/#
@@ -2999,7 +2898,6 @@ desgastante' -> https://oglobo.globo.com/rio/carnaval/
 hospital, -> https://oglobo.globo.com/mundo/
 preocupação -> https://oglobo.globo.com/ultimas-noticias/#
 preocupação -> https://oglobo.globo.com/politica/
-preocupação -> https://oglobo.globo.com/politica/
 preocupação -> https://oglobo.globo.com/blogs/pulso/
 preocupação -> https://oglobo.globo.com/rio/bairros/
 ancelmo -> https://oglobo.globo.com/
@@ -3007,7 +2905,6 @@ ancelmo -> https://oglobo.globo.com/ultimas-noticias/#
 ancelmo -> https://oglobo.globo.com/rio/
 ancelmo -> https://oglobo.globo.com/rio/carnaval/
 inscrição, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
-aquilatar: -> https://oglobo.globo.com/politica/
 aquilatar: -> https://oglobo.globo.com/politica/
 depressão’, -> https://oglobo.globo.com/
 fundou -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -3034,7 +2931,6 @@ poder -> https://oglobo.globo.com/
 poder -> https://oglobo.globo.com/ultimas-noticias/#
 poder -> https://oglobo.globo.com/politica/
 poder -> https://oglobo.globo.com/ultimas-noticias/
-poder -> https://oglobo.globo.com/politica/
 poder -> https://oglobo.globo.com/blogs/pulso/
 poder -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 poder -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -3058,7 +2954,6 @@ prêmio -> https://oglobo.globo.com/ultimas-noticias/
 prêmio -> https://oglobo.globo.com/100-anos/#
 prêmio -> https://oglobo.globo.com/politica/eleicoes-2024/
 prêmio -> https://oglobo.globo.com/100-anos/
-prêmio -> https://oglobo.globo.com/politica/
 prêmio -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 prêmio -> https://oglobo.globo.com/blogs/pulso/
 prêmio -> https://oglobo.globo.com/brasil/
@@ -3169,7 +3064,6 @@ morreram -> https://oglobo.globo.com/mundo/
 balneário -> https://oglobo.globo.com/politica/
 balneário -> https://oglobo.globo.com/politica/eleicoes-2024/#
 balneário -> https://oglobo.globo.com/politica/eleicoes-2024/
-balneário -> https://oglobo.globo.com/politica/
 ‘100 -> https://oglobo.globo.com/100-anos/#
 ‘100 -> https://oglobo.globo.com/100-anos/
 nota? -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -3199,7 +3093,6 @@ estrago -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 atingidos -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 mello -> https://oglobo.globo.com/
 mello -> https://oglobo.globo.com/politica/
-mello -> https://oglobo.globo.com/politica/
 desafios -> https://oglobo.globo.com/rio/web-summit-rio/
 desafios -> https://oglobo.globo.com/dialogos-rj/
 desafios -> https://oglobo.globo.com/mundo/
@@ -3215,7 +3108,6 @@ subaproveitados -> https://oglobo.globo.com/ultimas-noticias/
 subaproveitados -> https://oglobo.globo.com/brasil/
 dividido -> https://oglobo.globo.com/brasil/educacao/
 teste -> https://oglobo.globo.com/politica/
-teste -> https://oglobo.globo.com/politica/
 round' -> https://oglobo.globo.com/politica/eleicoes-2024/#
 round' -> https://oglobo.globo.com/politica/eleicoes-2024/
 substitutos, -> https://oglobo.globo.com/politica/eleicoes-2024/#
@@ -3224,20 +3116,17 @@ silva -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 silva -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 preferência -> https://oglobo.globo.com/
 andreazza -> https://oglobo.globo.com/politica/
-andreazza -> https://oglobo.globo.com/politica/
 sonho -> https://oglobo.globo.com/rio/
 sonho -> https://oglobo.globo.com/rio/bairros/
 provoca -> https://oglobo.globo.com/brasil/educacao/
 jair -> https://oglobo.globo.com/politica/
 jair -> https://oglobo.globo.com/politica/eleicoes-2024/#
 jair -> https://oglobo.globo.com/politica/eleicoes-2024/
-jair -> https://oglobo.globo.com/politica/
 jair -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 cobrança -> https://oglobo.globo.com/brasil/educacao/
 cobrança -> https://oglobo.globo.com/brasil/seguranca-publica/
 cobrança -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 mapeamento -> https://oglobo.globo.com/
-mapeamento -> https://oglobo.globo.com/politica/
 mapeamento -> https://oglobo.globo.com/politica/
 mapeamento -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 verticais: -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -3250,7 +3139,6 @@ golpe -> https://oglobo.globo.com/politica/
 golpe -> https://oglobo.globo.com/politica/eleicoes-2024/#
 golpe -> https://oglobo.globo.com/ultimas-noticias/
 golpe -> https://oglobo.globo.com/politica/eleicoes-2024/
-golpe -> https://oglobo.globo.com/politica/
 golpe -> https://oglobo.globo.com/rio/
 damião -> https://oglobo.globo.com/brasil/minas-gerais/
 1.800, -> https://oglobo.globo.com/brasil/educacao/
@@ -3267,7 +3155,6 @@ organizado -> https://oglobo.globo.com/brasil/seguranca-publica/
 itália; -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 incontinência -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 gian -> https://oglobo.globo.com/
-mês, -> https://oglobo.globo.com/politica/
 mês, -> https://oglobo.globo.com/politica/
 mês, -> https://oglobo.globo.com/blogs/pulso/
 presentear -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -3333,7 +3220,6 @@ cabos -> https://oglobo.globo.com/brasil/seguranca-publica/
 turno -> https://oglobo.globo.com/politica/
 turno -> https://oglobo.globo.com/politica/eleicoes-2024/#
 turno -> https://oglobo.globo.com/politica/eleicoes-2024/
-turno -> https://oglobo.globo.com/politica/
 algumas -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 (joana -> https://oglobo.globo.com/
 pagar -> https://oglobo.globo.com/brasil/educacao/
@@ -3347,7 +3233,6 @@ sustentabilidade -> https://oglobo.globo.com/rio/bairros/
 leucemia -> https://oglobo.globo.com/rio/
 leucemia -> https://oglobo.globo.com/rio/bairros/
 metas, -> https://oglobo.globo.com/brasil/educacao/
-analisar -> https://oglobo.globo.com/politica/
 analisar -> https://oglobo.globo.com/politica/
 protestos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 valer -> https://oglobo.globo.com/ultimas-noticias/
@@ -3373,14 +3258,12 @@ ajudar -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 tropas -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 bolsonarismo -> https://oglobo.globo.com/
 bolsonarismo -> https://oglobo.globo.com/politica/
-bolsonarismo -> https://oglobo.globo.com/politica/
 bolsonarismo -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 bolsonarismo -> https://oglobo.globo.com/brasil/minas-gerais/
 terremotos -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 ex-prefeito -> https://oglobo.globo.com/politica/
 ex-prefeito -> https://oglobo.globo.com/politica/eleicoes-2024/#
 ex-prefeito -> https://oglobo.globo.com/politica/eleicoes-2024/
-ex-prefeito -> https://oglobo.globo.com/politica/
 ex-prefeito -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 singer -> https://oglobo.globo.com/
 pensava -> https://oglobo.globo.com/
@@ -3393,7 +3276,6 @@ flamengo -> https://oglobo.globo.com/ultimas-noticias/
 flamengo -> https://oglobo.globo.com/100-anos/#
 flamengo -> https://oglobo.globo.com/politica/eleicoes-2024/
 flamengo -> https://oglobo.globo.com/100-anos/
-flamengo -> https://oglobo.globo.com/politica/
 flamengo -> https://oglobo.globo.com/blogs/pulso/
 flamengo -> https://oglobo.globo.com/brasil/
 flamengo -> https://oglobo.globo.com/brasil/educacao/
@@ -3445,7 +3327,6 @@ carregando... -> https://oglobo.globo.com/ultimas-noticias/
 carregando... -> https://oglobo.globo.com/100-anos/#
 carregando... -> https://oglobo.globo.com/politica/eleicoes-2024/
 carregando... -> https://oglobo.globo.com/100-anos/
-carregando... -> https://oglobo.globo.com/politica/
 carregando... -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 carregando... -> https://oglobo.globo.com/blogs/pulso/
 carregando... -> https://oglobo.globo.com/brasil/
@@ -3475,7 +3356,6 @@ morar -> https://oglobo.globo.com/ultimas-noticias/
 morar -> https://oglobo.globo.com/100-anos/#
 morar -> https://oglobo.globo.com/politica/eleicoes-2024/
 morar -> https://oglobo.globo.com/100-anos/
-morar -> https://oglobo.globo.com/politica/
 morar -> https://oglobo.globo.com/blogs/pulso/
 morar -> https://oglobo.globo.com/brasil/
 morar -> https://oglobo.globo.com/brasil/educacao/
@@ -3504,7 +3384,6 @@ gastronomia -> https://oglobo.globo.com/ultimas-noticias/
 gastronomia -> https://oglobo.globo.com/100-anos/#
 gastronomia -> https://oglobo.globo.com/politica/eleicoes-2024/
 gastronomia -> https://oglobo.globo.com/100-anos/
-gastronomia -> https://oglobo.globo.com/politica/
 gastronomia -> https://oglobo.globo.com/blogs/pulso/
 gastronomia -> https://oglobo.globo.com/brasil/
 gastronomia -> https://oglobo.globo.com/brasil/educacao/
@@ -3537,7 +3416,6 @@ aniversário: -> https://oglobo.globo.com/brasil/direitos-humanos/
 grupo -> https://oglobo.globo.com/politica/
 grupo -> https://oglobo.globo.com/100-anos/#
 grupo -> https://oglobo.globo.com/100-anos/
-grupo -> https://oglobo.globo.com/politica/
 grupo -> https://oglobo.globo.com/brasil/direitos-humanos/
 grupo -> https://oglobo.globo.com/rio/
 grupo -> https://oglobo.globo.com/rio/bairros/
@@ -3549,7 +3427,6 @@ bolsonarista -> https://oglobo.globo.com/politica/
 bolsonarista -> https://oglobo.globo.com/politica/eleicoes-2024/#
 bolsonarista -> https://oglobo.globo.com/ultimas-noticias/
 bolsonarista -> https://oglobo.globo.com/politica/eleicoes-2024/
-bolsonarista -> https://oglobo.globo.com/politica/
 edição, -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 2025: -> https://oglobo.globo.com/
 2025: -> https://oglobo.globo.com/brasil/educacao/
@@ -3581,10 +3458,8 @@ filha: -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 farpas -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 dirigentes -> https://oglobo.globo.com/brasil/educacao/
 unigel -> https://oglobo.globo.com/politica/
-unigel -> https://oglobo.globo.com/politica/
 cientistas -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 2026, -> https://oglobo.globo.com/blogs/pulso/
-contrapor -> https://oglobo.globo.com/politica/
 contrapor -> https://oglobo.globo.com/politica/
 financiar -> https://oglobo.globo.com/brasil/seguranca-publica/
 financiar -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -3666,7 +3541,6 @@ escravidão, -> https://oglobo.globo.com/brasil/direitos-humanos/
 2024. -> https://oglobo.globo.com/100-anos/#
 2024. -> https://oglobo.globo.com/politica/eleicoes-2024/
 2024. -> https://oglobo.globo.com/100-anos/
-2024. -> https://oglobo.globo.com/politica/
 2024. -> https://oglobo.globo.com/blogs/pulso/
 2024. -> https://oglobo.globo.com/brasil/
 2024. -> https://oglobo.globo.com/brasil/educacao/
@@ -3722,7 +3596,6 @@ além -> https://oglobo.globo.com/rio/web-summit-rio/
 além -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 além -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 suas -> https://oglobo.globo.com/politica/
-suas -> https://oglobo.globo.com/politica/
 suas -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 deixando -> https://oglobo.globo.com/brasil/seguranca-publica/
 deixando -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -3742,7 +3615,6 @@ terça-feira -> https://oglobo.globo.com/brasil/direitos-humanos/
 terça-feira -> https://oglobo.globo.com/brasil/sao-paulo/
 terça-feira -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 ducke/new -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
-contemplam -> https://oglobo.globo.com/politica/
 contemplam -> https://oglobo.globo.com/politica/
 temporária -> https://oglobo.globo.com/brasil/sao-paulo/
 desinfectar -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -3818,7 +3690,6 @@ tarcísio -> https://oglobo.globo.com/politica/
 tarcísio -> https://oglobo.globo.com/politica/eleicoes-2024/#
 tarcísio -> https://oglobo.globo.com/ultimas-noticias/
 tarcísio -> https://oglobo.globo.com/politica/eleicoes-2024/
-tarcísio -> https://oglobo.globo.com/politica/
 tarcísio -> https://oglobo.globo.com/blogs/pulso/
 tarcísio -> https://oglobo.globo.com/brasil/educacao/
 tarcísio -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -3875,7 +3746,6 @@ summit -> https://oglobo.globo.com/ultimas-noticias/
 summit -> https://oglobo.globo.com/100-anos/#
 summit -> https://oglobo.globo.com/politica/eleicoes-2024/
 summit -> https://oglobo.globo.com/100-anos/
-summit -> https://oglobo.globo.com/politica/
 summit -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 summit -> https://oglobo.globo.com/blogs/pulso/
 summit -> https://oglobo.globo.com/brasil/
@@ -3903,7 +3773,6 @@ fique -> https://oglobo.globo.com/
 fique -> https://oglobo.globo.com/ultimas-noticias/#
 fique -> https://oglobo.globo.com/politica/
 fique -> https://oglobo.globo.com/ultimas-noticias/
-fique -> https://oglobo.globo.com/politica/
 fique -> https://oglobo.globo.com/brasil/
 fique -> https://oglobo.globo.com/rio/
 fique -> https://oglobo.globo.com/mundo/
@@ -3933,7 +3802,6 @@ jardim -> https://oglobo.globo.com/ultimas-noticias/
 jardim -> https://oglobo.globo.com/100-anos/#
 jardim -> https://oglobo.globo.com/politica/eleicoes-2024/
 jardim -> https://oglobo.globo.com/100-anos/
-jardim -> https://oglobo.globo.com/politica/
 jardim -> https://oglobo.globo.com/blogs/pulso/
 jardim -> https://oglobo.globo.com/brasil/
 jardim -> https://oglobo.globo.com/brasil/educacao/
@@ -3959,7 +3827,6 @@ anuncia -> https://oglobo.globo.com/politica/eleicoes-2024/#
 anuncia -> https://oglobo.globo.com/politica/eleicoes-2024/
 anuncia -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 índice -> https://oglobo.globo.com/politica/
-índice -> https://oglobo.globo.com/politica/
 índice -> https://oglobo.globo.com/blogs/pulso/
 índice -> https://oglobo.globo.com/brasil/educacao/
 nossa -> https://oglobo.globo.com/
@@ -3973,7 +3840,6 @@ longevidade -> https://oglobo.globo.com/ultimas-noticias/
 longevidade -> https://oglobo.globo.com/100-anos/#
 longevidade -> https://oglobo.globo.com/politica/eleicoes-2024/
 longevidade -> https://oglobo.globo.com/100-anos/
-longevidade -> https://oglobo.globo.com/politica/
 longevidade -> https://oglobo.globo.com/blogs/pulso/
 longevidade -> https://oglobo.globo.com/brasil/
 longevidade -> https://oglobo.globo.com/brasil/educacao/
@@ -4005,7 +3871,6 @@ anuncie -> https://oglobo.globo.com/ultimas-noticias/
 anuncie -> https://oglobo.globo.com/100-anos/#
 anuncie -> https://oglobo.globo.com/politica/eleicoes-2024/
 anuncie -> https://oglobo.globo.com/100-anos/
-anuncie -> https://oglobo.globo.com/politica/
 anuncie -> https://oglobo.globo.com/blogs/pulso/
 anuncie -> https://oglobo.globo.com/brasil/
 anuncie -> https://oglobo.globo.com/brasil/educacao/
@@ -4031,7 +3896,6 @@ acompanhe -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/
 acompanhe -> https://oglobo.globo.com/dialogos-rj/
 posição -> https://oglobo.globo.com/
 posição -> https://oglobo.globo.com/politica/
-posição -> https://oglobo.globo.com/politica/
 posição -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 retaliações -> https://oglobo.globo.com/brasil/seguranca-publica/
 israel -> https://oglobo.globo.com/
@@ -4042,7 +3906,6 @@ israel -> https://oglobo.globo.com/ultimas-noticias/
 israel -> https://oglobo.globo.com/100-anos/#
 israel -> https://oglobo.globo.com/politica/eleicoes-2024/
 israel -> https://oglobo.globo.com/100-anos/
-israel -> https://oglobo.globo.com/politica/
 israel -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 israel -> https://oglobo.globo.com/blogs/pulso/
 israel -> https://oglobo.globo.com/brasil/
@@ -4076,7 +3939,6 @@ play -> https://oglobo.globo.com/ultimas-noticias/
 play -> https://oglobo.globo.com/100-anos/#
 play -> https://oglobo.globo.com/politica/eleicoes-2024/
 play -> https://oglobo.globo.com/100-anos/
-play -> https://oglobo.globo.com/politica/
 play -> https://oglobo.globo.com/blogs/pulso/
 play -> https://oglobo.globo.com/brasil/
 play -> https://oglobo.globo.com/brasil/educacao/
@@ -4130,7 +3992,6 @@ música -> https://oglobo.globo.com/ultimas-noticias/
 música -> https://oglobo.globo.com/100-anos/#
 música -> https://oglobo.globo.com/politica/eleicoes-2024/
 música -> https://oglobo.globo.com/100-anos/
-música -> https://oglobo.globo.com/politica/
 música -> https://oglobo.globo.com/blogs/pulso/
 música -> https://oglobo.globo.com/brasil/
 música -> https://oglobo.globo.com/brasil/educacao/
@@ -4194,7 +4055,6 @@ rocha -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 delegado -> https://oglobo.globo.com/politica/
 delegado -> https://oglobo.globo.com/politica/eleicoes-2024/#
 delegado -> https://oglobo.globo.com/politica/eleicoes-2024/
-delegado -> https://oglobo.globo.com/politica/
 delegado -> https://oglobo.globo.com/brasil/
 delegado -> https://oglobo.globo.com/brasil/educacao/
 delegado -> https://oglobo.globo.com/brasil/seguranca-publica/
@@ -4232,7 +4092,6 @@ ucrânia -> https://oglobo.globo.com/ultimas-noticias/
 ucrânia -> https://oglobo.globo.com/100-anos/#
 ucrânia -> https://oglobo.globo.com/politica/eleicoes-2024/
 ucrânia -> https://oglobo.globo.com/100-anos/
-ucrânia -> https://oglobo.globo.com/politica/
 ucrânia -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 ucrânia -> https://oglobo.globo.com/blogs/pulso/
 ucrânia -> https://oglobo.globo.com/brasil/
@@ -4257,7 +4116,6 @@ ucrânia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 alto-mar -> https://oglobo.globo.com/dialogos-rj/
 atraso -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 janeiro -> https://oglobo.globo.com/
-janeiro -> https://oglobo.globo.com/politica/
 janeiro -> https://oglobo.globo.com/politica/
 janeiro -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 janeiro -> https://oglobo.globo.com/brasil/minas-gerais/
@@ -4286,7 +4144,6 @@ economia -> https://oglobo.globo.com/ultimas-noticias/
 economia -> https://oglobo.globo.com/100-anos/#
 economia -> https://oglobo.globo.com/politica/eleicoes-2024/
 economia -> https://oglobo.globo.com/100-anos/
-economia -> https://oglobo.globo.com/politica/
 economia -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 economia -> https://oglobo.globo.com/blogs/pulso/
 economia -> https://oglobo.globo.com/brasil/
@@ -4323,7 +4180,6 @@ cobertura -> https://oglobo.globo.com/brasil/sao-paulo/
 cnpq -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 estado -> https://oglobo.globo.com/
 estado -> https://oglobo.globo.com/politica/
-estado -> https://oglobo.globo.com/politica/
 estado -> https://oglobo.globo.com/brasil/meio-ambiente/
 estado -> https://oglobo.globo.com/brasil/seguranca-publica/
 estado -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -4341,7 +4197,6 @@ honoríficos -> https://oglobo.globo.com/ultimas-noticias/
 honoríficos -> https://oglobo.globo.com/brasil/
 honoríficos -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 aplicando -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
-investigadas -> https://oglobo.globo.com/politica/
 investigadas -> https://oglobo.globo.com/politica/
 investigadas -> https://oglobo.globo.com/blogs/pulso/
 competição -> https://oglobo.globo.com/rio/bairros/
@@ -4365,7 +4220,6 @@ eleições -> https://oglobo.globo.com/ultimas-noticias/
 eleições -> https://oglobo.globo.com/100-anos/#
 eleições -> https://oglobo.globo.com/politica/eleicoes-2024/
 eleições -> https://oglobo.globo.com/100-anos/
-eleições -> https://oglobo.globo.com/politica/
 eleições -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 eleições -> https://oglobo.globo.com/blogs/pulso/
 eleições -> https://oglobo.globo.com/brasil/
@@ -4421,7 +4275,6 @@ investe -> https://oglobo.globo.com/ultimas-noticias/
 investe -> https://oglobo.globo.com/100-anos/#
 investe -> https://oglobo.globo.com/politica/eleicoes-2024/
 investe -> https://oglobo.globo.com/100-anos/
-investe -> https://oglobo.globo.com/politica/
 investe -> https://oglobo.globo.com/blogs/pulso/
 investe -> https://oglobo.globo.com/brasil/
 investe -> https://oglobo.globo.com/brasil/educacao/
@@ -4451,7 +4304,6 @@ sonar -> https://oglobo.globo.com/ultimas-noticias/
 sonar -> https://oglobo.globo.com/100-anos/#
 sonar -> https://oglobo.globo.com/politica/eleicoes-2024/
 sonar -> https://oglobo.globo.com/100-anos/
-sonar -> https://oglobo.globo.com/politica/
 sonar -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 sonar -> https://oglobo.globo.com/blogs/pulso/
 sonar -> https://oglobo.globo.com/brasil/
@@ -4481,7 +4333,6 @@ futebol -> https://oglobo.globo.com/ultimas-noticias/
 futebol -> https://oglobo.globo.com/100-anos/#
 futebol -> https://oglobo.globo.com/politica/eleicoes-2024/
 futebol -> https://oglobo.globo.com/100-anos/
-futebol -> https://oglobo.globo.com/politica/
 futebol -> https://oglobo.globo.com/blogs/pulso/
 futebol -> https://oglobo.globo.com/brasil/
 futebol -> https://oglobo.globo.com/brasil/educacao/
@@ -4511,7 +4362,6 @@ viagem -> https://oglobo.globo.com/ultimas-noticias/
 viagem -> https://oglobo.globo.com/100-anos/#
 viagem -> https://oglobo.globo.com/politica/eleicoes-2024/
 viagem -> https://oglobo.globo.com/100-anos/
-viagem -> https://oglobo.globo.com/politica/
 viagem -> https://oglobo.globo.com/blogs/pulso/
 viagem -> https://oglobo.globo.com/brasil/
 viagem -> https://oglobo.globo.com/brasil/educacao/
@@ -4536,7 +4386,6 @@ deltan -> https://oglobo.globo.com/politica/eleicoes-2024/#
 deltan -> https://oglobo.globo.com/politica/eleicoes-2024/
 chaveiros -> https://oglobo.globo.com/brasil/sao-paulo/
 criminais, -> https://oglobo.globo.com/ultimas-noticias/#
-criminais, -> https://oglobo.globo.com/politica/
 criminais, -> https://oglobo.globo.com/politica/
 criminais, -> https://oglobo.globo.com/rio/
 bombar -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -4563,7 +4412,6 @@ terminam -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 terminal -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 paiva: -> https://oglobo.globo.com/rio/bairros/
 "what -> https://oglobo.globo.com/politica/
-"what -> https://oglobo.globo.com/politica/
 "what -> https://oglobo.globo.com/blogs/pulso/
 "obstáculos -> https://oglobo.globo.com/brasil/educacao/
 mantém -> https://oglobo.globo.com/blogs/pulso/
@@ -4577,7 +4425,6 @@ processo -> https://oglobo.globo.com/brasil/direitos-humanos/
 processo -> https://oglobo.globo.com/dialogos-rj/
 processo -> https://oglobo.globo.com/mundo/
 20:37 -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
-pereira -> https://oglobo.globo.com/politica/
 pereira -> https://oglobo.globo.com/politica/
 carmem -> https://oglobo.globo.com/rio/carnaval/
 (18). -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -4611,7 +4458,6 @@ teatro -> https://oglobo.globo.com/ultimas-noticias/
 teatro -> https://oglobo.globo.com/100-anos/#
 teatro -> https://oglobo.globo.com/politica/eleicoes-2024/
 teatro -> https://oglobo.globo.com/100-anos/
-teatro -> https://oglobo.globo.com/politica/
 teatro -> https://oglobo.globo.com/blogs/pulso/
 teatro -> https://oglobo.globo.com/brasil/
 teatro -> https://oglobo.globo.com/brasil/educacao/
@@ -4643,7 +4489,6 @@ veja -> https://oglobo.globo.com/ultimas-noticias/
 veja -> https://oglobo.globo.com/100-anos/#
 veja -> https://oglobo.globo.com/politica/eleicoes-2024/
 veja -> https://oglobo.globo.com/100-anos/
-veja -> https://oglobo.globo.com/politica/
 veja -> https://oglobo.globo.com/blogs/pulso/
 veja -> https://oglobo.globo.com/brasil/
 veja -> https://oglobo.globo.com/brasil/educacao/
@@ -4683,7 +4528,6 @@ hamas -> https://oglobo.globo.com/ultimas-noticias/
 hamas -> https://oglobo.globo.com/100-anos/#
 hamas -> https://oglobo.globo.com/politica/eleicoes-2024/
 hamas -> https://oglobo.globo.com/100-anos/
-hamas -> https://oglobo.globo.com/politica/
 hamas -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 hamas -> https://oglobo.globo.com/blogs/pulso/
 hamas -> https://oglobo.globo.com/brasil/
@@ -4709,7 +4553,6 @@ veio -> https://oglobo.globo.com/ultimas-noticias/
 veio -> https://oglobo.globo.com/brasil/
 veio -> https://oglobo.globo.com/rio/web-summit-rio/
 brasileiros, -> https://oglobo.globo.com/politica/
-brasileiros, -> https://oglobo.globo.com/politica/
 brasileiros, -> https://oglobo.globo.com/blogs/pulso/
 casarão -> https://oglobo.globo.com/rio/
 casarão -> https://oglobo.globo.com/rio/bairros/
@@ -4724,7 +4567,6 @@ renda -> https://oglobo.globo.com/ultimas-noticias/
 renda -> https://oglobo.globo.com/100-anos/#
 renda -> https://oglobo.globo.com/politica/eleicoes-2024/
 renda -> https://oglobo.globo.com/100-anos/
-renda -> https://oglobo.globo.com/politica/
 renda -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 renda -> https://oglobo.globo.com/blogs/pulso/
 renda -> https://oglobo.globo.com/brasil/
@@ -4748,7 +4590,6 @@ renda -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 renda -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 expulsão -> https://oglobo.globo.com/rio/carnaval/
 líder -> https://oglobo.globo.com/
-líder -> https://oglobo.globo.com/politica/
 líder -> https://oglobo.globo.com/politica/
 líder -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 líder -> https://oglobo.globo.com/brasil/minas-gerais/
@@ -4790,7 +4631,6 @@ dúbias -> https://oglobo.globo.com/politica/eleicoes-2024/#
 dúbias -> https://oglobo.globo.com/politica/eleicoes-2024/
 escotilha -> https://oglobo.globo.com/mundo/
 luís -> https://oglobo.globo.com/politica/
-luís -> https://oglobo.globo.com/politica/
 percepção -> https://oglobo.globo.com/blogs/pulso/
 cadeia, -> https://oglobo.globo.com/
 imobiliária; -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -4803,14 +4643,11 @@ anunciou -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2
 millennial -> https://oglobo.globo.com/
 inconstitucional -> https://oglobo.globo.com/brasil/direitos-humanos/
 farias -> https://oglobo.globo.com/politica/
-farias -> https://oglobo.globo.com/politica/
 renan -> https://oglobo.globo.com/politica/
 renan -> https://oglobo.globo.com/politica/eleicoes-2024/#
 renan -> https://oglobo.globo.com/politica/eleicoes-2024/
-renan -> https://oglobo.globo.com/politica/
 tomará -> https://oglobo.globo.com/brasil/minas-gerais/
 estável -> https://oglobo.globo.com/blogs/pulso/
-carlos -> https://oglobo.globo.com/politica/
 carlos -> https://oglobo.globo.com/politica/
 positividade -> https://oglobo.globo.com/
 terra -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -4860,7 +4697,6 @@ eua, -> https://oglobo.globo.com/mundo/
 eua, -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 leidi -> https://oglobo.globo.com/
 congresso -> https://oglobo.globo.com/politica/
-congresso -> https://oglobo.globo.com/politica/
 jornal, -> https://oglobo.globo.com/100-anos/#
 jornal, -> https://oglobo.globo.com/100-anos/
 mais': -> https://oglobo.globo.com/rio/bairros/
@@ -4880,7 +4716,6 @@ confirma -> https://oglobo.globo.com/politica/
 confirma -> https://oglobo.globo.com/politica/eleicoes-2024/#
 confirma -> https://oglobo.globo.com/ultimas-noticias/
 confirma -> https://oglobo.globo.com/politica/eleicoes-2024/
-confirma -> https://oglobo.globo.com/politica/
 médico -> https://oglobo.globo.com/
 médico -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 médico -> https://oglobo.globo.com/brasil/minas-gerais/
@@ -4909,7 +4744,6 @@ digital -> https://oglobo.globo.com/ultimas-noticias/
 digital -> https://oglobo.globo.com/100-anos/#
 digital -> https://oglobo.globo.com/politica/eleicoes-2024/
 digital -> https://oglobo.globo.com/100-anos/
-digital -> https://oglobo.globo.com/politica/
 digital -> https://oglobo.globo.com/blogs/pulso/
 digital -> https://oglobo.globo.com/brasil/
 digital -> https://oglobo.globo.com/brasil/educacao/
@@ -4944,7 +4778,6 @@ termos -> https://oglobo.globo.com/ultimas-noticias/
 termos -> https://oglobo.globo.com/100-anos/#
 termos -> https://oglobo.globo.com/politica/eleicoes-2024/
 termos -> https://oglobo.globo.com/100-anos/
-termos -> https://oglobo.globo.com/politica/
 termos -> https://oglobo.globo.com/blogs/pulso/
 termos -> https://oglobo.globo.com/brasil/
 termos -> https://oglobo.globo.com/brasil/educacao/
@@ -4977,7 +4810,6 @@ gerais -> https://oglobo.globo.com/ultimas-noticias/
 gerais -> https://oglobo.globo.com/100-anos/#
 gerais -> https://oglobo.globo.com/politica/eleicoes-2024/
 gerais -> https://oglobo.globo.com/100-anos/
-gerais -> https://oglobo.globo.com/politica/
 gerais -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 gerais -> https://oglobo.globo.com/blogs/pulso/
 gerais -> https://oglobo.globo.com/brasil/
@@ -5009,7 +4841,6 @@ condições -> https://oglobo.globo.com/ultimas-noticias/
 condições -> https://oglobo.globo.com/100-anos/#
 condições -> https://oglobo.globo.com/politica/eleicoes-2024/
 condições -> https://oglobo.globo.com/100-anos/
-condições -> https://oglobo.globo.com/politica/
 condições -> https://oglobo.globo.com/blogs/pulso/
 condições -> https://oglobo.globo.com/brasil/
 condições -> https://oglobo.globo.com/brasil/educacao/
@@ -5035,7 +4866,6 @@ ministros -> https://oglobo.globo.com/politica/
 ministros -> https://oglobo.globo.com/politica/eleicoes-2024/#
 ministros -> https://oglobo.globo.com/ultimas-noticias/
 ministros -> https://oglobo.globo.com/politica/eleicoes-2024/
-ministros -> https://oglobo.globo.com/politica/
 ministros -> https://oglobo.globo.com/blogs/pulso/
 ministros -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 ministros -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -5043,9 +4873,7 @@ votar -> https://oglobo.globo.com/
 votar -> https://oglobo.globo.com/politica/
 votar -> https://oglobo.globo.com/politica/eleicoes-2024/#
 votar -> https://oglobo.globo.com/politica/eleicoes-2024/
-votar -> https://oglobo.globo.com/politica/
 mistérios -> https://oglobo.globo.com/mundo/clima-e-ciencia/
-portas -> https://oglobo.globo.com/politica/
 portas -> https://oglobo.globo.com/politica/
 completo -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 oferta -> https://oglobo.globo.com/
@@ -5076,7 +4904,6 @@ portal -> https://oglobo.globo.com/ultimas-noticias/
 portal -> https://oglobo.globo.com/100-anos/#
 portal -> https://oglobo.globo.com/politica/eleicoes-2024/
 portal -> https://oglobo.globo.com/100-anos/
-portal -> https://oglobo.globo.com/politica/
 portal -> https://oglobo.globo.com/blogs/pulso/
 portal -> https://oglobo.globo.com/brasil/
 portal -> https://oglobo.globo.com/brasil/educacao/
@@ -5108,7 +4935,6 @@ edição -> https://oglobo.globo.com/ultimas-noticias/
 edição -> https://oglobo.globo.com/100-anos/#
 edição -> https://oglobo.globo.com/politica/eleicoes-2024/
 edição -> https://oglobo.globo.com/100-anos/
-edição -> https://oglobo.globo.com/politica/
 edição -> https://oglobo.globo.com/blogs/pulso/
 edição -> https://oglobo.globo.com/brasil/
 edição -> https://oglobo.globo.com/brasil/educacao/
@@ -5137,7 +4963,6 @@ dino -> https://oglobo.globo.com/ultimas-noticias/
 dino -> https://oglobo.globo.com/100-anos/#
 dino -> https://oglobo.globo.com/politica/eleicoes-2024/
 dino -> https://oglobo.globo.com/100-anos/
-dino -> https://oglobo.globo.com/politica/
 dino -> https://oglobo.globo.com/blogs/pulso/
 dino -> https://oglobo.globo.com/brasil/
 dino -> https://oglobo.globo.com/brasil/educacao/
@@ -5160,7 +4985,6 @@ dino -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 dino -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 vera -> https://oglobo.globo.com/
 vera -> https://oglobo.globo.com/politica/
-vera -> https://oglobo.globo.com/politica/
 vera -> https://oglobo.globo.com/rio/
 contrato -> https://oglobo.globo.com/ultimas-noticias/#
 contrato -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -5176,7 +5000,6 @@ mãe; -> https://oglobo.globo.com/politica/eleicoes-2024/#
 mãe; -> https://oglobo.globo.com/politica/eleicoes-2024/
 inclusão -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 inclusão -> https://oglobo.globo.com/rio/web-summit-rio/
-ora, -> https://oglobo.globo.com/politica/
 ora, -> https://oglobo.globo.com/politica/
 niemeyer -> https://oglobo.globo.com/
 niemeyer -> https://oglobo.globo.com/rio/
@@ -5246,7 +5069,6 @@ finanças -> https://oglobo.globo.com/ultimas-noticias/
 finanças -> https://oglobo.globo.com/100-anos/#
 finanças -> https://oglobo.globo.com/politica/eleicoes-2024/
 finanças -> https://oglobo.globo.com/100-anos/
-finanças -> https://oglobo.globo.com/politica/
 finanças -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 finanças -> https://oglobo.globo.com/blogs/pulso/
 finanças -> https://oglobo.globo.com/brasil/
@@ -5277,7 +5099,6 @@ reprodução/globo -> https://oglobo.globo.com/
 entra -> https://oglobo.globo.com/politica/
 entra -> https://oglobo.globo.com/politica/eleicoes-2024/#
 entra -> https://oglobo.globo.com/politica/eleicoes-2024/
-entra -> https://oglobo.globo.com/politica/
 tratamento -> https://oglobo.globo.com/
 tratamento -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 tratamento -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -5292,7 +5113,6 @@ entre -> https://oglobo.globo.com/politica/
 entre -> https://oglobo.globo.com/politica/eleicoes-2024/#
 entre -> https://oglobo.globo.com/ultimas-noticias/
 entre -> https://oglobo.globo.com/politica/eleicoes-2024/
-entre -> https://oglobo.globo.com/politica/
 entre -> https://oglobo.globo.com/blogs/pulso/
 entre -> https://oglobo.globo.com/brasil/
 entre -> https://oglobo.globo.com/brasil/educacao/
@@ -5316,7 +5136,6 @@ trabalhe -> https://oglobo.globo.com/ultimas-noticias/
 trabalhe -> https://oglobo.globo.com/100-anos/#
 trabalhe -> https://oglobo.globo.com/politica/eleicoes-2024/
 trabalhe -> https://oglobo.globo.com/100-anos/
-trabalhe -> https://oglobo.globo.com/politica/
 trabalhe -> https://oglobo.globo.com/blogs/pulso/
 trabalhe -> https://oglobo.globo.com/brasil/
 trabalhe -> https://oglobo.globo.com/brasil/educacao/
@@ -5340,7 +5159,6 @@ internado -> https://oglobo.globo.com/brasil/minas-gerais/
 internado -> https://oglobo.globo.com/mundo/
 poderiam -> https://oglobo.globo.com/
 poderiam -> https://oglobo.globo.com/politica/
-poderiam -> https://oglobo.globo.com/politica/
 detêm -> https://oglobo.globo.com/mundo/
 apologia -> https://oglobo.globo.com/brasil/sao-paulo/
 disponíveis -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -5354,7 +5172,6 @@ plus -> https://oglobo.globo.com/ultimas-noticias/
 plus -> https://oglobo.globo.com/100-anos/#
 plus -> https://oglobo.globo.com/politica/eleicoes-2024/
 plus -> https://oglobo.globo.com/100-anos/
-plus -> https://oglobo.globo.com/politica/
 plus -> https://oglobo.globo.com/blogs/pulso/
 plus -> https://oglobo.globo.com/brasil/
 plus -> https://oglobo.globo.com/brasil/educacao/
@@ -5383,7 +5200,6 @@ daniel -> https://oglobo.globo.com/ultimas-noticias/#
 ampliam -> https://oglobo.globo.com/rio/web-summit-rio/
 internada -> https://oglobo.globo.com/brasil/sao-paulo/
 prelibação, -> https://oglobo.globo.com/politica/
-prelibação, -> https://oglobo.globo.com/politica/
 trabalho -> https://oglobo.globo.com/brasil/educacao/
 trabalho -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 trabalho -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -5399,7 +5215,6 @@ somos -> https://oglobo.globo.com/ultimas-noticias/
 somos -> https://oglobo.globo.com/100-anos/#
 somos -> https://oglobo.globo.com/politica/eleicoes-2024/
 somos -> https://oglobo.globo.com/100-anos/
-somos -> https://oglobo.globo.com/politica/
 somos -> https://oglobo.globo.com/blogs/pulso/
 somos -> https://oglobo.globo.com/brasil/
 somos -> https://oglobo.globo.com/brasil/educacao/
@@ -5469,7 +5284,6 @@ privacidade -> https://oglobo.globo.com/ultimas-noticias/
 privacidade -> https://oglobo.globo.com/100-anos/#
 privacidade -> https://oglobo.globo.com/politica/eleicoes-2024/
 privacidade -> https://oglobo.globo.com/100-anos/
-privacidade -> https://oglobo.globo.com/politica/
 privacidade -> https://oglobo.globo.com/blogs/pulso/
 privacidade -> https://oglobo.globo.com/brasil/
 privacidade -> https://oglobo.globo.com/brasil/educacao/
@@ -5498,7 +5312,6 @@ seca -> https://oglobo.globo.com/brasil/meio-ambiente/
 político -> https://oglobo.globo.com/
 político -> https://oglobo.globo.com/brasil/minas-gerais/
 político -> https://oglobo.globo.com/mundo/
-dados -> https://oglobo.globo.com/politica/
 dados -> https://oglobo.globo.com/politica/
 dados -> https://oglobo.globo.com/blogs/pulso/
 dados -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -5537,7 +5350,6 @@ virar -> https://oglobo.globo.com/brasil/minas-gerais/
 itanhaém, -> https://oglobo.globo.com/brasil/
 itanhaém, -> https://oglobo.globo.com/brasil/sao-paulo/
 costura, -> https://oglobo.globo.com/politica/
-costura, -> https://oglobo.globo.com/politica/
 carvalho, -> https://oglobo.globo.com/rio/
 carvalho, -> https://oglobo.globo.com/rio/bairros/
 youtuber -> https://oglobo.globo.com/brasil/
@@ -5554,7 +5366,6 @@ secretaria -> https://oglobo.globo.com/rio/bairros/
 vintém, -> https://oglobo.globo.com/rio/carnaval/
 depoimentos -> https://oglobo.globo.com/brasil/seguranca-publica/
 judiciário -> https://oglobo.globo.com/politica/
-judiciário -> https://oglobo.globo.com/politica/
 judiciário -> https://oglobo.globo.com/mundo/
 turno, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 exilado -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -5567,7 +5378,6 @@ empate -> https://oglobo.globo.com/brasil/educacao/
 9,2°c -> https://oglobo.globo.com/brasil/meio-ambiente/
 retoma -> https://oglobo.globo.com/
 retoma -> https://oglobo.globo.com/politica/
-retoma -> https://oglobo.globo.com/politica/
 retoma -> https://oglobo.globo.com/brasil/sao-paulo/
 redistribuído -> https://oglobo.globo.com/
 redistribuído -> https://oglobo.globo.com/ultimas-noticias/#
@@ -5576,7 +5386,6 @@ redistribuído -> https://oglobo.globo.com/ultimas-noticias/
 redistribuído -> https://oglobo.globo.com/100-anos/#
 redistribuído -> https://oglobo.globo.com/politica/eleicoes-2024/
 redistribuído -> https://oglobo.globo.com/100-anos/
-redistribuído -> https://oglobo.globo.com/politica/
 redistribuído -> https://oglobo.globo.com/blogs/pulso/
 redistribuído -> https://oglobo.globo.com/brasil/
 redistribuído -> https://oglobo.globo.com/brasil/educacao/
@@ -5614,7 +5423,6 @@ español -> https://oglobo.globo.com/ultimas-noticias/
 español -> https://oglobo.globo.com/100-anos/#
 español -> https://oglobo.globo.com/politica/eleicoes-2024/
 español -> https://oglobo.globo.com/100-anos/
-español -> https://oglobo.globo.com/politica/
 español -> https://oglobo.globo.com/blogs/pulso/
 español -> https://oglobo.globo.com/brasil/
 español -> https://oglobo.globo.com/brasil/educacao/
@@ -5683,7 +5491,6 @@ calcule -> https://oglobo.globo.com/ultimas-noticias/
 calcule -> https://oglobo.globo.com/100-anos/#
 calcule -> https://oglobo.globo.com/politica/eleicoes-2024/
 calcule -> https://oglobo.globo.com/100-anos/
-calcule -> https://oglobo.globo.com/politica/
 calcule -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 calcule -> https://oglobo.globo.com/blogs/pulso/
 calcule -> https://oglobo.globo.com/brasil/
@@ -5758,7 +5565,6 @@ erdogan -> https://oglobo.globo.com/mundo/
 ex-juiz -> https://oglobo.globo.com/politica/eleicoes-2024/#
 ex-juiz -> https://oglobo.globo.com/politica/eleicoes-2024/
 identificar -> https://oglobo.globo.com/politica/
-identificar -> https://oglobo.globo.com/politica/
 discussão -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 américa -> https://oglobo.globo.com/dialogos-rj/
 américa -> https://oglobo.globo.com/mundo/
@@ -5769,7 +5575,6 @@ lidas -> https://oglobo.globo.com/politica/
 lidas -> https://oglobo.globo.com/politica/eleicoes-2024/#
 lidas -> https://oglobo.globo.com/ultimas-noticias/
 lidas -> https://oglobo.globo.com/politica/eleicoes-2024/
-lidas -> https://oglobo.globo.com/politica/
 lidas -> https://oglobo.globo.com/blogs/pulso/
 lidas -> https://oglobo.globo.com/brasil/
 lidas -> https://oglobo.globo.com/brasil/educacao/
@@ -5794,7 +5599,6 @@ participantes -> https://oglobo.globo.com/blogs/pulso/
 desempenho -> https://oglobo.globo.com/blogs/pulso/
 desempenho -> https://oglobo.globo.com/brasil/educacao/
 favoravelmente -> https://oglobo.globo.com/politica/
-favoravelmente -> https://oglobo.globo.com/politica/
 criminosa -> https://oglobo.globo.com/brasil/
 insustentável -> https://oglobo.globo.com/brasil/educacao/
 américo -> https://oglobo.globo.com/
@@ -5808,7 +5612,6 @@ aqui -> https://oglobo.globo.com/ultimas-noticias/
 aqui -> https://oglobo.globo.com/blogs/pulso/
 aqui -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 ipsos -> https://oglobo.globo.com/politica/
-ipsos -> https://oglobo.globo.com/politica/
 ipsos -> https://oglobo.globo.com/blogs/pulso/
 vestibular -> https://oglobo.globo.com/brasil/
 vestibular -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -5817,7 +5620,6 @@ ditadura -> https://oglobo.globo.com/politica/
 ditadura -> https://oglobo.globo.com/politica/eleicoes-2024/#
 ditadura -> https://oglobo.globo.com/ultimas-noticias/
 ditadura -> https://oglobo.globo.com/politica/eleicoes-2024/
-ditadura -> https://oglobo.globo.com/politica/
 ditadura -> https://oglobo.globo.com/brasil/
 ditadura -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 ditadura -> https://oglobo.globo.com/rio/bairros/
@@ -5830,9 +5632,7 @@ superior -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 superior -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 funcionar -> https://oglobo.globo.com/rio/bairros/
 pampolha -> https://oglobo.globo.com/politica/
-pampolha -> https://oglobo.globo.com/politica/
 criminoso -> https://oglobo.globo.com/brasil/sao-paulo/
-brasília -> https://oglobo.globo.com/politica/
 brasília -> https://oglobo.globo.com/politica/
 brasília -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 químicos -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -5860,7 +5660,6 @@ como -> https://oglobo.globo.com/politica/
 como -> https://oglobo.globo.com/politica/eleicoes-2024/#
 como -> https://oglobo.globo.com/ultimas-noticias/
 como -> https://oglobo.globo.com/politica/eleicoes-2024/
-como -> https://oglobo.globo.com/politica/
 como -> https://oglobo.globo.com/blogs/pulso/
 como -> https://oglobo.globo.com/brasil/
 como -> https://oglobo.globo.com/brasil/educacao/
@@ -5906,7 +5705,6 @@ vasco -> https://oglobo.globo.com/ultimas-noticias/
 vasco -> https://oglobo.globo.com/100-anos/#
 vasco -> https://oglobo.globo.com/politica/eleicoes-2024/
 vasco -> https://oglobo.globo.com/100-anos/
-vasco -> https://oglobo.globo.com/politica/
 vasco -> https://oglobo.globo.com/blogs/pulso/
 vasco -> https://oglobo.globo.com/brasil/
 vasco -> https://oglobo.globo.com/brasil/educacao/
@@ -5931,7 +5729,6 @@ vasco -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 doutor -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 rumores -> https://oglobo.globo.com/
 investigações -> https://oglobo.globo.com/politica/
-investigações -> https://oglobo.globo.com/politica/
 investigações -> https://oglobo.globo.com/brasil/direitos-humanos/
 seja -> https://oglobo.globo.com/brasil/meio-ambiente/
 souza, -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
@@ -5947,7 +5744,6 @@ busca -> https://oglobo.globo.com/ultimas-noticias/#
 busca -> https://oglobo.globo.com/politica/
 busca -> https://oglobo.globo.com/politica/eleicoes-2024/#
 busca -> https://oglobo.globo.com/politica/eleicoes-2024/
-busca -> https://oglobo.globo.com/politica/
 busca -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 busca -> https://oglobo.globo.com/brasil/seguranca-publica/
 busca -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -5959,7 +5755,6 @@ ambiente -> https://oglobo.globo.com/ultimas-noticias/
 ambiente -> https://oglobo.globo.com/100-anos/#
 ambiente -> https://oglobo.globo.com/politica/eleicoes-2024/
 ambiente -> https://oglobo.globo.com/100-anos/
-ambiente -> https://oglobo.globo.com/politica/
 ambiente -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 ambiente -> https://oglobo.globo.com/blogs/pulso/
 ambiente -> https://oglobo.globo.com/brasil/
@@ -5990,7 +5785,6 @@ vídeos -> https://oglobo.globo.com/ultimas-noticias/
 vídeos -> https://oglobo.globo.com/100-anos/#
 vídeos -> https://oglobo.globo.com/politica/eleicoes-2024/
 vídeos -> https://oglobo.globo.com/100-anos/
-vídeos -> https://oglobo.globo.com/politica/
 vídeos -> https://oglobo.globo.com/blogs/pulso/
 vídeos -> https://oglobo.globo.com/brasil/
 vídeos -> https://oglobo.globo.com/brasil/educacao/
@@ -6018,7 +5812,6 @@ claire -> https://oglobo.globo.com/ultimas-noticias/
 claire -> https://oglobo.globo.com/100-anos/#
 claire -> https://oglobo.globo.com/politica/eleicoes-2024/
 claire -> https://oglobo.globo.com/100-anos/
-claire -> https://oglobo.globo.com/politica/
 claire -> https://oglobo.globo.com/blogs/pulso/
 claire -> https://oglobo.globo.com/brasil/
 claire -> https://oglobo.globo.com/brasil/educacao/
@@ -6115,7 +5908,6 @@ prefeito, -> https://oglobo.globo.com/politica/eleicoes-2024/
 prefeito, -> https://oglobo.globo.com/brasil/minas-gerais/
 turístico -> https://oglobo.globo.com/
 bahia -> https://oglobo.globo.com/politica/
-bahia -> https://oglobo.globo.com/politica/
 bahia -> https://oglobo.globo.com/blogs/pulso/
 bahia -> https://oglobo.globo.com/brasil/seguranca-publica/
 bahia -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -6171,7 +5963,6 @@ dasa -> https://oglobo.globo.com/ultimas-noticias/
 dasa -> https://oglobo.globo.com/100-anos/#
 dasa -> https://oglobo.globo.com/politica/eleicoes-2024/
 dasa -> https://oglobo.globo.com/100-anos/
-dasa -> https://oglobo.globo.com/politica/
 dasa -> https://oglobo.globo.com/blogs/pulso/
 dasa -> https://oglobo.globo.com/brasil/
 dasa -> https://oglobo.globo.com/brasil/educacao/
@@ -6203,7 +5994,6 @@ sofreram -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2
 sofreram -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 sequestro, -> https://oglobo.globo.com/brasil/seguranca-publica/
 batalha -> https://oglobo.globo.com/
-batalha -> https://oglobo.globo.com/politica/
 batalha -> https://oglobo.globo.com/politica/
 youtube -> https://oglobo.globo.com/
 novamente -> https://oglobo.globo.com/
@@ -6265,7 +6055,6 @@ governo -> https://oglobo.globo.com/politica/
 governo -> https://oglobo.globo.com/politica/eleicoes-2024/#
 governo -> https://oglobo.globo.com/ultimas-noticias/
 governo -> https://oglobo.globo.com/politica/eleicoes-2024/
-governo -> https://oglobo.globo.com/politica/
 governo -> https://oglobo.globo.com/blogs/pulso/
 governo -> https://oglobo.globo.com/brasil/
 governo -> https://oglobo.globo.com/brasil/educacao/
@@ -6292,7 +6081,6 @@ basta -> https://oglobo.globo.com/rio/
 menos -> https://oglobo.globo.com/ultimas-noticias/#
 menos -> https://oglobo.globo.com/politica/
 menos -> https://oglobo.globo.com/ultimas-noticias/
-menos -> https://oglobo.globo.com/politica/
 menos -> https://oglobo.globo.com/brasil/
 menos -> https://oglobo.globo.com/brasil/sao-paulo/
 menos -> https://oglobo.globo.com/rio/
@@ -6337,7 +6125,6 @@ sociais -> https://oglobo.globo.com/
 sociais -> https://oglobo.globo.com/ultimas-noticias/#
 sociais -> https://oglobo.globo.com/politica/
 sociais -> https://oglobo.globo.com/ultimas-noticias/
-sociais -> https://oglobo.globo.com/politica/
 sociais -> https://oglobo.globo.com/brasil/
 sociais -> https://oglobo.globo.com/brasil/educacao/
 sociais -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -6369,7 +6156,6 @@ encontrado -> https://oglobo.globo.com/brasil/sao-paulo/
 seus -> https://oglobo.globo.com/ultimas-noticias/#
 seus -> https://oglobo.globo.com/politica/
 seus -> https://oglobo.globo.com/ultimas-noticias/
-seus -> https://oglobo.globo.com/politica/
 seus -> https://oglobo.globo.com/brasil/
 seus -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 seus -> https://oglobo.globo.com/rio/
@@ -6441,10 +6227,8 @@ histórica -> https://oglobo.globo.com/politica/eleicoes-2024/#
 histórica -> https://oglobo.globo.com/politica/eleicoes-2024/
 histórica -> https://oglobo.globo.com/brasil/meio-ambiente/
 defende -> https://oglobo.globo.com/politica/
-defende -> https://oglobo.globo.com/politica/
 defende -> https://oglobo.globo.com/brasil/meio-ambiente/
 defende -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
-governo, -> https://oglobo.globo.com/politica/
 governo, -> https://oglobo.globo.com/politica/
 governo, -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 ganhado -> https://oglobo.globo.com/
@@ -6452,7 +6236,6 @@ ganhado -> https://oglobo.globo.com/ultimas-noticias/
 ganhado -> https://oglobo.globo.com/blogs/pulso/
 ganhado -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 ganhado -> https://oglobo.globo.com/rio/web-summit-rio/
-cresceu -> https://oglobo.globo.com/politica/
 cresceu -> https://oglobo.globo.com/politica/
 cresceu -> https://oglobo.globo.com/blogs/pulso/
 identificou -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -6465,7 +6248,6 @@ crescer -> https://oglobo.globo.com/ultimas-noticias/
 crescer -> https://oglobo.globo.com/100-anos/#
 crescer -> https://oglobo.globo.com/politica/eleicoes-2024/
 crescer -> https://oglobo.globo.com/100-anos/
-crescer -> https://oglobo.globo.com/politica/
 crescer -> https://oglobo.globo.com/blogs/pulso/
 crescer -> https://oglobo.globo.com/brasil/
 crescer -> https://oglobo.globo.com/brasil/educacao/
@@ -6526,7 +6308,6 @@ conflito -> https://oglobo.globo.com/ultimas-noticias/
 conflito -> https://oglobo.globo.com/100-anos/#
 conflito -> https://oglobo.globo.com/politica/eleicoes-2024/
 conflito -> https://oglobo.globo.com/100-anos/
-conflito -> https://oglobo.globo.com/politica/
 conflito -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 conflito -> https://oglobo.globo.com/blogs/pulso/
 conflito -> https://oglobo.globo.com/brasil/
@@ -6583,13 +6364,11 @@ queixas -> https://oglobo.globo.com/rio/
 queixas -> https://oglobo.globo.com/rio/carnaval/
 magalhães -> https://oglobo.globo.com/
 magalhães -> https://oglobo.globo.com/politica/
-magalhães -> https://oglobo.globo.com/politica/
 climão -> https://oglobo.globo.com/ultimas-noticias/#
 climão -> https://oglobo.globo.com/politica/
 climão -> https://oglobo.globo.com/politica/eleicoes-2024/#
 climão -> https://oglobo.globo.com/ultimas-noticias/
 climão -> https://oglobo.globo.com/politica/eleicoes-2024/
-climão -> https://oglobo.globo.com/politica/
 climão -> https://oglobo.globo.com/blogs/pulso/
 climão -> https://oglobo.globo.com/brasil/direitos-humanos/
 climão -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -6606,7 +6385,6 @@ inutilizado -> https://oglobo.globo.com/politica/
 lado -> https://oglobo.globo.com/
 lado -> https://oglobo.globo.com/rio/bairros/
 lado -> https://oglobo.globo.com/mundo/
-petrobras -> https://oglobo.globo.com/politica/
 petrobras -> https://oglobo.globo.com/politica/
 ramos -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 globo* -> https://oglobo.globo.com/
@@ -6666,7 +6444,6 @@ público -> https://oglobo.globo.com/ultimas-noticias/
 público -> https://oglobo.globo.com/100-anos/#
 público -> https://oglobo.globo.com/politica/eleicoes-2024/
 público -> https://oglobo.globo.com/100-anos/
-público -> https://oglobo.globo.com/politica/
 público -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 público -> https://oglobo.globo.com/blogs/pulso/
 público -> https://oglobo.globo.com/brasil/
@@ -6706,7 +6483,6 @@ sergipe, -> https://oglobo.globo.com/brasil/educacao/
 pesquisas -> https://oglobo.globo.com/politica/
 pesquisas -> https://oglobo.globo.com/politica/eleicoes-2024/#
 pesquisas -> https://oglobo.globo.com/politica/eleicoes-2024/
-pesquisas -> https://oglobo.globo.com/politica/
 pesquisas -> https://oglobo.globo.com/blogs/pulso/
 investiga -> https://oglobo.globo.com/brasil/
 investiga -> https://oglobo.globo.com/brasil/educacao/
@@ -6758,7 +6534,6 @@ pública -> https://oglobo.globo.com/ultimas-noticias/
 pública -> https://oglobo.globo.com/100-anos/#
 pública -> https://oglobo.globo.com/politica/eleicoes-2024/
 pública -> https://oglobo.globo.com/100-anos/
-pública -> https://oglobo.globo.com/politica/
 pública -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 pública -> https://oglobo.globo.com/blogs/pulso/
 pública -> https://oglobo.globo.com/brasil/
@@ -6800,7 +6575,6 @@ covid -> https://oglobo.globo.com/
 covid -> https://oglobo.globo.com/brasil/sao-paulo/
 tida -> https://oglobo.globo.com/brasil/direitos-humanos/
 projetar -> https://oglobo.globo.com/politica/
-projetar -> https://oglobo.globo.com/politica/
 glaciares -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 tempo -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 tempo -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -6835,7 +6609,6 @@ pegn -> https://oglobo.globo.com/ultimas-noticias/
 pegn -> https://oglobo.globo.com/100-anos/#
 pegn -> https://oglobo.globo.com/politica/eleicoes-2024/
 pegn -> https://oglobo.globo.com/100-anos/
-pegn -> https://oglobo.globo.com/politica/
 pegn -> https://oglobo.globo.com/blogs/pulso/
 pegn -> https://oglobo.globo.com/brasil/
 pegn -> https://oglobo.globo.com/brasil/educacao/
@@ -6864,7 +6637,6 @@ conforto -> https://oglobo.globo.com/ultimas-noticias/
 conforto -> https://oglobo.globo.com/100-anos/#
 conforto -> https://oglobo.globo.com/politica/eleicoes-2024/
 conforto -> https://oglobo.globo.com/100-anos/
-conforto -> https://oglobo.globo.com/politica/
 conforto -> https://oglobo.globo.com/blogs/pulso/
 conforto -> https://oglobo.globo.com/brasil/
 conforto -> https://oglobo.globo.com/brasil/educacao/
@@ -6915,7 +6687,6 @@ fluminense -> https://oglobo.globo.com/ultimas-noticias/
 fluminense -> https://oglobo.globo.com/100-anos/#
 fluminense -> https://oglobo.globo.com/politica/eleicoes-2024/
 fluminense -> https://oglobo.globo.com/100-anos/
-fluminense -> https://oglobo.globo.com/politica/
 fluminense -> https://oglobo.globo.com/blogs/pulso/
 fluminense -> https://oglobo.globo.com/brasil/
 fluminense -> https://oglobo.globo.com/brasil/educacao/
@@ -6947,7 +6718,6 @@ entrar -> https://oglobo.globo.com/ultimas-noticias/
 entrar -> https://oglobo.globo.com/100-anos/#
 entrar -> https://oglobo.globo.com/politica/eleicoes-2024/
 entrar -> https://oglobo.globo.com/100-anos/
-entrar -> https://oglobo.globo.com/politica/
 entrar -> https://oglobo.globo.com/blogs/pulso/
 entrar -> https://oglobo.globo.com/brasil/
 entrar -> https://oglobo.globo.com/brasil/educacao/
@@ -6988,7 +6758,6 @@ extra -> https://oglobo.globo.com/ultimas-noticias/
 extra -> https://oglobo.globo.com/100-anos/#
 extra -> https://oglobo.globo.com/politica/eleicoes-2024/
 extra -> https://oglobo.globo.com/100-anos/
-extra -> https://oglobo.globo.com/politica/
 extra -> https://oglobo.globo.com/blogs/pulso/
 extra -> https://oglobo.globo.com/brasil/
 extra -> https://oglobo.globo.com/brasil/educacao/
@@ -7029,7 +6798,6 @@ grátis -> https://oglobo.globo.com/ultimas-noticias/
 grátis -> https://oglobo.globo.com/100-anos/#
 grátis -> https://oglobo.globo.com/politica/eleicoes-2024/
 grátis -> https://oglobo.globo.com/100-anos/
-grátis -> https://oglobo.globo.com/politica/
 grátis -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 grátis -> https://oglobo.globo.com/blogs/pulso/
 grátis -> https://oglobo.globo.com/brasil/
@@ -7058,7 +6826,6 @@ correia -> https://oglobo.globo.com/politica/eleicoes-2024/
 seleção -> https://oglobo.globo.com/ultimas-noticias/#
 seleção -> https://oglobo.globo.com/politica/
 seleção -> https://oglobo.globo.com/ultimas-noticias/
-seleção -> https://oglobo.globo.com/politica/
 seleção -> https://oglobo.globo.com/brasil/
 seleção -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 seleção -> https://oglobo.globo.com/rio/
@@ -7124,7 +6891,6 @@ pela -> https://oglobo.globo.com/politica/eleicoes-2024/#
 pela -> https://oglobo.globo.com/100-anos/#
 pela -> https://oglobo.globo.com/politica/eleicoes-2024/
 pela -> https://oglobo.globo.com/100-anos/
-pela -> https://oglobo.globo.com/politica/
 pela -> https://oglobo.globo.com/blogs/pulso/
 pela -> https://oglobo.globo.com/brasil/meio-ambiente/
 pela -> https://oglobo.globo.com/brasil/seguranca-publica/
@@ -7142,7 +6908,6 @@ durou -> https://oglobo.globo.com/rio/
 indrive, -> https://oglobo.globo.com/rio/web-summit-rio/
 buarque, -> https://oglobo.globo.com/ultimas-noticias/
 buarque, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
-rebuscados -> https://oglobo.globo.com/politica/
 rebuscados -> https://oglobo.globo.com/politica/
 comunicação' -> https://oglobo.globo.com/rio/carnaval/
 ‘fiquei -> https://oglobo.globo.com/
@@ -7202,7 +6967,6 @@ impeachment -> https://oglobo.globo.com/blogs/pulso/
 (bukassa -> https://oglobo.globo.com/
 diária -> https://oglobo.globo.com/
 canal -> https://oglobo.globo.com/politica/
-canal -> https://oglobo.globo.com/politica/
 canal -> https://oglobo.globo.com/brasil/
 canal -> https://oglobo.globo.com/brasil/sao-paulo/
 canal -> https://oglobo.globo.com/brasil/minas-gerais/
@@ -7238,7 +7002,6 @@ transmitido -> https://oglobo.globo.com/ultimas-noticias/
 transmitido -> https://oglobo.globo.com/100-anos/#
 transmitido -> https://oglobo.globo.com/politica/eleicoes-2024/
 transmitido -> https://oglobo.globo.com/100-anos/
-transmitido -> https://oglobo.globo.com/politica/
 transmitido -> https://oglobo.globo.com/blogs/pulso/
 transmitido -> https://oglobo.globo.com/brasil/
 transmitido -> https://oglobo.globo.com/brasil/educacao/
@@ -7265,9 +7028,7 @@ ex-secretária -> https://oglobo.globo.com/ultimas-noticias/#
 ex-secretária -> https://oglobo.globo.com/brasil/
 personagens -> https://oglobo.globo.com/
 personagens -> https://oglobo.globo.com/politica/
-personagens -> https://oglobo.globo.com/politica/
 gaspar -> https://oglobo.globo.com/
-gaspar -> https://oglobo.globo.com/politica/
 gaspar -> https://oglobo.globo.com/politica/
 gaspar -> https://oglobo.globo.com/brasil/direitos-humanos/
 cpis -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -7305,7 +7066,6 @@ autorização. -> https://oglobo.globo.com/ultimas-noticias/
 autorização. -> https://oglobo.globo.com/100-anos/#
 autorização. -> https://oglobo.globo.com/politica/eleicoes-2024/
 autorização. -> https://oglobo.globo.com/100-anos/
-autorização. -> https://oglobo.globo.com/politica/
 autorização. -> https://oglobo.globo.com/blogs/pulso/
 autorização. -> https://oglobo.globo.com/brasil/
 autorização. -> https://oglobo.globo.com/brasil/educacao/
@@ -7354,7 +7114,6 @@ conta -> https://oglobo.globo.com/ultimas-noticias/
 conta -> https://oglobo.globo.com/100-anos/#
 conta -> https://oglobo.globo.com/politica/eleicoes-2024/
 conta -> https://oglobo.globo.com/100-anos/
-conta -> https://oglobo.globo.com/politica/
 conta -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 conta -> https://oglobo.globo.com/blogs/pulso/
 conta -> https://oglobo.globo.com/brasil/
@@ -7384,7 +7143,6 @@ agricultura -> https://oglobo.globo.com/brasil/meio-ambiente/
 proporcionar -> https://oglobo.globo.com/dialogos-rj/
 megale -> https://oglobo.globo.com/
 megale -> https://oglobo.globo.com/politica/
-megale -> https://oglobo.globo.com/politica/
 megale -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 paulista -> https://oglobo.globo.com/
 paulista -> https://oglobo.globo.com/blogs/pulso/
@@ -7402,7 +7160,6 @@ país -> https://oglobo.globo.com/politica/
 país -> https://oglobo.globo.com/ultimas-noticias/
 país -> https://oglobo.globo.com/100-anos/#
 país -> https://oglobo.globo.com/100-anos/
-país -> https://oglobo.globo.com/politica/
 país -> https://oglobo.globo.com/blogs/pulso/
 país -> https://oglobo.globo.com/brasil/educacao/
 país -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -7442,7 +7199,6 @@ traz -> https://oglobo.globo.com/politica/
 traz -> https://oglobo.globo.com/politica/eleicoes-2024/#
 traz -> https://oglobo.globo.com/ultimas-noticias/
 traz -> https://oglobo.globo.com/politica/eleicoes-2024/
-traz -> https://oglobo.globo.com/politica/
 traz -> https://oglobo.globo.com/brasil/
 traz -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 traz -> https://oglobo.globo.com/rio/
@@ -7464,7 +7220,6 @@ ganha -> https://oglobo.globo.com/dialogos-rj/
 resultados -> https://oglobo.globo.com/politica/
 resultados -> https://oglobo.globo.com/politica/eleicoes-2024/#
 resultados -> https://oglobo.globo.com/politica/eleicoes-2024/
-resultados -> https://oglobo.globo.com/politica/
 resultados -> https://oglobo.globo.com/blogs/pulso/
 resultados -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 resultados -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -7476,7 +7231,6 @@ câncer -> https://oglobo.globo.com/ultimas-noticias/
 câncer -> https://oglobo.globo.com/100-anos/#
 câncer -> https://oglobo.globo.com/politica/eleicoes-2024/
 câncer -> https://oglobo.globo.com/100-anos/
-câncer -> https://oglobo.globo.com/politica/
 câncer -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 câncer -> https://oglobo.globo.com/blogs/pulso/
 câncer -> https://oglobo.globo.com/brasil/
@@ -7523,11 +7277,9 @@ corporal -> https://oglobo.globo.com/brasil/direitos-humanos/
 apuração -> https://oglobo.globo.com/politica/
 apuração -> https://oglobo.globo.com/politica/eleicoes-2024/#
 apuração -> https://oglobo.globo.com/politica/eleicoes-2024/
-apuração -> https://oglobo.globo.com/politica/
 apuração -> https://oglobo.globo.com/brasil/educacao/
 apuração -> https://oglobo.globo.com/rio/
 apuração -> https://oglobo.globo.com/rio/carnaval/
-respectivamente, -> https://oglobo.globo.com/politica/
 respectivamente, -> https://oglobo.globo.com/politica/
 respectivamente, -> https://oglobo.globo.com/blogs/pulso/
 respectivamente, -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
@@ -7545,7 +7297,6 @@ enem -> https://oglobo.globo.com/ultimas-noticias/
 enem -> https://oglobo.globo.com/100-anos/#
 enem -> https://oglobo.globo.com/politica/eleicoes-2024/
 enem -> https://oglobo.globo.com/100-anos/
-enem -> https://oglobo.globo.com/politica/
 enem -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 enem -> https://oglobo.globo.com/blogs/pulso/
 enem -> https://oglobo.globo.com/brasil/
@@ -7597,7 +7348,6 @@ pelos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 maricá -> https://oglobo.globo.com/
 maricá -> https://oglobo.globo.com/rio/
 análise -> https://oglobo.globo.com/politica/
-análise -> https://oglobo.globo.com/politica/
 desaba -> https://oglobo.globo.com/
 festividade, -> https://oglobo.globo.com/rio/carnaval/
 atinge -> https://oglobo.globo.com/
@@ -7608,7 +7358,6 @@ abrirem -> https://oglobo.globo.com/ultimas-noticias/#
 abrirem -> https://oglobo.globo.com/brasil/
 iminente -> https://oglobo.globo.com/
 perguntas -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
-fatos -> https://oglobo.globo.com/politica/
 fatos -> https://oglobo.globo.com/politica/
 fatos -> https://oglobo.globo.com/brasil/seguranca-publica/
 perguntar -> https://oglobo.globo.com/
@@ -7633,7 +7382,6 @@ julgamento -> https://oglobo.globo.com/
 julgamento -> https://oglobo.globo.com/politica/
 julgamento -> https://oglobo.globo.com/politica/eleicoes-2024/#
 julgamento -> https://oglobo.globo.com/politica/eleicoes-2024/
-julgamento -> https://oglobo.globo.com/politica/
 julgamento -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 ex-atleta -> https://oglobo.globo.com/ultimas-noticias/#
 major -> https://oglobo.globo.com/ultimas-noticias/#
@@ -7641,12 +7389,10 @@ major -> https://oglobo.globo.com/politica/
 major -> https://oglobo.globo.com/politica/eleicoes-2024/#
 major -> https://oglobo.globo.com/ultimas-noticias/
 major -> https://oglobo.globo.com/politica/eleicoes-2024/
-major -> https://oglobo.globo.com/politica/
 tema, -> https://oglobo.globo.com/dialogos-rj/
 responsável -> https://oglobo.globo.com/brasil/seguranca-publica/
 responsável -> https://oglobo.globo.com/brasil/minas-gerais/
 pedido -> https://oglobo.globo.com/
-pedido -> https://oglobo.globo.com/politica/
 pedido -> https://oglobo.globo.com/politica/
 pedido -> https://oglobo.globo.com/brasil/educacao/
 pedido -> https://oglobo.globo.com/rio/carnaval/
@@ -7709,11 +7455,9 @@ europeia -> https://oglobo.globo.com/brasil/
 europeia -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 identifica -> https://oglobo.globo.com/
 identifica -> https://oglobo.globo.com/politica/
-identifica -> https://oglobo.globo.com/politica/
 então -> https://oglobo.globo.com/brasil/direitos-humanos/
 então -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 terras -> https://oglobo.globo.com/
-desafio -> https://oglobo.globo.com/politica/
 desafio -> https://oglobo.globo.com/politica/
 desafio -> https://oglobo.globo.com/blogs/pulso/
 (psd) -> https://oglobo.globo.com/politica/eleicoes-2024/#
@@ -7725,10 +7469,8 @@ hospital -> https://oglobo.globo.com/
 hospital -> https://oglobo.globo.com/brasil/sao-paulo/
 hospital -> https://oglobo.globo.com/mundo/
 temas -> https://oglobo.globo.com/politica/
-temas -> https://oglobo.globo.com/politica/
 temas -> https://oglobo.globo.com/blogs/pulso/
 embarcação -> https://oglobo.globo.com/mundo/
-escolhido -> https://oglobo.globo.com/politica/
 escolhido -> https://oglobo.globo.com/politica/
 chef -> https://oglobo.globo.com/ultimas-noticias/
 investigado -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -7779,7 +7521,6 @@ marca -> https://oglobo.globo.com/ultimas-noticias/
 marca -> https://oglobo.globo.com/100-anos/#
 marca -> https://oglobo.globo.com/politica/eleicoes-2024/
 marca -> https://oglobo.globo.com/100-anos/
-marca -> https://oglobo.globo.com/politica/
 marca -> https://oglobo.globo.com/blogs/pulso/
 marca -> https://oglobo.globo.com/brasil/
 marca -> https://oglobo.globo.com/brasil/educacao/
@@ -7804,7 +7545,6 @@ acabar -> https://oglobo.globo.com/ultimas-noticias/#
 acabar -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 campanhas -> https://oglobo.globo.com/brasil/sao-paulo/
 relatório -> https://oglobo.globo.com/
-relatório -> https://oglobo.globo.com/politica/
 relatório -> https://oglobo.globo.com/politica/
 relatório -> https://oglobo.globo.com/blogs/pulso/
 relatório -> https://oglobo.globo.com/brasil/
@@ -7875,7 +7615,6 @@ editoriais -> https://oglobo.globo.com/ultimas-noticias/
 editoriais -> https://oglobo.globo.com/100-anos/#
 editoriais -> https://oglobo.globo.com/politica/eleicoes-2024/
 editoriais -> https://oglobo.globo.com/100-anos/
-editoriais -> https://oglobo.globo.com/politica/
 editoriais -> https://oglobo.globo.com/blogs/pulso/
 editoriais -> https://oglobo.globo.com/brasil/
 editoriais -> https://oglobo.globo.com/brasil/educacao/
@@ -7917,7 +7656,6 @@ meio -> https://oglobo.globo.com/ultimas-noticias/
 meio -> https://oglobo.globo.com/100-anos/#
 meio -> https://oglobo.globo.com/politica/eleicoes-2024/
 meio -> https://oglobo.globo.com/100-anos/
-meio -> https://oglobo.globo.com/politica/
 meio -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 meio -> https://oglobo.globo.com/blogs/pulso/
 meio -> https://oglobo.globo.com/brasil/
@@ -7956,7 +7694,6 @@ fies -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 mostra -> https://oglobo.globo.com/politica/
 mostra -> https://oglobo.globo.com/politica/eleicoes-2024/#
 mostra -> https://oglobo.globo.com/politica/eleicoes-2024/
-mostra -> https://oglobo.globo.com/politica/
 mostra -> https://oglobo.globo.com/blogs/pulso/
 mostra -> https://oglobo.globo.com/brasil/educacao/
 mostra -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -7964,7 +7701,6 @@ mostra -> https://oglobo.globo.com/brasil/meio-ambiente/
 mostra -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 mostra -> https://oglobo.globo.com/mundo/
 retomada -> https://oglobo.globo.com/
-retomada -> https://oglobo.globo.com/politica/
 retomada -> https://oglobo.globo.com/politica/
 retomada -> https://oglobo.globo.com/rio/web-summit-rio/
 neutralidade -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -8012,7 +7748,6 @@ santa -> https://oglobo.globo.com/
 fracos -> https://oglobo.globo.com/blogs/pulso/
 bela -> https://oglobo.globo.com/
 bela -> https://oglobo.globo.com/politica/
-bela -> https://oglobo.globo.com/politica/
 bela -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 marie -> https://oglobo.globo.com/
 marie -> https://oglobo.globo.com/ultimas-noticias/#
@@ -8021,7 +7756,6 @@ marie -> https://oglobo.globo.com/ultimas-noticias/
 marie -> https://oglobo.globo.com/100-anos/#
 marie -> https://oglobo.globo.com/politica/eleicoes-2024/
 marie -> https://oglobo.globo.com/100-anos/
-marie -> https://oglobo.globo.com/politica/
 marie -> https://oglobo.globo.com/blogs/pulso/
 marie -> https://oglobo.globo.com/brasil/
 marie -> https://oglobo.globo.com/brasil/educacao/
@@ -8051,10 +7785,8 @@ maria -> https://oglobo.globo.com/100-anos/#
 maria -> https://oglobo.globo.com/100-anos/
 alterar -> https://oglobo.globo.com/
 citam -> https://oglobo.globo.com/politica/
-citam -> https://oglobo.globo.com/politica/
 citam -> https://oglobo.globo.com/blogs/pulso/
 trama -> https://oglobo.globo.com/
-trama -> https://oglobo.globo.com/politica/
 trama -> https://oglobo.globo.com/politica/
 trama -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 webb, -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -8076,7 +7808,6 @@ educação -> https://oglobo.globo.com/ultimas-noticias/
 educação -> https://oglobo.globo.com/100-anos/#
 educação -> https://oglobo.globo.com/politica/eleicoes-2024/
 educação -> https://oglobo.globo.com/100-anos/
-educação -> https://oglobo.globo.com/politica/
 educação -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 educação -> https://oglobo.globo.com/blogs/pulso/
 educação -> https://oglobo.globo.com/brasil/
@@ -8108,7 +7839,6 @@ material -> https://oglobo.globo.com/ultimas-noticias/
 material -> https://oglobo.globo.com/100-anos/#
 material -> https://oglobo.globo.com/politica/eleicoes-2024/
 material -> https://oglobo.globo.com/100-anos/
-material -> https://oglobo.globo.com/politica/
 material -> https://oglobo.globo.com/blogs/pulso/
 material -> https://oglobo.globo.com/brasil/
 material -> https://oglobo.globo.com/brasil/educacao/
@@ -8156,7 +7886,6 @@ registrou-se -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 2026 -> https://oglobo.globo.com/politica/
 2026 -> https://oglobo.globo.com/politica/eleicoes-2024/#
 2026 -> https://oglobo.globo.com/politica/eleicoes-2024/
-2026 -> https://oglobo.globo.com/politica/
 2026 -> https://oglobo.globo.com/blogs/pulso/
 2026 -> https://oglobo.globo.com/brasil/educacao/
 2026 -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -8168,7 +7897,6 @@ registrou-se -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 2025 -> https://oglobo.globo.com/100-anos/#
 2025 -> https://oglobo.globo.com/politica/eleicoes-2024/
 2025 -> https://oglobo.globo.com/100-anos/
-2025 -> https://oglobo.globo.com/politica/
 2025 -> https://oglobo.globo.com/blogs/pulso/
 2025 -> https://oglobo.globo.com/brasil/
 2025 -> https://oglobo.globo.com/brasil/educacao/
@@ -8197,7 +7925,6 @@ registrou-se -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 2024 -> https://oglobo.globo.com/100-anos/#
 2024 -> https://oglobo.globo.com/politica/eleicoes-2024/
 2024 -> https://oglobo.globo.com/100-anos/
-2024 -> https://oglobo.globo.com/politica/
 2024 -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 2024 -> https://oglobo.globo.com/blogs/pulso/
 2024 -> https://oglobo.globo.com/brasil/
@@ -8274,7 +8001,6 @@ streaming -> https://oglobo.globo.com/ultimas-noticias/
 streaming -> https://oglobo.globo.com/100-anos/#
 streaming -> https://oglobo.globo.com/politica/eleicoes-2024/
 streaming -> https://oglobo.globo.com/100-anos/
-streaming -> https://oglobo.globo.com/politica/
 streaming -> https://oglobo.globo.com/blogs/pulso/
 streaming -> https://oglobo.globo.com/brasil/
 streaming -> https://oglobo.globo.com/brasil/educacao/
@@ -8303,7 +8029,6 @@ laços -> https://oglobo.globo.com/ultimas-noticias/#
 salvador, -> https://oglobo.globo.com/brasil/seguranca-publica/
 começa -> https://oglobo.globo.com/
 começa -> https://oglobo.globo.com/politica/
-começa -> https://oglobo.globo.com/politica/
 começa -> https://oglobo.globo.com/brasil/educacao/
 começa -> https://oglobo.globo.com/rio/bairros/
 começa -> https://oglobo.globo.com/mundo/
@@ -8315,7 +8040,6 @@ opinião -> https://oglobo.globo.com/ultimas-noticias/
 opinião -> https://oglobo.globo.com/100-anos/#
 opinião -> https://oglobo.globo.com/politica/eleicoes-2024/
 opinião -> https://oglobo.globo.com/100-anos/
-opinião -> https://oglobo.globo.com/politica/
 opinião -> https://oglobo.globo.com/blogs/pulso/
 opinião -> https://oglobo.globo.com/brasil/
 opinião -> https://oglobo.globo.com/brasil/educacao/
@@ -8355,7 +8079,6 @@ menu -> https://oglobo.globo.com/ultimas-noticias/
 menu -> https://oglobo.globo.com/100-anos/#
 menu -> https://oglobo.globo.com/politica/eleicoes-2024/
 menu -> https://oglobo.globo.com/100-anos/
-menu -> https://oglobo.globo.com/politica/
 menu -> https://oglobo.globo.com/blogs/pulso/
 menu -> https://oglobo.globo.com/brasil/
 menu -> https://oglobo.globo.com/brasil/educacao/
@@ -8394,13 +8117,11 @@ sinal -> https://oglobo.globo.com/politica/
 sinal -> https://oglobo.globo.com/politica/eleicoes-2024/#
 sinal -> https://oglobo.globo.com/ultimas-noticias/
 sinal -> https://oglobo.globo.com/politica/eleicoes-2024/
-sinal -> https://oglobo.globo.com/politica/
 condenação -> https://oglobo.globo.com/ultimas-noticias/#
 condenação -> https://oglobo.globo.com/politica/
 condenação -> https://oglobo.globo.com/politica/eleicoes-2024/#
 condenação -> https://oglobo.globo.com/ultimas-noticias/
 condenação -> https://oglobo.globo.com/politica/eleicoes-2024/
-condenação -> https://oglobo.globo.com/politica/
 condenação -> https://oglobo.globo.com/brasil/minas-gerais/
 reajusta -> https://oglobo.globo.com/ultimas-noticias/
 reajusta -> https://oglobo.globo.com/politica/
@@ -8420,7 +8141,6 @@ ciência -> https://oglobo.globo.com/ultimas-noticias/
 ciência -> https://oglobo.globo.com/100-anos/#
 ciência -> https://oglobo.globo.com/politica/eleicoes-2024/
 ciência -> https://oglobo.globo.com/100-anos/
-ciência -> https://oglobo.globo.com/politica/
 ciência -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 ciência -> https://oglobo.globo.com/blogs/pulso/
 ciência -> https://oglobo.globo.com/brasil/
@@ -8515,7 +8235,6 @@ internacional -> https://oglobo.globo.com/ultimas-noticias/
 internacional -> https://oglobo.globo.com/100-anos/#
 internacional -> https://oglobo.globo.com/politica/eleicoes-2024/
 internacional -> https://oglobo.globo.com/100-anos/
-internacional -> https://oglobo.globo.com/politica/
 internacional -> https://oglobo.globo.com/blogs/pulso/
 internacional -> https://oglobo.globo.com/brasil/
 internacional -> https://oglobo.globo.com/brasil/educacao/
@@ -8554,7 +8273,6 @@ isolamento -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 época -> https://oglobo.globo.com/100-anos/#
 época -> https://oglobo.globo.com/politica/eleicoes-2024/
 época -> https://oglobo.globo.com/100-anos/
-época -> https://oglobo.globo.com/politica/
 época -> https://oglobo.globo.com/blogs/pulso/
 época -> https://oglobo.globo.com/brasil/
 época -> https://oglobo.globo.com/brasil/educacao/
@@ -8593,7 +8311,6 @@ milhões -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 milhões -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 naufrágio -> https://oglobo.globo.com/mundo/
 afetada, -> https://oglobo.globo.com/brasil/meio-ambiente/
-sinalizar -> https://oglobo.globo.com/politica/
 sinalizar -> https://oglobo.globo.com/politica/
 milagres: -> https://oglobo.globo.com/rio/
 milagres: -> https://oglobo.globo.com/rio/bairros/
@@ -8643,7 +8360,6 @@ fotos -> https://oglobo.globo.com/ultimas-noticias/
 fotos -> https://oglobo.globo.com/100-anos/#
 fotos -> https://oglobo.globo.com/politica/eleicoes-2024/
 fotos -> https://oglobo.globo.com/100-anos/
-fotos -> https://oglobo.globo.com/politica/
 fotos -> https://oglobo.globo.com/blogs/pulso/
 fotos -> https://oglobo.globo.com/brasil/
 fotos -> https://oglobo.globo.com/brasil/educacao/
@@ -8703,7 +8419,6 @@ valor -> https://oglobo.globo.com/ultimas-noticias/
 valor -> https://oglobo.globo.com/100-anos/#
 valor -> https://oglobo.globo.com/politica/eleicoes-2024/
 valor -> https://oglobo.globo.com/100-anos/
-valor -> https://oglobo.globo.com/politica/
 valor -> https://oglobo.globo.com/blogs/pulso/
 valor -> https://oglobo.globo.com/brasil/
 valor -> https://oglobo.globo.com/brasil/educacao/
@@ -8725,7 +8440,6 @@ valor -> https://oglobo.globo.com/mundo/
 valor -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 valor -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 pressão -> https://oglobo.globo.com/politica/
-pressão -> https://oglobo.globo.com/politica/
 ameaças -> https://oglobo.globo.com/brasil/seguranca-publica/
 ameaçar -> https://oglobo.globo.com/brasil/seguranca-publica/
 aplicadas -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -8745,7 +8459,6 @@ médio -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 médio -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 médio -> https://oglobo.globo.com/mundo/
 estuda -> https://oglobo.globo.com/politica/
-estuda -> https://oglobo.globo.com/politica/
 estuda -> https://oglobo.globo.com/blogs/pulso/
 média -> https://oglobo.globo.com/blogs/pulso/
 média -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -8757,7 +8470,6 @@ positivo -> https://oglobo.globo.com/brasil/educacao/
 conferências, -> https://oglobo.globo.com/rio/web-summit-rio/
 repita -> https://oglobo.globo.com/brasil/meio-ambiente/
 discordar -> https://oglobo.globo.com/
-discordar -> https://oglobo.globo.com/politica/
 discordar -> https://oglobo.globo.com/politica/
 moro, -> https://oglobo.globo.com/politica/eleicoes-2024/#
 moro, -> https://oglobo.globo.com/politica/eleicoes-2024/
@@ -8804,7 +8516,6 @@ casamento -> https://oglobo.globo.com/
 casamento -> https://oglobo.globo.com/ultimas-noticias/
 casamento -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 avança -> https://oglobo.globo.com/politica/
-avança -> https://oglobo.globo.com/politica/
 avança -> https://oglobo.globo.com/blogs/pulso/
 rodes -> https://oglobo.globo.com/
 comentar -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -8827,7 +8538,6 @@ dentro -> https://oglobo.globo.com/
 dentro -> https://oglobo.globo.com/ultimas-noticias/#
 dentro -> https://oglobo.globo.com/politica/
 dentro -> https://oglobo.globo.com/ultimas-noticias/
-dentro -> https://oglobo.globo.com/politica/
 dentro -> https://oglobo.globo.com/brasil/
 dentro -> https://oglobo.globo.com/brasil/meio-ambiente/
 dentro -> https://oglobo.globo.com/brasil/seguranca-publica/
@@ -8860,7 +8570,6 @@ grande -> https://oglobo.globo.com/ultimas-noticias/
 grande -> https://oglobo.globo.com/100-anos/#
 grande -> https://oglobo.globo.com/politica/eleicoes-2024/
 grande -> https://oglobo.globo.com/100-anos/
-grande -> https://oglobo.globo.com/politica/
 grande -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 grande -> https://oglobo.globo.com/blogs/pulso/
 grande -> https://oglobo.globo.com/brasil/
@@ -8896,7 +8605,6 @@ pode -> https://oglobo.globo.com/ultimas-noticias/
 pode -> https://oglobo.globo.com/100-anos/#
 pode -> https://oglobo.globo.com/politica/eleicoes-2024/
 pode -> https://oglobo.globo.com/100-anos/
-pode -> https://oglobo.globo.com/politica/
 pode -> https://oglobo.globo.com/blogs/pulso/
 pode -> https://oglobo.globo.com/brasil/
 pode -> https://oglobo.globo.com/brasil/educacao/
@@ -9000,7 +8708,6 @@ fale -> https://oglobo.globo.com/ultimas-noticias/
 fale -> https://oglobo.globo.com/100-anos/#
 fale -> https://oglobo.globo.com/politica/eleicoes-2024/
 fale -> https://oglobo.globo.com/100-anos/
-fale -> https://oglobo.globo.com/politica/
 fale -> https://oglobo.globo.com/blogs/pulso/
 fale -> https://oglobo.globo.com/brasil/
 fale -> https://oglobo.globo.com/brasil/educacao/
@@ -9052,7 +8759,6 @@ cultura -> https://oglobo.globo.com/ultimas-noticias/
 cultura -> https://oglobo.globo.com/100-anos/#
 cultura -> https://oglobo.globo.com/politica/eleicoes-2024/
 cultura -> https://oglobo.globo.com/100-anos/
-cultura -> https://oglobo.globo.com/politica/
 cultura -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 cultura -> https://oglobo.globo.com/blogs/pulso/
 cultura -> https://oglobo.globo.com/brasil/
@@ -9083,7 +8789,6 @@ horóscopo -> https://oglobo.globo.com/ultimas-noticias/
 horóscopo -> https://oglobo.globo.com/100-anos/#
 horóscopo -> https://oglobo.globo.com/politica/eleicoes-2024/
 horóscopo -> https://oglobo.globo.com/100-anos/
-horóscopo -> https://oglobo.globo.com/politica/
 horóscopo -> https://oglobo.globo.com/blogs/pulso/
 horóscopo -> https://oglobo.globo.com/brasil/
 horóscopo -> https://oglobo.globo.com/brasil/educacao/
@@ -9123,7 +8828,6 @@ trégua -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 serem -> https://oglobo.globo.com/rio/web-summit-rio/
 'fuad -> https://oglobo.globo.com/brasil/minas-gerais/
 quente -> https://oglobo.globo.com/politica/
-quente -> https://oglobo.globo.com/politica/
 quente -> https://oglobo.globo.com/brasil/meio-ambiente/
 quente -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 domínio -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -9132,7 +8836,6 @@ olho -> https://oglobo.globo.com/
 olho -> https://oglobo.globo.com/politica/
 olho -> https://oglobo.globo.com/100-anos/#
 olho -> https://oglobo.globo.com/100-anos/
-olho -> https://oglobo.globo.com/politica/
 olho -> https://oglobo.globo.com/mundo/
 calor -> https://oglobo.globo.com/brasil/meio-ambiente/
 ontem -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -9167,7 +8870,6 @@ sofre -> https://oglobo.globo.com/
 natural, -> https://oglobo.globo.com/dialogos-rj/
 granja -> https://oglobo.globo.com/
 jurídicos -> https://oglobo.globo.com/politica/
-jurídicos -> https://oglobo.globo.com/politica/
 unidos -> https://oglobo.globo.com/
 unidos -> https://oglobo.globo.com/brasil/meio-ambiente/
 unidos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -9195,7 +8897,6 @@ clube -> https://oglobo.globo.com/ultimas-noticias/
 clube -> https://oglobo.globo.com/100-anos/#
 clube -> https://oglobo.globo.com/politica/eleicoes-2024/
 clube -> https://oglobo.globo.com/100-anos/
-clube -> https://oglobo.globo.com/politica/
 clube -> https://oglobo.globo.com/blogs/pulso/
 clube -> https://oglobo.globo.com/brasil/
 clube -> https://oglobo.globo.com/brasil/educacao/
@@ -9218,7 +8919,6 @@ clube -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 clube -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 global; -> https://oglobo.globo.com/blogs/pulso/
 momento -> https://oglobo.globo.com/politica/
-momento -> https://oglobo.globo.com/politica/
 momento -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 momento -> https://oglobo.globo.com/mundo/
 pneumonia -> https://oglobo.globo.com/mundo/
@@ -9233,7 +8933,6 @@ contra -> https://oglobo.globo.com/politica/
 contra -> https://oglobo.globo.com/politica/eleicoes-2024/#
 contra -> https://oglobo.globo.com/ultimas-noticias/
 contra -> https://oglobo.globo.com/politica/eleicoes-2024/
-contra -> https://oglobo.globo.com/politica/
 contra -> https://oglobo.globo.com/brasil/
 contra -> https://oglobo.globo.com/brasil/seguranca-publica/
 contra -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -9273,7 +8972,6 @@ imposto -> https://oglobo.globo.com/ultimas-noticias/
 imposto -> https://oglobo.globo.com/100-anos/#
 imposto -> https://oglobo.globo.com/politica/eleicoes-2024/
 imposto -> https://oglobo.globo.com/100-anos/
-imposto -> https://oglobo.globo.com/politica/
 imposto -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 imposto -> https://oglobo.globo.com/blogs/pulso/
 imposto -> https://oglobo.globo.com/brasil/
@@ -9302,7 +9000,6 @@ moraes -> https://oglobo.globo.com/politica/
 moraes -> https://oglobo.globo.com/politica/eleicoes-2024/#
 moraes -> https://oglobo.globo.com/ultimas-noticias/
 moraes -> https://oglobo.globo.com/politica/eleicoes-2024/
-moraes -> https://oglobo.globo.com/politica/
 moraes -> https://oglobo.globo.com/blogs/pulso/
 moraes -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 moraes -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -9311,14 +9008,12 @@ unido, -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 conteúdos -> https://oglobo.globo.com/ultimas-noticias/#
 conteúdos -> https://oglobo.globo.com/politica/
 conteúdos -> https://oglobo.globo.com/ultimas-noticias/
-conteúdos -> https://oglobo.globo.com/politica/
 conteúdos -> https://oglobo.globo.com/brasil/
 conteúdos -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 conteúdos -> https://oglobo.globo.com/rio/
 conteúdos -> https://oglobo.globo.com/mundo/
 shows, -> https://oglobo.globo.com/rio/carnaval/
 shows, -> https://oglobo.globo.com/rio/web-summit-rio/
-tampouco -> https://oglobo.globo.com/politica/
 tampouco -> https://oglobo.globo.com/politica/
 'inimigo -> https://oglobo.globo.com/blogs/pulso/
 cidadania -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -9337,7 +9032,6 @@ incluindo -> https://oglobo.globo.com/politica/
 incluindo -> https://oglobo.globo.com/politica/eleicoes-2024/#
 incluindo -> https://oglobo.globo.com/ultimas-noticias/
 incluindo -> https://oglobo.globo.com/politica/eleicoes-2024/
-incluindo -> https://oglobo.globo.com/politica/
 incluindo -> https://oglobo.globo.com/blogs/pulso/
 incluindo -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 incluindo -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -9424,7 +9118,6 @@ conteúdo -> https://oglobo.globo.com/ultimas-noticias/
 conteúdo -> https://oglobo.globo.com/100-anos/#
 conteúdo -> https://oglobo.globo.com/politica/eleicoes-2024/
 conteúdo -> https://oglobo.globo.com/100-anos/
-conteúdo -> https://oglobo.globo.com/politica/
 conteúdo -> https://oglobo.globo.com/blogs/pulso/
 conteúdo -> https://oglobo.globo.com/brasil/
 conteúdo -> https://oglobo.globo.com/brasil/educacao/
@@ -9453,7 +9146,6 @@ rural -> https://oglobo.globo.com/ultimas-noticias/
 rural -> https://oglobo.globo.com/100-anos/#
 rural -> https://oglobo.globo.com/politica/eleicoes-2024/
 rural -> https://oglobo.globo.com/100-anos/
-rural -> https://oglobo.globo.com/politica/
 rural -> https://oglobo.globo.com/blogs/pulso/
 rural -> https://oglobo.globo.com/brasil/
 rural -> https://oglobo.globo.com/brasil/educacao/
@@ -9482,7 +9174,6 @@ bairros -> https://oglobo.globo.com/ultimas-noticias/
 bairros -> https://oglobo.globo.com/100-anos/#
 bairros -> https://oglobo.globo.com/politica/eleicoes-2024/
 bairros -> https://oglobo.globo.com/100-anos/
-bairros -> https://oglobo.globo.com/politica/
 bairros -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 bairros -> https://oglobo.globo.com/blogs/pulso/
 bairros -> https://oglobo.globo.com/brasil/
@@ -9540,7 +9231,6 @@ duas -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 ruins -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 deputados -> https://oglobo.globo.com/
 deputados -> https://oglobo.globo.com/politica/
-deputados -> https://oglobo.globo.com/politica/
 última -> https://oglobo.globo.com/politica/eleicoes-2024/#
 última -> https://oglobo.globo.com/politica/eleicoes-2024/
 última -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -9555,7 +9245,6 @@ estreia -> https://oglobo.globo.com/100-anos/#
 estreia -> https://oglobo.globo.com/100-anos/
 estreia -> https://oglobo.globo.com/rio/bairros/
 doi-codi -> https://oglobo.globo.com/rio/bairros/
-faz, -> https://oglobo.globo.com/politica/
 faz, -> https://oglobo.globo.com/politica/
 faz, -> https://oglobo.globo.com/blogs/pulso/
 ausência -> https://oglobo.globo.com/politica/eleicoes-2024/#
@@ -9586,11 +9275,9 @@ ex-presidente, -> https://oglobo.globo.com/politica/eleicoes-2024/#
 ex-presidente, -> https://oglobo.globo.com/politica/eleicoes-2024/
 trocar -> https://oglobo.globo.com/brasil/educacao/
 indicam -> https://oglobo.globo.com/politica/
-indicam -> https://oglobo.globo.com/politica/
 indicam -> https://oglobo.globo.com/blogs/pulso/
 indicam -> https://oglobo.globo.com/mundo/
 reaproximação -> https://oglobo.globo.com/
-reaproximação -> https://oglobo.globo.com/politica/
 reaproximação -> https://oglobo.globo.com/politica/
 ascensão -> https://oglobo.globo.com/
 ascensão -> https://oglobo.globo.com/rio/
@@ -9605,7 +9292,6 @@ publicidade -> https://oglobo.globo.com/ultimas-noticias/
 publicidade -> https://oglobo.globo.com/100-anos/#
 publicidade -> https://oglobo.globo.com/politica/eleicoes-2024/
 publicidade -> https://oglobo.globo.com/100-anos/
-publicidade -> https://oglobo.globo.com/politica/
 publicidade -> https://oglobo.globo.com/blogs/pulso/
 publicidade -> https://oglobo.globo.com/brasil/
 publicidade -> https://oglobo.globo.com/brasil/educacao/
@@ -9658,7 +9344,6 @@ entrevista -> https://oglobo.globo.com/brasil/minas-gerais/
 entrevista -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 on-line -> https://oglobo.globo.com/rio/web-summit-rio/
 petroleira -> https://oglobo.globo.com/politica/
-petroleira -> https://oglobo.globo.com/politica/
 convocação -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 completava -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 impacta -> https://oglobo.globo.com/rio/
@@ -9681,7 +9366,6 @@ repassa -> https://oglobo.globo.com/100-anos/#
 repassa -> https://oglobo.globo.com/100-anos/
 depoimento -> https://oglobo.globo.com/
 bastidores -> https://oglobo.globo.com/politica/
-bastidores -> https://oglobo.globo.com/politica/
 bastidores -> https://oglobo.globo.com/rio/
 janeiro; -> https://oglobo.globo.com/brasil/minas-gerais/
 impacto -> https://oglobo.globo.com/100-anos/#
@@ -9703,7 +9387,6 @@ extraoficial -> https://oglobo.globo.com/ultimas-noticias/
 extraoficial -> https://oglobo.globo.com/100-anos/#
 extraoficial -> https://oglobo.globo.com/politica/eleicoes-2024/
 extraoficial -> https://oglobo.globo.com/100-anos/
-extraoficial -> https://oglobo.globo.com/politica/
 extraoficial -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 extraoficial -> https://oglobo.globo.com/blogs/pulso/
 extraoficial -> https://oglobo.globo.com/brasil/
@@ -9756,7 +9439,6 @@ partido -> https://oglobo.globo.com/
 partido -> https://oglobo.globo.com/politica/
 partido -> https://oglobo.globo.com/politica/eleicoes-2024/#
 partido -> https://oglobo.globo.com/politica/eleicoes-2024/
-partido -> https://oglobo.globo.com/politica/
 partido -> https://oglobo.globo.com/brasil/seguranca-publica/
 homenageados -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 escrita -> https://oglobo.globo.com/brasil/educacao/
@@ -9769,7 +9451,6 @@ conosco -> https://oglobo.globo.com/ultimas-noticias/
 conosco -> https://oglobo.globo.com/100-anos/#
 conosco -> https://oglobo.globo.com/politica/eleicoes-2024/
 conosco -> https://oglobo.globo.com/100-anos/
-conosco -> https://oglobo.globo.com/politica/
 conosco -> https://oglobo.globo.com/blogs/pulso/
 conosco -> https://oglobo.globo.com/brasil/
 conosco -> https://oglobo.globo.com/brasil/educacao/
@@ -9791,7 +9472,6 @@ conosco -> https://oglobo.globo.com/mundo/
 conosco -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 conosco -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 2026', -> https://oglobo.globo.com/rio/carnaval/
-exclusivas -> https://oglobo.globo.com/politica/
 exclusivas -> https://oglobo.globo.com/politica/
 gratuitas -> https://oglobo.globo.com/ultimas-noticias/
 gratuitas -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -9823,7 +9503,6 @@ acesso -> https://oglobo.globo.com/brasil/educacao/
 acesso -> https://oglobo.globo.com/rio/
 acelera -> https://oglobo.globo.com/rio/web-summit-rio/
 enfrentamento -> https://oglobo.globo.com/politica/
-enfrentamento -> https://oglobo.globo.com/politica/
 matrícula -> https://oglobo.globo.com/brasil/educacao/
 matrícula -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
 acesse -> https://oglobo.globo.com/
@@ -9834,7 +9513,6 @@ acesse -> https://oglobo.globo.com/ultimas-noticias/
 acesse -> https://oglobo.globo.com/100-anos/#
 acesse -> https://oglobo.globo.com/politica/eleicoes-2024/
 acesse -> https://oglobo.globo.com/100-anos/
-acesse -> https://oglobo.globo.com/politica/
 acesse -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 acesse -> https://oglobo.globo.com/blogs/pulso/
 acesse -> https://oglobo.globo.com/brasil/
@@ -9861,7 +9539,6 @@ redações -> https://oglobo.globo.com/100-anos/
 trump: -> https://oglobo.globo.com/
 'motel' -> https://oglobo.globo.com/brasil/meio-ambiente/
 golpista -> https://oglobo.globo.com/
-golpista -> https://oglobo.globo.com/politica/
 golpista -> https://oglobo.globo.com/politica/
 golpista -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 denúncias, -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -9903,7 +9580,6 @@ câmara -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/20
 câmara -> https://oglobo.globo.com/rio/
 preveem -> https://oglobo.globo.com/rio/web-summit-rio/
 barroso, -> https://oglobo.globo.com/politica/
-barroso, -> https://oglobo.globo.com/politica/
 trump, -> https://oglobo.globo.com/mundo/
 trump, -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 completar -> https://oglobo.globo.com/
@@ -9930,7 +9606,6 @@ móvel -> https://oglobo.globo.com/ultimas-noticias/#
 tendências. -> https://oglobo.globo.com/blogs/pulso/
 aboliram -> https://oglobo.globo.com/ultimas-noticias/#
 política-ideológica. -> https://oglobo.globo.com/politica/
-política-ideológica. -> https://oglobo.globo.com/politica/
 demais -> https://oglobo.globo.com/100-anos/#
 demais -> https://oglobo.globo.com/100-anos/
 queria -> https://oglobo.globo.com/
@@ -9946,7 +9621,6 @@ techtudo -> https://oglobo.globo.com/ultimas-noticias/
 techtudo -> https://oglobo.globo.com/100-anos/#
 techtudo -> https://oglobo.globo.com/politica/eleicoes-2024/
 techtudo -> https://oglobo.globo.com/100-anos/
-techtudo -> https://oglobo.globo.com/politica/
 techtudo -> https://oglobo.globo.com/blogs/pulso/
 techtudo -> https://oglobo.globo.com/brasil/
 techtudo -> https://oglobo.globo.com/brasil/educacao/
@@ -10013,7 +9687,6 @@ english -> https://oglobo.globo.com/ultimas-noticias/
 english -> https://oglobo.globo.com/100-anos/#
 english -> https://oglobo.globo.com/politica/eleicoes-2024/
 english -> https://oglobo.globo.com/100-anos/
-english -> https://oglobo.globo.com/politica/
 english -> https://oglobo.globo.com/blogs/pulso/
 english -> https://oglobo.globo.com/brasil/
 english -> https://oglobo.globo.com/brasil/educacao/
@@ -10056,7 +9729,6 @@ criar -> https://oglobo.globo.com/politica/
 criar -> https://oglobo.globo.com/ultimas-noticias/
 criar -> https://oglobo.globo.com/100-anos/#
 criar -> https://oglobo.globo.com/100-anos/
-criar -> https://oglobo.globo.com/politica/
 criar -> https://oglobo.globo.com/brasil/
 criar -> https://oglobo.globo.com/rio/
 criar -> https://oglobo.globo.com/rio/carnaval/
@@ -10098,7 +9770,6 @@ vida -> https://oglobo.globo.com/ultimas-noticias/
 vida -> https://oglobo.globo.com/100-anos/#
 vida -> https://oglobo.globo.com/politica/eleicoes-2024/
 vida -> https://oglobo.globo.com/100-anos/
-vida -> https://oglobo.globo.com/politica/
 vida -> https://oglobo.globo.com/blogs/pulso/
 vida -> https://oglobo.globo.com/brasil/
 vida -> https://oglobo.globo.com/brasil/educacao/
@@ -10133,7 +9804,6 @@ sudoku -> https://oglobo.globo.com/ultimas-noticias/
 sudoku -> https://oglobo.globo.com/100-anos/#
 sudoku -> https://oglobo.globo.com/politica/eleicoes-2024/
 sudoku -> https://oglobo.globo.com/100-anos/
-sudoku -> https://oglobo.globo.com/politica/
 sudoku -> https://oglobo.globo.com/blogs/pulso/
 sudoku -> https://oglobo.globo.com/brasil/
 sudoku -> https://oglobo.globo.com/brasil/educacao/
@@ -10163,12 +9833,10 @@ dizem -> https://oglobo.globo.com/mundo/
 dizem -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 demográfico -> https://oglobo.globo.com/brasil/sao-paulo/
 bacellar, -> https://oglobo.globo.com/politica/
-bacellar, -> https://oglobo.globo.com/politica/
 massa' -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 limpar -> https://oglobo.globo.com/ultimas-noticias/#
 limpar -> https://oglobo.globo.com/politica/
 limpar -> https://oglobo.globo.com/ultimas-noticias/
-limpar -> https://oglobo.globo.com/politica/
 limpar -> https://oglobo.globo.com/brasil/
 limpar -> https://oglobo.globo.com/rio/
 limpar -> https://oglobo.globo.com/mundo/
@@ -10194,7 +9862,6 @@ após -> https://oglobo.globo.com/politica/
 após -> https://oglobo.globo.com/politica/eleicoes-2024/#
 após -> https://oglobo.globo.com/ultimas-noticias/
 após -> https://oglobo.globo.com/politica/eleicoes-2024/
-após -> https://oglobo.globo.com/politica/
 após -> https://oglobo.globo.com/blogs/pulso/
 após -> https://oglobo.globo.com/brasil/
 após -> https://oglobo.globo.com/brasil/educacao/
@@ -10216,7 +9883,6 @@ vice -> https://oglobo.globo.com/politica/eleicoes-2024/#
 vice -> https://oglobo.globo.com/politica/eleicoes-2024/
 vice -> https://oglobo.globo.com/brasil/minas-gerais/
 reuniões -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
-públicos -> https://oglobo.globo.com/politica/
 públicos -> https://oglobo.globo.com/politica/
 policiais -> https://oglobo.globo.com/rio/
 policiais -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -10264,11 +9930,9 @@ ouro -> https://oglobo.globo.com/rio/
 ouro -> https://oglobo.globo.com/rio/carnaval/
 ouro -> https://oglobo.globo.com/rio/web-summit-rio/
 'clube -> https://oglobo.globo.com/politica/
-'clube -> https://oglobo.globo.com/politica/
 entorpecentes -> https://oglobo.globo.com/rio/
 crescimento -> https://oglobo.globo.com/blogs/pulso/
 crescimento -> https://oglobo.globo.com/brasil/meio-ambiente/
-wories -> https://oglobo.globo.com/politica/
 wories -> https://oglobo.globo.com/politica/
 wories -> https://oglobo.globo.com/blogs/pulso/
 influenciador -> https://oglobo.globo.com/brasil/sao-paulo/
@@ -10287,7 +9951,6 @@ revelia -> https://oglobo.globo.com/politica/eleicoes-2024/
 assassinato -> https://oglobo.globo.com/politica/
 assassinato -> https://oglobo.globo.com/politica/eleicoes-2024/#
 assassinato -> https://oglobo.globo.com/politica/eleicoes-2024/
-assassinato -> https://oglobo.globo.com/politica/
 dura -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 derrubar -> https://oglobo.globo.com/brasil/direitos-humanos/
 derrubar -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -10310,7 +9973,6 @@ whatsapp -> https://oglobo.globo.com/ultimas-noticias/
 whatsapp -> https://oglobo.globo.com/100-anos/#
 whatsapp -> https://oglobo.globo.com/politica/eleicoes-2024/
 whatsapp -> https://oglobo.globo.com/100-anos/
-whatsapp -> https://oglobo.globo.com/politica/
 whatsapp -> https://oglobo.globo.com/blogs/pulso/
 whatsapp -> https://oglobo.globo.com/brasil/
 whatsapp -> https://oglobo.globo.com/brasil/educacao/
@@ -10338,7 +10000,6 @@ casarões -> https://oglobo.globo.com/ultimas-noticias/
 casarões -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 casarões -> https://oglobo.globo.com/rio/
 percentuais -> https://oglobo.globo.com/politica/
-percentuais -> https://oglobo.globo.com/politica/
 percentuais -> https://oglobo.globo.com/blogs/pulso/
 reclamou -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 michelle -> https://oglobo.globo.com/blogs/pulso/
@@ -10350,7 +10011,6 @@ show -> https://oglobo.globo.com/ultimas-noticias/
 show -> https://oglobo.globo.com/100-anos/#
 show -> https://oglobo.globo.com/politica/eleicoes-2024/
 show -> https://oglobo.globo.com/100-anos/
-show -> https://oglobo.globo.com/politica/
 show -> https://oglobo.globo.com/blogs/pulso/
 show -> https://oglobo.globo.com/brasil/
 show -> https://oglobo.globo.com/brasil/educacao/
@@ -10374,7 +10034,6 @@ show -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 amarradas -> https://oglobo.globo.com/brasil/meio-ambiente/
 percepções -> https://oglobo.globo.com/blogs/pulso/
 percepções -> https://oglobo.globo.com/brasil/educacao/
-apoio -> https://oglobo.globo.com/politica/
 apoio -> https://oglobo.globo.com/politica/
 apoio -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 apoio -> https://oglobo.globo.com/rio/web-summit-rio/
@@ -10406,7 +10065,6 @@ livros -> https://oglobo.globo.com/ultimas-noticias/
 livros -> https://oglobo.globo.com/100-anos/#
 livros -> https://oglobo.globo.com/politica/eleicoes-2024/
 livros -> https://oglobo.globo.com/100-anos/
-livros -> https://oglobo.globo.com/politica/
 livros -> https://oglobo.globo.com/blogs/pulso/
 livros -> https://oglobo.globo.com/brasil/
 livros -> https://oglobo.globo.com/brasil/educacao/
@@ -10476,7 +10134,6 @@ casa -> https://oglobo.globo.com/ultimas-noticias/
 casa -> https://oglobo.globo.com/100-anos/#
 casa -> https://oglobo.globo.com/politica/eleicoes-2024/
 casa -> https://oglobo.globo.com/100-anos/
-casa -> https://oglobo.globo.com/politica/
 casa -> https://oglobo.globo.com/blogs/pulso/
 casa -> https://oglobo.globo.com/brasil/
 casa -> https://oglobo.globo.com/brasil/educacao/
@@ -10507,14 +10164,12 @@ histórica, -> https://oglobo.globo.com/rio/
 'virou' -> https://oglobo.globo.com/brasil/direitos-humanos/
 saudável -> https://oglobo.globo.com/dialogos-rj/
 mergulho -> https://oglobo.globo.com/politica/
-mergulho -> https://oglobo.globo.com/politica/
 manter -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 caso -> https://oglobo.globo.com/
 caso -> https://oglobo.globo.com/ultimas-noticias/#
 caso -> https://oglobo.globo.com/politica/
 caso -> https://oglobo.globo.com/politica/eleicoes-2024/#
 caso -> https://oglobo.globo.com/politica/eleicoes-2024/
-caso -> https://oglobo.globo.com/politica/
 caso -> https://oglobo.globo.com/brasil/seguranca-publica/
 caso -> https://oglobo.globo.com/mundo/
 'único -> https://oglobo.globo.com/brasil/direitos-humanos/
@@ -10553,7 +10208,6 @@ defesa -> https://oglobo.globo.com/ultimas-noticias/
 defesa -> https://oglobo.globo.com/100-anos/#
 defesa -> https://oglobo.globo.com/politica/eleicoes-2024/
 defesa -> https://oglobo.globo.com/100-anos/
-defesa -> https://oglobo.globo.com/politica/
 defesa -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 defesa -> https://oglobo.globo.com/blogs/pulso/
 defesa -> https://oglobo.globo.com/brasil/
@@ -10586,7 +10240,6 @@ patrícia -> https://oglobo.globo.com/ultimas-noticias/
 patrícia -> https://oglobo.globo.com/100-anos/#
 patrícia -> https://oglobo.globo.com/politica/eleicoes-2024/
 patrícia -> https://oglobo.globo.com/100-anos/
-patrícia -> https://oglobo.globo.com/politica/
 patrícia -> https://oglobo.globo.com/blogs/pulso/
 patrícia -> https://oglobo.globo.com/brasil/
 patrícia -> https://oglobo.globo.com/brasil/educacao/
@@ -10609,7 +10262,6 @@ patrícia -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 patrícia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 faleceu -> https://oglobo.globo.com/brasil/minas-gerais/
 comportamento -> https://oglobo.globo.com/politica/
-comportamento -> https://oglobo.globo.com/politica/
 comportamento -> https://oglobo.globo.com/blogs/pulso/
 armada -> https://oglobo.globo.com/rio/
 parlamentar -> https://oglobo.globo.com/politica/
@@ -10620,7 +10272,6 @@ feminina -> https://oglobo.globo.com/rio/web-summit-rio/
 dezembro -> https://oglobo.globo.com/blogs/pulso/
 dezembro -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 netuno -> https://oglobo.globo.com/mundo/clima-e-ciencia/
-tratar -> https://oglobo.globo.com/politica/
 tratar -> https://oglobo.globo.com/politica/
 tratar -> https://oglobo.globo.com/rio/carnaval/
 tratar -> https://oglobo.globo.com/mundo/
@@ -10653,7 +10304,6 @@ saúde -> https://oglobo.globo.com/ultimas-noticias/
 saúde -> https://oglobo.globo.com/100-anos/#
 saúde -> https://oglobo.globo.com/politica/eleicoes-2024/
 saúde -> https://oglobo.globo.com/100-anos/
-saúde -> https://oglobo.globo.com/politica/
 saúde -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 saúde -> https://oglobo.globo.com/blogs/pulso/
 saúde -> https://oglobo.globo.com/brasil/
@@ -10685,7 +10335,6 @@ lua: -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 levada -> https://oglobo.globo.com/brasil/seguranca-publica/
 nasa -> https://oglobo.globo.com/mundo/
 nasa -> https://oglobo.globo.com/mundo/clima-e-ciencia/
-pressionado -> https://oglobo.globo.com/politica/
 pressionado -> https://oglobo.globo.com/politica/
 doméstica -> https://oglobo.globo.com/brasil/direitos-humanos/
 aprovar, -> https://oglobo.globo.com/brasil/meio-ambiente/
@@ -10720,7 +10369,6 @@ bem-estar -> https://oglobo.globo.com/ultimas-noticias/
 bem-estar -> https://oglobo.globo.com/100-anos/#
 bem-estar -> https://oglobo.globo.com/politica/eleicoes-2024/
 bem-estar -> https://oglobo.globo.com/100-anos/
-bem-estar -> https://oglobo.globo.com/politica/
 bem-estar -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 bem-estar -> https://oglobo.globo.com/blogs/pulso/
 bem-estar -> https://oglobo.globo.com/brasil/
@@ -10750,7 +10398,6 @@ cientista -> https://oglobo.globo.com/ultimas-noticias/
 cientista -> https://oglobo.globo.com/100-anos/#
 cientista -> https://oglobo.globo.com/politica/eleicoes-2024/
 cientista -> https://oglobo.globo.com/100-anos/
-cientista -> https://oglobo.globo.com/politica/
 cientista -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 cientista -> https://oglobo.globo.com/blogs/pulso/
 cientista -> https://oglobo.globo.com/brasil/
@@ -10783,7 +10430,6 @@ glamour -> https://oglobo.globo.com/ultimas-noticias/
 glamour -> https://oglobo.globo.com/100-anos/#
 glamour -> https://oglobo.globo.com/politica/eleicoes-2024/
 glamour -> https://oglobo.globo.com/100-anos/
-glamour -> https://oglobo.globo.com/politica/
 glamour -> https://oglobo.globo.com/blogs/pulso/
 glamour -> https://oglobo.globo.com/brasil/
 glamour -> https://oglobo.globo.com/brasil/educacao/
@@ -10819,7 +10465,6 @@ fórmula -> https://oglobo.globo.com/ultimas-noticias/
 fórmula -> https://oglobo.globo.com/100-anos/#
 fórmula -> https://oglobo.globo.com/politica/eleicoes-2024/
 fórmula -> https://oglobo.globo.com/100-anos/
-fórmula -> https://oglobo.globo.com/politica/
 fórmula -> https://oglobo.globo.com/blogs/pulso/
 fórmula -> https://oglobo.globo.com/brasil/
 fórmula -> https://oglobo.globo.com/brasil/educacao/
@@ -10847,7 +10492,6 @@ gera -> https://oglobo.globo.com/ultimas-noticias/#
 gratidão: -> https://oglobo.globo.com/mundo/
 castro -> https://oglobo.globo.com/
 castro -> https://oglobo.globo.com/politica/
-castro -> https://oglobo.globo.com/politica/
 castro -> https://oglobo.globo.com/brasil/
 castro -> https://oglobo.globo.com/brasil/seguranca-publica/
 sarney, -> https://oglobo.globo.com/100-anos/#
@@ -10862,7 +10506,6 @@ situação -> https://oglobo.globo.com/ultimas-noticias/
 situação -> https://oglobo.globo.com/politica/eleicoes-2024/
 situação -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 situação -> https://oglobo.globo.com/rio/bairros/
-fábricas -> https://oglobo.globo.com/politica/
 fábricas -> https://oglobo.globo.com/politica/
 deportado -> https://oglobo.globo.com/mundo/
 deportado -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -10887,7 +10530,6 @@ sociais, -> https://oglobo.globo.com/rio/carnaval/
 'queremos -> https://oglobo.globo.com/mundo/
 'queremos -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 acordos -> https://oglobo.globo.com/politica/
-acordos -> https://oglobo.globo.com/politica/
 primeiro -> https://oglobo.globo.com/politica/eleicoes-2024/#
 primeiro -> https://oglobo.globo.com/100-anos/#
 primeiro -> https://oglobo.globo.com/politica/eleicoes-2024/
@@ -10904,7 +10546,6 @@ usado -> https://oglobo.globo.com/rio/
 'com -> https://oglobo.globo.com/100-anos/#
 'com -> https://oglobo.globo.com/100-anos/
 noticia -> https://oglobo.globo.com/politica/
-noticia -> https://oglobo.globo.com/politica/
 noticia -> https://oglobo.globo.com/blogs/pulso/
 impérios -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 postos -> https://oglobo.globo.com/mundo/
@@ -10916,7 +10557,6 @@ favor -> https://oglobo.globo.com/
 favor -> https://oglobo.globo.com/politica/
 favor -> https://oglobo.globo.com/politica/eleicoes-2024/#
 favor -> https://oglobo.globo.com/politica/eleicoes-2024/
-favor -> https://oglobo.globo.com/politica/
 desastre -> https://oglobo.globo.com/ultimas-noticias/
 desastre -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 natureza, -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -10944,7 +10584,6 @@ diferença -> https://oglobo.globo.com/ultimas-noticias/
 diferença -> https://oglobo.globo.com/100-anos/#
 diferença -> https://oglobo.globo.com/politica/eleicoes-2024/
 diferença -> https://oglobo.globo.com/100-anos/
-diferença -> https://oglobo.globo.com/politica/
 diferença -> https://oglobo.globo.com/blogs/pulso/
 diferença -> https://oglobo.globo.com/brasil/
 diferença -> https://oglobo.globo.com/brasil/educacao/
@@ -11011,7 +10650,6 @@ terceiro -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 bolsas -> https://oglobo.globo.com/ultimas-noticias/#
 bolsas -> https://oglobo.globo.com/brasil/
 horas -> https://oglobo.globo.com/politica/
-horas -> https://oglobo.globo.com/politica/
 horas -> https://oglobo.globo.com/blogs/pulso/
 horas -> https://oglobo.globo.com/brasil/
 horas -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/
@@ -11048,7 +10686,6 @@ medicina -> https://oglobo.globo.com/ultimas-noticias/
 medicina -> https://oglobo.globo.com/100-anos/#
 medicina -> https://oglobo.globo.com/politica/eleicoes-2024/
 medicina -> https://oglobo.globo.com/100-anos/
-medicina -> https://oglobo.globo.com/politica/
 medicina -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 medicina -> https://oglobo.globo.com/blogs/pulso/
 medicina -> https://oglobo.globo.com/brasil/
@@ -11081,7 +10718,6 @@ comércio -> https://oglobo.globo.com/ultimas-noticias/
 comércio -> https://oglobo.globo.com/100-anos/#
 comércio -> https://oglobo.globo.com/politica/eleicoes-2024/
 comércio -> https://oglobo.globo.com/100-anos/
-comércio -> https://oglobo.globo.com/politica/
 comércio -> https://oglobo.globo.com/blogs/pulso/
 comércio -> https://oglobo.globo.com/brasil/
 comércio -> https://oglobo.globo.com/brasil/educacao/
@@ -11148,7 +10784,6 @@ humanos -> https://oglobo.globo.com/ultimas-noticias/
 humanos -> https://oglobo.globo.com/100-anos/#
 humanos -> https://oglobo.globo.com/politica/eleicoes-2024/
 humanos -> https://oglobo.globo.com/100-anos/
-humanos -> https://oglobo.globo.com/politica/
 humanos -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 humanos -> https://oglobo.globo.com/blogs/pulso/
 humanos -> https://oglobo.globo.com/brasil/
@@ -11195,7 +10830,6 @@ energia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 escravo -> https://oglobo.globo.com/brasil/direitos-humanos/
 franco -> https://oglobo.globo.com/
 franco -> https://oglobo.globo.com/politica/
-franco -> https://oglobo.globo.com/politica/
 climático -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 climático -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 segurança -> https://oglobo.globo.com/
@@ -11206,7 +10840,6 @@ segurança -> https://oglobo.globo.com/ultimas-noticias/
 segurança -> https://oglobo.globo.com/100-anos/#
 segurança -> https://oglobo.globo.com/politica/eleicoes-2024/
 segurança -> https://oglobo.globo.com/100-anos/
-segurança -> https://oglobo.globo.com/politica/
 segurança -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 segurança -> https://oglobo.globo.com/blogs/pulso/
 segurança -> https://oglobo.globo.com/brasil/
@@ -11274,7 +10907,6 @@ mundo -> https://oglobo.globo.com/ultimas-noticias/
 mundo -> https://oglobo.globo.com/100-anos/#
 mundo -> https://oglobo.globo.com/politica/eleicoes-2024/
 mundo -> https://oglobo.globo.com/100-anos/
-mundo -> https://oglobo.globo.com/politica/
 mundo -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 mundo -> https://oglobo.globo.com/blogs/pulso/
 mundo -> https://oglobo.globo.com/brasil/
@@ -11327,7 +10959,6 @@ saftec -> https://oglobo.globo.com/ultimas-noticias/
 saftec -> https://oglobo.globo.com/100-anos/#
 saftec -> https://oglobo.globo.com/politica/eleicoes-2024/
 saftec -> https://oglobo.globo.com/100-anos/
-saftec -> https://oglobo.globo.com/politica/
 saftec -> https://oglobo.globo.com/blogs/pulso/
 saftec -> https://oglobo.globo.com/brasil/
 saftec -> https://oglobo.globo.com/brasil/educacao/
@@ -11359,7 +10990,6 @@ vinhos -> https://oglobo.globo.com/ultimas-noticias/
 vinhos -> https://oglobo.globo.com/100-anos/#
 vinhos -> https://oglobo.globo.com/politica/eleicoes-2024/
 vinhos -> https://oglobo.globo.com/100-anos/
-vinhos -> https://oglobo.globo.com/politica/
 vinhos -> https://oglobo.globo.com/blogs/pulso/
 vinhos -> https://oglobo.globo.com/brasil/
 vinhos -> https://oglobo.globo.com/brasil/educacao/
@@ -11381,10 +11011,8 @@ vinhos -> https://oglobo.globo.com/mundo/
 vinhos -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 vinhos -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 lula, -> https://oglobo.globo.com/politica/
-lula, -> https://oglobo.globo.com/politica/
 lula, -> https://oglobo.globo.com/blogs/pulso/
 cerca -> https://oglobo.globo.com/
-cerca -> https://oglobo.globo.com/politica/
 cerca -> https://oglobo.globo.com/politica/
 cerca -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 selecionadas -> https://oglobo.globo.com/100-anos/#
@@ -11403,7 +11031,6 @@ concurso -> https://oglobo.globo.com/ultimas-noticias/
 concurso -> https://oglobo.globo.com/100-anos/#
 concurso -> https://oglobo.globo.com/politica/eleicoes-2024/
 concurso -> https://oglobo.globo.com/100-anos/
-concurso -> https://oglobo.globo.com/politica/
 concurso -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 concurso -> https://oglobo.globo.com/blogs/pulso/
 concurso -> https://oglobo.globo.com/brasil/
@@ -11451,7 +11078,6 @@ carnaval -> https://oglobo.globo.com/ultimas-noticias/
 carnaval -> https://oglobo.globo.com/100-anos/#
 carnaval -> https://oglobo.globo.com/politica/eleicoes-2024/
 carnaval -> https://oglobo.globo.com/100-anos/
-carnaval -> https://oglobo.globo.com/politica/
 carnaval -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 carnaval -> https://oglobo.globo.com/blogs/pulso/
 carnaval -> https://oglobo.globo.com/brasil/
@@ -11504,7 +11130,6 @@ região -> https://oglobo.globo.com/brasil/meio-ambiente/
 região -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 penas -> https://oglobo.globo.com/
 penas -> https://oglobo.globo.com/politica/
-penas -> https://oglobo.globo.com/politica/
 esbarram -> https://oglobo.globo.com/rio/web-summit-rio/
 sido -> https://oglobo.globo.com/
 sido -> https://oglobo.globo.com/ultimas-noticias/#
@@ -11526,7 +11151,6 @@ vogue -> https://oglobo.globo.com/ultimas-noticias/
 vogue -> https://oglobo.globo.com/100-anos/#
 vogue -> https://oglobo.globo.com/politica/eleicoes-2024/
 vogue -> https://oglobo.globo.com/100-anos/
-vogue -> https://oglobo.globo.com/politica/
 vogue -> https://oglobo.globo.com/blogs/pulso/
 vogue -> https://oglobo.globo.com/brasil/
 vogue -> https://oglobo.globo.com/brasil/educacao/
@@ -11574,7 +11198,6 @@ siga -> https://oglobo.globo.com/ultimas-noticias/
 siga -> https://oglobo.globo.com/100-anos/#
 siga -> https://oglobo.globo.com/politica/eleicoes-2024/
 siga -> https://oglobo.globo.com/100-anos/
-siga -> https://oglobo.globo.com/politica/
 siga -> https://oglobo.globo.com/blogs/pulso/
 siga -> https://oglobo.globo.com/brasil/
 siga -> https://oglobo.globo.com/brasil/educacao/
@@ -11626,13 +11249,11 @@ sancionou -> https://oglobo.globo.com/brasil/educacao/
 sancionou -> https://oglobo.globo.com/brasil/direitos-humanos/
 artista -> https://oglobo.globo.com/ultimas-noticias/
 arrendadas -> https://oglobo.globo.com/politica/
-arrendadas -> https://oglobo.globo.com/politica/
 senador -> https://oglobo.globo.com/politica/eleicoes-2024/#
 senador -> https://oglobo.globo.com/politica/eleicoes-2024/
 senador -> https://oglobo.globo.com/brasil/minas-gerais/
 páscoa -> https://oglobo.globo.com/
 páscoa -> https://oglobo.globo.com/rio/
-bahia' -> https://oglobo.globo.com/politica/
 bahia' -> https://oglobo.globo.com/politica/
 abertas; -> https://oglobo.globo.com/brasil/educacao/
 identificação -> https://oglobo.globo.com/politica/
@@ -11642,7 +11263,6 @@ comemoração -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noti
 selva, -> https://oglobo.globo.com/mundo/
 áurea: -> https://oglobo.globo.com/brasil/direitos-humanos/
 proíbe -> https://oglobo.globo.com/brasil/educacao/
-informações -> https://oglobo.globo.com/politica/
 informações -> https://oglobo.globo.com/politica/
 informações -> https://oglobo.globo.com/blogs/pulso/
 informações -> https://oglobo.globo.com/brasil/seguranca-publica/
@@ -11666,7 +11286,6 @@ pulso -> https://oglobo.globo.com/ultimas-noticias/
 pulso -> https://oglobo.globo.com/100-anos/#
 pulso -> https://oglobo.globo.com/politica/eleicoes-2024/
 pulso -> https://oglobo.globo.com/100-anos/
-pulso -> https://oglobo.globo.com/politica/
 pulso -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 pulso -> https://oglobo.globo.com/blogs/pulso/
 pulso -> https://oglobo.globo.com/brasil/
@@ -11699,7 +11318,6 @@ zema -> https://oglobo.globo.com/brasil/seguranca-publica/
 zema -> https://oglobo.globo.com/brasil/direitos-humanos/
 zema -> https://oglobo.globo.com/brasil/minas-gerais/
 pontos -> https://oglobo.globo.com/politica/
-pontos -> https://oglobo.globo.com/politica/
 pontos -> https://oglobo.globo.com/blogs/pulso/
 pontos -> https://oglobo.globo.com/brasil/educacao/
 pontos -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
@@ -11712,10 +11330,8 @@ total -> https://oglobo.globo.com/politica/eleicoes-2024/#
 total -> https://oglobo.globo.com/politica/eleicoes-2024/
 total -> https://oglobo.globo.com/brasil/educacao/
 olhar -> https://oglobo.globo.com/politica/
-olhar -> https://oglobo.globo.com/politica/
 tiros -> https://oglobo.globo.com/brasil/seguranca-publica/
 tenta -> https://oglobo.globo.com/
-tenta -> https://oglobo.globo.com/politica/
 tenta -> https://oglobo.globo.com/politica/
 tenta -> https://oglobo.globo.com/mundo/
 tenta -> https://oglobo.globo.com/mundo/clima-e-ciencia/
@@ -11748,7 +11364,6 @@ determinação -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 ficar -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 pontuação. -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 tendências -> https://oglobo.globo.com/politica/
-tendências -> https://oglobo.globo.com/politica/
 comerciais -> https://oglobo.globo.com/
 comerciais -> https://oglobo.globo.com/ultimas-noticias/#
 possui -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -11772,7 +11387,6 @@ conference, -> https://oglobo.globo.com/dialogos-rj/
 favoritos -> https://oglobo.globo.com/ultimas-noticias/#
 favoritos -> https://oglobo.globo.com/politica/
 favoritos -> https://oglobo.globo.com/ultimas-noticias/
-favoritos -> https://oglobo.globo.com/politica/
 favoritos -> https://oglobo.globo.com/brasil/
 favoritos -> https://oglobo.globo.com/rio/
 favoritos -> https://oglobo.globo.com/mundo/
@@ -11798,7 +11412,6 @@ jovem -> https://oglobo.globo.com/ultimas-noticias/
 jovem -> https://oglobo.globo.com/100-anos/#
 jovem -> https://oglobo.globo.com/politica/eleicoes-2024/
 jovem -> https://oglobo.globo.com/100-anos/
-jovem -> https://oglobo.globo.com/politica/
 jovem -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 jovem -> https://oglobo.globo.com/blogs/pulso/
 jovem -> https://oglobo.globo.com/brasil/
@@ -11864,12 +11477,9 @@ picolés -> https://oglobo.globo.com/
 emoção -> https://oglobo.globo.com/
 emoção -> https://oglobo.globo.com/rio/carnaval/
 simplificação -> https://oglobo.globo.com/politica/
-simplificação -> https://oglobo.globo.com/politica/
 ciência’, -> https://oglobo.globo.com/brasil/educacao/premio-jovem-cientista
 esporte, -> https://oglobo.globo.com/politica/
-esporte, -> https://oglobo.globo.com/politica/
 principais -> https://oglobo.globo.com/
-principais -> https://oglobo.globo.com/politica/
 principais -> https://oglobo.globo.com/politica/
 principais -> https://oglobo.globo.com/blogs/pulso/
 principais -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
@@ -11936,7 +11546,6 @@ bicho -> https://oglobo.globo.com/ultimas-noticias/
 bicho -> https://oglobo.globo.com/100-anos/#
 bicho -> https://oglobo.globo.com/politica/eleicoes-2024/
 bicho -> https://oglobo.globo.com/100-anos/
-bicho -> https://oglobo.globo.com/politica/
 bicho -> https://oglobo.globo.com/blogs/pulso/
 bicho -> https://oglobo.globo.com/brasil/
 bicho -> https://oglobo.globo.com/brasil/educacao/
@@ -11968,7 +11577,6 @@ viver -> https://oglobo.globo.com/ultimas-noticias/
 viver -> https://oglobo.globo.com/100-anos/#
 viver -> https://oglobo.globo.com/politica/eleicoes-2024/
 viver -> https://oglobo.globo.com/100-anos/
-viver -> https://oglobo.globo.com/politica/
 viver -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 viver -> https://oglobo.globo.com/blogs/pulso/
 viver -> https://oglobo.globo.com/brasil/
@@ -12022,7 +11630,6 @@ escuta -> https://oglobo.globo.com/ultimas-noticias/
 escuta -> https://oglobo.globo.com/100-anos/#
 escuta -> https://oglobo.globo.com/politica/eleicoes-2024/
 escuta -> https://oglobo.globo.com/100-anos/
-escuta -> https://oglobo.globo.com/politica/
 escuta -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 escuta -> https://oglobo.globo.com/blogs/pulso/
 escuta -> https://oglobo.globo.com/brasil/
@@ -12053,7 +11660,6 @@ intercolegial -> https://oglobo.globo.com/ultimas-noticias/
 intercolegial -> https://oglobo.globo.com/100-anos/#
 intercolegial -> https://oglobo.globo.com/politica/eleicoes-2024/
 intercolegial -> https://oglobo.globo.com/100-anos/
-intercolegial -> https://oglobo.globo.com/politica/
 intercolegial -> https://oglobo.globo.com/blogs/pulso/
 intercolegial -> https://oglobo.globo.com/brasil/
 intercolegial -> https://oglobo.globo.com/brasil/educacao/
@@ -12170,7 +11776,6 @@ assinante -> https://oglobo.globo.com/ultimas-noticias/
 assinante -> https://oglobo.globo.com/100-anos/#
 assinante -> https://oglobo.globo.com/politica/eleicoes-2024/
 assinante -> https://oglobo.globo.com/100-anos/
-assinante -> https://oglobo.globo.com/politica/
 assinante -> https://oglobo.globo.com/blogs/pulso/
 assinante -> https://oglobo.globo.com/brasil/
 assinante -> https://oglobo.globo.com/brasil/educacao/
@@ -12200,7 +11805,6 @@ broadcast, -> https://oglobo.globo.com/ultimas-noticias/
 broadcast, -> https://oglobo.globo.com/100-anos/#
 broadcast, -> https://oglobo.globo.com/politica/eleicoes-2024/
 broadcast, -> https://oglobo.globo.com/100-anos/
-broadcast, -> https://oglobo.globo.com/politica/
 broadcast, -> https://oglobo.globo.com/blogs/pulso/
 broadcast, -> https://oglobo.globo.com/brasil/
 broadcast, -> https://oglobo.globo.com/brasil/educacao/
@@ -12262,7 +11866,6 @@ eleição -> https://oglobo.globo.com/politica/eleicoes-2024/
 salvar -> https://oglobo.globo.com/ultimas-noticias/#
 salvar -> https://oglobo.globo.com/politica/
 salvar -> https://oglobo.globo.com/ultimas-noticias/
-salvar -> https://oglobo.globo.com/politica/
 salvar -> https://oglobo.globo.com/brasil/
 salvar -> https://oglobo.globo.com/rio/
 salvar -> https://oglobo.globo.com/mundo/
@@ -12284,7 +11887,6 @@ notícias -> https://oglobo.globo.com/ultimas-noticias/
 notícias -> https://oglobo.globo.com/100-anos/#
 notícias -> https://oglobo.globo.com/politica/eleicoes-2024/
 notícias -> https://oglobo.globo.com/100-anos/
-notícias -> https://oglobo.globo.com/politica/
 notícias -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 notícias -> https://oglobo.globo.com/blogs/pulso/
 notícias -> https://oglobo.globo.com/brasil/
@@ -12318,7 +11920,6 @@ consumidor -> https://oglobo.globo.com/ultimas-noticias/
 consumidor -> https://oglobo.globo.com/100-anos/#
 consumidor -> https://oglobo.globo.com/politica/eleicoes-2024/
 consumidor -> https://oglobo.globo.com/100-anos/
-consumidor -> https://oglobo.globo.com/politica/
 consumidor -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 consumidor -> https://oglobo.globo.com/blogs/pulso/
 consumidor -> https://oglobo.globo.com/brasil/
@@ -12348,7 +11949,6 @@ reescrito -> https://oglobo.globo.com/ultimas-noticias/
 reescrito -> https://oglobo.globo.com/100-anos/#
 reescrito -> https://oglobo.globo.com/politica/eleicoes-2024/
 reescrito -> https://oglobo.globo.com/100-anos/
-reescrito -> https://oglobo.globo.com/politica/
 reescrito -> https://oglobo.globo.com/blogs/pulso/
 reescrito -> https://oglobo.globo.com/brasil/
 reescrito -> https://oglobo.globo.com/brasil/educacao/
@@ -12405,7 +12005,6 @@ kogut -> https://oglobo.globo.com/ultimas-noticias/
 kogut -> https://oglobo.globo.com/100-anos/#
 kogut -> https://oglobo.globo.com/politica/eleicoes-2024/
 kogut -> https://oglobo.globo.com/100-anos/
-kogut -> https://oglobo.globo.com/politica/
 kogut -> https://oglobo.globo.com/blogs/pulso/
 kogut -> https://oglobo.globo.com/brasil/
 kogut -> https://oglobo.globo.com/brasil/educacao/
@@ -12439,7 +12038,6 @@ humanitário -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 estimar -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
 maicol -> https://oglobo.globo.com/brasil/seguranca-publica/
 argumentos -> https://oglobo.globo.com/politica/
-argumentos -> https://oglobo.globo.com/politica/
 parcial -> https://oglobo.globo.com/rio/carnaval/
 parcial -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 comentários -> https://oglobo.globo.com/brasil/educacao/enem-e-vestibular/noticia/2024/11/11/gabarito-enem-2024-veja-respostas-das-provas-do-1o-e-2o-dia.ghtml
@@ -12462,7 +12060,6 @@ bhfm -> https://oglobo.globo.com/ultimas-noticias/
 bhfm -> https://oglobo.globo.com/100-anos/#
 bhfm -> https://oglobo.globo.com/politica/eleicoes-2024/
 bhfm -> https://oglobo.globo.com/100-anos/
-bhfm -> https://oglobo.globo.com/politica/
 bhfm -> https://oglobo.globo.com/blogs/pulso/
 bhfm -> https://oglobo.globo.com/brasil/
 bhfm -> https://oglobo.globo.com/brasil/educacao/
@@ -12494,7 +12091,6 @@ esportes -> https://oglobo.globo.com/ultimas-noticias/
 esportes -> https://oglobo.globo.com/100-anos/#
 esportes -> https://oglobo.globo.com/politica/eleicoes-2024/
 esportes -> https://oglobo.globo.com/100-anos/
-esportes -> https://oglobo.globo.com/politica/
 esportes -> https://oglobo.globo.com/blogs/pulso/
 esportes -> https://oglobo.globo.com/brasil/
 esportes -> https://oglobo.globo.com/brasil/educacao/
@@ -12523,7 +12119,6 @@ quinta-feira, -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 coreia -> https://oglobo.globo.com/tudo-sobre/assunto/guerra-na-ucrania/
 webb -> https://oglobo.globo.com/mundo/clima-e-ciencia/
 empresa -> https://oglobo.globo.com/politica/
-empresa -> https://oglobo.globo.com/politica/
 empresa -> https://oglobo.globo.com/brasil/sos-rio-grande-do-sul/
 empresa -> https://oglobo.globo.com/rio/bairros/
 arsenal -> https://oglobo.globo.com/rio/
@@ -12540,7 +12135,6 @@ sair -> https://oglobo.globo.com/ultimas-noticias/
 sair -> https://oglobo.globo.com/100-anos/#
 sair -> https://oglobo.globo.com/politica/eleicoes-2024/
 sair -> https://oglobo.globo.com/100-anos/
-sair -> https://oglobo.globo.com/politica/
 sair -> https://oglobo.globo.com/blogs/sonar-a-escuta-das-redes/
 sair -> https://oglobo.globo.com/blogs/pulso/
 sair -> https://oglobo.globo.com/brasil/
@@ -12594,8 +12188,5 @@ response -> https://about.google/products/
 anistia -> https://oglobo.globo.com/politica/#
 tendo -> https://www.dicionariodenomesproprios.com.br/miguel/
 solicitadas -> https://policies.google.com/technologies/cookies?hl=pt-PT&utm_source=ucb
-Elefante -> https://pt.wikipedia.org/wiki/Elefante
-Elefante -> https://pt.wikipedia.org/wiki/Elefante
-Elefante -> https://pt.wikipedia.org/wiki/Elefante
 Elefante -> https://pt.wikipedia.org/wiki/Elefante
 >>>>>>>>> Temporary merge branch 2
