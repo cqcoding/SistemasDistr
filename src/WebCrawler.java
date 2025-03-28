@@ -13,19 +13,23 @@ import java.io.InputStream;
  * Classe responsável por realizar a extração de links de páginas da web e enviá-los para indexação.
  */
 public class WebCrawler {
-    private Set<String> visitedLinks = new HashSet<>();      //guarda os links visitados
-    private static final int MAX_PAGES = 10;                 //limite de páginas para evitar loops infinitos
+    /** Armazena os links visitados. */
+    private Set<String> visitedLinks = new HashSet<>();
+    
+    /** Limite de páginas para evitar loops infinitos. */
+    private static final int MAX_PAGES = 10;                
+    
+    /** Interface para comunicação com o GatewayServer. */
+    private InterfaceGatewayServer gateway; 
 
-    //pra poder filtrar as STOPWORDS
-    /*private Classifier classifier;
-    private Instances trainingData;*/
-
-    private InterfaceGatewayServer gateway;       //interface p/ comunicar com o GATEWAYSERVER
-
-    //conectar ao gatewayserver
+    /**
+     * Construtor da classe.
+     * Conecta-se ao GatewayServer via RMI para envio de URLs para indexação.
+     * @param gatewayUrl URL do servidor RMI para conexão.
+     */
     public WebCrawler() {
         try {
-            // Carregar propriedades usando o ClassLoader
+            /** Carregar propriedades usando o ClassLoader. */
             Properties properties = new Properties();
             try (InputStream input = WebCrawler.class.getClassLoader().getResourceAsStream("config.properties")) {
                 if (input == null) {
@@ -35,32 +39,13 @@ public class WebCrawler {
                 properties.load(input);
             }
 
-            // Obter o IP do servidor a partir das propriedades
+            /** Obtém o IP do servidor a partir das propriedades. */
             String serverIp = properties.getProperty("server.ip", "localhost");
             String gatewayUrl = "rmi://" + serverIp + "/server";
 
             System.out.println("Tentando conectar ao Crawler em: " + gatewayUrl);
             this.gateway = (InterfaceGatewayServer) Naming.lookup(gatewayUrl);
             System.out.println("Conectado ao Crawler!");
-
-            //Carrega os dados de treinamento do arquivo ARFF e treina o modelo
-            /*DataSource source = new DataSource("stopWords.arff");
-            trainingData = source.getDataSet();
-
-            // Verifica se o ARFF tem pelo menos um atributo além da classe
-            if (trainingData.numAttributes() < 2) {
-                throw new IllegalArgumentException("O dataset precisa ter pelo menos um atributo de texto além da classe.");
-            }
-
-            // Define o índice do atributo de classe
-            trainingData.setClassIndex(trainingData.numAttributes() - 1);
-
-            // Aplica StringToWordVector
-            trainingData = aplicarStringToWordVector(trainingData);
-
-            // Treina o classificador NaiveBayes
-            classifier = new NaiveBayes();
-            classifier.buildClassifier(trainingData);*/
         } 
         catch (Exception e) {
             System.err.println("Erro ao conectar ao GatewayServer.");
@@ -103,7 +88,9 @@ public class WebCrawler {
     }
 
     public static void main(String[] args) {
-        WebCrawler crawler = new WebCrawler();             //o obj WebCrawler é criado e recebe a gatewayUrl como parâmetro p/ ter acesso ao GATEWAYSERVER pela conexão RMI
-        crawler.crawl("https://oglobo.globo.com/"); // URL inicial
+        WebCrawler crawler = new WebCrawler();  
+        
+        /** URL inicial. */
+        crawler.crawl("https://oglobo.globo.com/"); 
     }
 }

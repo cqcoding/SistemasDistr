@@ -17,43 +17,64 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * GatewayServer é responsável por gerenciar a comunicação entre os clientes e os servidores Barrel.
+ * Distribui URLs para processamento, realiza buscas distribuídas, monitora a atividade dos Barrels e mantém estatísticas de uso.
+ * Essa classe implementa a interface InterfaceGatewayServer e estende UnicastRemoteObject, permitindo chamadas remotas via remota.
+ */
+
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer {
-// é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
+// NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
     private List<InterfaceBarrel> barrels;
-    private static final String[] palavras_chave = {""}; // Definir palavras chave aqui
+
+    /** Lista de palavras-chave utilizadas para indexação. */
+    private static final String[] palavras_chave = {""};
+
+    /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
     private List<String> urlsIndexados;
 
-    // Estruturas necessárias para armazenar estatísticas
-    /** Contagem das pesquisas mais comuns. */
-    private final Map<String, Integer> pesquisasFrequentes;  //contador das pesquisas + comuns
+    /** Estruturas necessárias para armazenar estatísticas.
+     * Contagem das pesquisas mais comuns.
+     */
+    private final Map<String, Integer> pesquisasFrequentes;  
     
     /** Mapeia os Barrels ativos e o tamanho do índice de cada um. */
-    private final Map<String, Integer> barrelsAtivos;        //lista de Barrels ativos e tamanhos de índice
+    private final Map<String, Integer> barrelsAtivos;        
     
     /** Mapeia cada Barrel ao tempo médio de resposta. */
-    private final Map<String, List<Long>> temposResposta;    //tempo médio de resposta por Barrel
+    private final Map<String, List<Long>> temposResposta;    
 
-    //estruturas necessárias p nextpage, previous e link
-    private List<String> resultadosPesquisa;                 //resultados da última pesquisa feita - list pois não precisa estar associada a uma chave, são só urls
-    private int paginaAtual;                                 //indice da pág atual
-    private static final int TAMANHO_PAGINA = 10;            //nº de resultados por pág
+    /** Estruturas necessárias para nextpage, previous e link.
+     * Lista contendo os resultados da última pesquisa. 
+    */
+    private List<String> resultadosPesquisa;            // usa list, pois não precisa estar associada a uma chave, são só URLs.
+    
+    /** Índice da página atual de resultados. */
+    private int paginaAtual;
+    
+    /** Número de resultados exibidos por página. */                                
+    private static final int TAMANHO_PAGINA = 10; 
 
-    protected GatewayServer(String serverIp) throws RemoteException {    //protegido para garantir que só classes filhas ou dentro do mesmo
-        // pacote possam instanciar o objeto diretamente
-        super();              //exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas
+    /**
+     * Construtor da classe GatewayServer.
+     * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
+     * Protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
+     */
+    protected GatewayServer(String serverIp) throws RemoteException {    
+        super();              // NOTE: exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas.
         this.barrels = new ArrayList<>();
-        this.urlsIndexados = new ArrayList<>();         // inicializa a lista de URLs.
-        // inicia os maps das estatísticas.
+        this.urlsIndexados = new ArrayList<>();    
         this.pesquisasFrequentes = new HashMap<>();     
         this.barrelsAtivos = new HashMap<>();
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
-        this.paginaAtual = 0;                           //pags começam com 0
+        this.paginaAtual = 0;                           
 
-        // Lista de barrels disponíveis
+        /** Lista de Barrels disponíveis para conexão. */
         List<String> barrelUrls = Arrays.asList(
             "rmi://" + serverIp + "/barrel1",
             "rmi://" + serverIp + "/barrel2",
@@ -65,47 +86,48 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         iniciarMonitoramento();
 
     }
-
         public static void main(String[] args) {
             try {
-                // Carregar propriedades do arquivo
+                /** Carrega propriedades do arquivo. */
                 Properties properties = new Properties();
                 try (InputStream input = new FileInputStream("config.properties")) {
                     properties.load(input);
                 }
     
-                // Obter o IP do servidor a partir das propriedades
+                /** Obtém o IP do servidor a partir das propriedades. */
                 String serverIp = properties.getProperty("server.ip", "localhost");
                 String objName = "rmi://" + serverIp + "/server";
     
-                GatewayServer server = new GatewayServer(serverIp);   // Instancia o servidor
+                GatewayServer server = new GatewayServer(serverIp);
     
                 System.out.println("Registrando objeto no RMIRegistry...");
     
                 try {
-                    LocateRegistry.createRegistry(1099);  // Cria um registry RMI na porta 1099
+                    LocateRegistry.createRegistry(1099);
                     System.out.println("Registry RMI criado na porta 1099.");
                 } catch (Exception e) {
                     System.out.println("Registry RMI já existente.");
                 }
     
-                Naming.rebind(objName, server);  // Registra o objeto remoto no RMI Registry
+                /** Registra o objeto remoto no RMI Registry. */
+                Naming.rebind(objName, server);  
     
                 System.out.println("Servidor RMI pronto...");
             } catch (Exception e) {
-                e.printStackTrace();  // Caso dê erro, ele será impresso
+                e.printStackTrace(); 
             }
         }
 
-
+    /**
+     * Estabelece a conexão com os servidores Barrel.
+     */
     private void conectarBarrels(List<String> barrelUrls) {
 
         barrels.clear();    
 
         for(String barrelUrl: barrelUrls){
             try { 
-                    // conecta os Barrels usando a URL fornecida.
-                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
+                    InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl); // conecta os Barrels usando a URL fornecida.
                     barrels.add(barrel);       // adiciona o Barrel conectado à lista de Barrels.
                     System.out.println("Conectado ao barrel: " + barrelUrl);
                 
@@ -129,7 +151,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             return;
         }
 
-        // escolher Barrel com menos URLs na fila.
+        /** Escolher Barrel com menos URLs na fila. */
         InterfaceBarrel melhorBarrel = null;
         int menorFila = Integer.MAX_VALUE;
 
@@ -163,7 +185,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             while (true) {
                 try {
                     Thread.sleep(5000); // verifica a cada 5 segundos.
-                    //System.out.println("Monitorando Barrels...");
 
                     /** Limpa apenas os Barrels inativos do mapa. */
                     barrelsAtivos.entrySet().removeIf(entry -> !barrelAindaAtivo(entry.getKey()));
@@ -438,5 +459,4 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
         }
     }
-
 }

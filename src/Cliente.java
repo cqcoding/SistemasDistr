@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Cliente {
     public static void main(String[] args) {
         try {
-            // Carregar propriedades usando o ClassLoader
+            /** Carregar propriedades usando o ClassLoader. */
             Properties properties = new Properties();
             try (InputStream input = Cliente.class.getClassLoader().getResourceAsStream("config.properties")) {
                 if (input == null) {
@@ -21,7 +21,7 @@ public class Cliente {
                 properties.load(input);
             }
 
-            // Obter o IP do servidor a partir das propriedades
+            /** Obtém o IP do servidor a partir das propriedades. */
             String serverIp = properties.getProperty("server.ip", "localhost");
             String server = "rmi://" + serverIp + "/server";
 
@@ -75,7 +75,7 @@ public class Cliente {
                     break;                  
                 }
                 else {
-                    System.out.println ("Opcao invalida. Tente novamente.");
+                    System.out.println ("Opção inválida. Tente novamente!");
                 }
             } 
         } 
