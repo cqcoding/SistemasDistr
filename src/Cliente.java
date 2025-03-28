@@ -1,8 +1,8 @@
+import java.io.InputStream;
 import java.rmi.Naming;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Properties;
-import java.io.InputStream;
+import java.util.Scanner;
 
 public class Cliente {
     public static void main(String[] args) {

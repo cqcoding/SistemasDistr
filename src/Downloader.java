@@ -98,25 +98,28 @@ public class Downloader {
         }
     }
 
-    //isso é pra salvar o que o cliente colocar de url pra INDEXAR, entra na fila e o downloader vai pegar da fila 
     private void salvarURLNoArquivo(String palavra, String url) {
-        // Cria uma chave única para palavra+URL
-        String chaveUnica = palavra + "_" + url;
-        
-        // Verifica se a combinação já foi processada
-        if (!palavrasProcessadas.contains(chaveUnica)) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
-                writer.write(palavra + " -> " + url + "\n");  // Salva a palavra e a URL no arquivo
-                System.out.println("URL salva: " + palavra + " -> " + url);
-                palavrasProcessadas.add(chaveUnica);  // Marca a combinação como processada
-            } 
-            catch (IOException e) {
-                System.err.println("Erro ao salvar URL no arquivo: " + e.getMessage());
+        try {
+            // Carregar todas as URLs já salvas no arquivo
+            List<String> linhas = Files.readAllLines(Paths.get("urlsIndexados.txt"));
+            
+            // Verificar se a URL já foi salva
+            String novaEntrada = palavra + " -> " + url;
+            if (linhas.contains(novaEntrada)) {
+                System.out.println("URL já salva, ignorando: " + novaEntrada);
+                return; // Evita escrever duplicado
             }
+    
+            // Se não estiver no arquivo, adiciona a nova entrada
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
+                writer.write(novaEntrada + "\n");
+                System.out.println("URL salva: " + novaEntrada);
+            }
+        } 
+        catch (IOException e) {
+            System.err.println("Erro ao salvar URL no arquivo: " + e.getMessage());
         }
     }
-
-   
 
     public void executar(){
         try {
