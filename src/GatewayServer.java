@@ -11,10 +11,10 @@ import java.rmi.registry.LocateRegistry;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
+//import java.io.BufferedWriter;
+//import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
+//import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -295,12 +295,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         /** Consultar cada Barrel e combinar os resultados. */
         for (InterfaceBarrel barrel : barrels) {
-            long inicio = System.nanoTime();
+            long inicio = System.nanoTime();    //tempo em nanossegundos (1 segundo = 1.000.000.000 nanossegundos)
             
             List<String> barrelResultados = barrel.pesquisar(palavra);
             resultados.addAll(barrelResultados);
 
-            long duracao = (System.nanoTime() - inicio) / 100000; 
+            long duracao = (System.nanoTime() - inicio) / 100000; //dividindo por 100.000 transformaria p 10 microsegundos depois no relatorio eu divido por mais 1000 pra virar decimos de segundo
 
             /** Atualização de tempo de resposta no mapa por Barrel. */
             String nomeBarrel = barrel.getNomeBarrel();            // obtém o nome real do Barrel usado.
@@ -423,7 +423,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             } 
             else {
                 long media = tempos.stream()                   // converte a lista de tempos de resposta em um fluxo de dados.
-                            .mapToLong(Long::longValue)        // converte a lista de objetos Long para primitivos long.
+                            .mapToLong(Long::longValue)        // converte a lista de objetos Long para primitivos long - conversão necessária pq ArrayList<Long> armazena objetos Long, não primitivos long e funções matemáticas trabalham com tipos primitivos p/ + eficiência
                             .sum() / tempos.size();            // calcula a média somando todos os valores e dividindo pelo total.
 
                 /** Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo). */
@@ -449,10 +449,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         barrelsAtivos.put(barrel, tamanho);
     }
 
+    //carrega a lista de URLs previamente indexadas do urlsIndexados p/ memória, pra que possam ser usadas pelo programa
     private void carregarURLs() {
-        try (BufferedReader br = new BufferedReader(new FileReader(ArquivoURLS))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ArquivoURLS))) {  //essa linha permite acessar o texto dentro do arquivo --- por causa do readLine, o BufferedReader busca caracteres no buffer até encontrar uma quebra de linha e entrega de volta a linha inteira como uma String
             String url;
-            while ((url = br.readLine()) != null) {
+            while ((url = br.readLine()) != null) {    //br.readline é usado pra ler o arquivo linha por linha - cada linha = 1 url
                 urlsIndexados.add(url);
             }
         } catch (IOException e) {

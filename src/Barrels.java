@@ -55,8 +55,8 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     @Override
     public int getTamanhoIndice() throws RemoteException {
         int total = 0;
-        for (List<String> urls : urlsIndexados.values()) {
-            total += urls.size(); // conta todas as URLs indexadas.
+        for (List<String> urls : urlsIndexados.values()) {  //passa por todo o urlsIndexados 
+            total += urls.size();                           // \_> soma o tamanho da lista e depois retorna esse tamanho
         }
         return total;
     }
@@ -70,7 +70,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void indexar_URL(String palavra, String url) throws RemoteException {
-        urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url);
+        urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url);     //forma compacta de verificar se a chave existe, criar a lista, e adicionar — tudo em uma linha --> Evita nulos e simplifica o código
         salvarURLs();
         System.out.println("URL indexado: " + palavra + " -> " + url);
     }
