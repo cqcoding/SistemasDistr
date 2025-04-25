@@ -5,6 +5,16 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
@@ -12,8 +22,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
+
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Properties;
 import java.io.InputStream;
@@ -22,11 +36,19 @@ import java.io.InputStream;
  * Classe responsável por baixar páginas da web, processar palavras e indexar URLs em um servidor Barrel via remota.
  */
 public class Downloader {
-    InterfaceBarrel barrel;  //conexão com o barrel
-    private Set<String> urlsProcessadas;
-    private Set<String> palavrasProcessadas;
-    private Map<String, Integer> contagemPalavras;
-    private Set<String> stopWords;
+    InterfaceBarrel barrel;                     //conexão com o barrel
+    
+    private Set<String> urlsProcessadas;        // URLs que já foram processadas
+    private Set<String> palavrasProcessadas;    // p/ evitar re-indexar a mesma palavra da mesma URL
+    private Set<String> stopWords;              //carregada inicialmente, atualizada dinamicamente
+    
+    private final ConcurrentMap<String, AtomicInteger> contagemPalavras; //contagem thread-safe
+    private final AtomicLong paginasProcessadasDesdeUltimaVerificacao;   //contador thread-safe
+
+    private static final String stopWords_file = "stopwords.txt";
+    private static final int numero_threads = 5;         //nº de threads para processamento
+    private final ExecutorService threadPool;
+    private final Object stopWordLock = new Object(); //lock p/ operação de atualizarStopWords
 
 /**
      * Construtor da classe Downloader.
@@ -35,17 +57,21 @@ public class Downloader {
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
     public Downloader() throws RemoteException {
-        // inicializar os Sets no construtor.
-        this.urlsProcessadas = new HashSet<>();
-        this.palavrasProcessadas = new HashSet<>();
-        this.contagemPalavras = new HashMap<>();
-        this.stopWords = new HashSet<>();
+        // inicializar os Sets no construtor - usa implementações concorrentes
+        this.urlsProcessadas = ConcurrentHashMap.newKeySet();
+        this.palavrasProcessadas = ConcurrentHashMap.newKeySet();
+        this.stopWords = ConcurrentHashMap.newKeySet();
+        this.contagemPalavras = new ConcurrentHashMap<>();
+        this.paginasProcessadasDesdeUltimaVerificacao = new AtomicLong(0);
+
         carregarStopWords();
 
-       
+        // Inicializa o pool de threads
+        this.threadPool = Executors.newFixedThreadPool(numero_threads);
 
+        //conexão rmi
         try {
-            // Carregar propriedades usando o ClassLoader
+            //carrega propriedades usando o ClassLoader
             Properties properties = new Properties();
             try (InputStream input = Downloader.class.getClassLoader().getResourceAsStream("config.properties")) {
                 if (input == null) {
@@ -69,22 +95,36 @@ public class Downloader {
 
             System.out.println("Tentando conectar ao Barrel em: " + barrelUrl);
             this.barrel = (InterfaceBarrel) Naming.lookup(barrelUrl);
-            System.out.println("Conectado ao Barrel!");
+            System.out.println("Conectado ao Barrel: " + this.barrel.getNomeBarrel());
         } 
         catch (Exception e) {
+            threadPool.shutdownNow(); // Garante que o pool seja desligado se a conexão falhar
+
             System.err.println("Erro ao conectar ao Barrel.");
             e.printStackTrace();
         }
+        //add shutdown hook para tentar desligar o pool corretamente
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
     /**
-     * Carrega as stop words a partir de um arquivo externo, no caso o txt.
+     * Carrega as stop words a partir de um arquivo externo, no caso o stopwords.txt
      */
     private void carregarStopWords() {
         try {
-            List<String> lines = Files.readAllLines(Paths.get("stopwords.txt"));
-            stopWords.addAll(lines);
-        } catch (IOException e) {
+            Set<String> palavrasCarregadas;
+            if (Files.exists(Paths.get(stopWords_file))) {
+                palavrasCarregadas = new HashSet<>(Files.readAllLines(Paths.get(stopWords_file)));
+            } else {
+                System.out.println("Arquivo " + stopWords_file + " não encontrado, iniciando com lista vazia.");
+                palavrasCarregadas = new HashSet<>();
+            }
+           
+            //add ao set concorrente
+            stopWords.addAll(palavrasCarregadas);
+            System.out.println("Stop words carregadas: " + stopWords.size());   //mostra o temenho da lista de sotp words
+        } 
+        catch (IOException e) {
             System.err.println("Erro ao carregar stop words: " + e.getMessage());
         }
     }
@@ -94,126 +134,260 @@ public class Downloader {
      * Palavras que aparecem mais de 100 vezes são adicionadas ao arquivo.
      */
     private void atualizarStopWords() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("stopwords.txt", true))) {
-            // realiza a filtragem das palavras.
-            contagemPalavras.entrySet().stream()
-                .filter(entry -> entry.getValue() > 100)
-                .forEach(entry -> {
-                    try {
-                        writer.write(entry.getKey() + "\n");
-                        palavrasProcessadas.add(entry.getKey());
-                    } catch (IOException e) {
-                        System.err.println("Erro ao atualizar stop words: " + e.getMessage());
+        //sincroniza a operação p/ evitar múltiplas threads fazendo isso ao mesmo tempo
+        synchronized (stopWordLock) {
+            Set<String> palavrasParaAdicionarArquivo = new HashSet<>();
+            int threshold = 100; //limite
+
+            //1 -> identifica localmente palavras frequentes que AINDA não estão no set em memória
+            contagemPalavras.forEach((palavra, count) -> {
+                if (count.get() > threshold && !stopWords.contains(palavra)) {
+                    palavrasParaAdicionarArquivo.add(palavra);
+                }
+            });
+
+            if (palavrasParaAdicionarArquivo.isEmpty()) {
+                return; //n fazer nada
+            }
+
+            System.out.println("Tentando adicionar " + palavrasParaAdicionarArquivo.size() + " novas stop words potenciais.");
+
+            //2 -> tenta obter lock no arquivo p/ escrita segura
+            try (FileChannel channel = FileChannel.open(Paths.get(stopWords_file),
+                         StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+                 FileLock lock = channel.lock()) { //lock exclusivo
+
+                System.out.println("Lock obtido em " + stopWords_file + ". Verificando e adicionando.");
+
+                //3 -> DENTRO DO LOCK: Re-ler o arquivo p/ segurança
+                 Set<String> stopWordsAtuaisNoArquivo = new HashSet<>(Files.readAllLines(Paths.get(stopWords_file)));
+                 int palavrasRealmenteAdicionadas = 0;
+
+                //4 -> add ao arquivo e ao set em memória (stopWords)
+                try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(stopWords_file), StandardOpenOption.APPEND)) {
+                    for (String palavra : palavrasParaAdicionarArquivo) {
+                        if (!stopWordsAtuaisNoArquivo.contains(palavra)) {
+                            writer.write(palavra);
+                            writer.newLine();
+                            stopWords.add(palavra);         //add ao set concorrente em memória
+                            palavrasRealmenteAdicionadas++;
+                        } else {
+                             //se já tá no arquivo (adicionado por outra thread/instância), garante que esteja no set em memória desta instância também
+                             stopWords.add(palavra);
+                         }
                     }
-                });
-        } catch (IOException e) {
-            System.err.println("Erro ao abrir arquivo de stop words: " + e.getMessage());
-        }
+                }
+
+                if (palavrasRealmenteAdicionadas > 0) {
+                     System.out.println(palavrasRealmenteAdicionadas + " novas stop words adicionadas ao arquivo e à memória.");
+                } 
+                else {
+                     System.out.println("Nenhuma palavra nova precisou ser adicionada ao arquivo.");
+                }
+
+            } 
+            catch (IOException e) {
+                System.err.println("Erro de I/O ao tentar atualizar " + stopWords_file + ": " + e.getMessage());
+            } 
+            catch (Exception e) {
+                System.err.println("Erro ao tentar obter lock ou atualizar " + stopWords_file + ": " + e.getMessage());
+            }
+       } //fim do synchronized (stopWordLock)
     }
 
-    private void salvarURLNoArquivo(String palavra, String url) {
-        try {
-            // Carregar todas as URLs já salvas no arquivo
-            List<String> linhas = Files.readAllLines(Paths.get("urlsIndexados.txt"));
-            
-            // Verificar se a URL já foi salva
-            String novaEntrada = palavra + " -> " + url;
-            if (linhas.contains(novaEntrada)) {
-                //System.out.println("URL já salva, ignorando: " + novaEntrada);
-                return; // Evita escrever duplicado
-            }
-    
-            // Se não estiver no arquivo, adiciona a nova entrada
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("urlsIndexados.txt", true))) {
-                writer.write(novaEntrada + "\n");
-                System.out.println("URL salva: " + novaEntrada);
-            }
-        } 
-        catch (IOException e) {
-            System.err.println("Erro ao salvar URL no arquivo: " + e.getMessage());
+    // Classe interna para a tarefa de processar uma URL
+    private class ProcessUrlTask implements Runnable {
+        private final String url;
+
+        ProcessUrlTask(String url) {
+            this.url = url;
         }
-    }
 
-    public void executar(){
-        try {
-            while (true) {
-                String url = barrel.get_url();             // obtém a próxima URL para baixar.
+        @Override
+        public void run() {
+            try {
+                 System.out.println("[" + Thread.currentThread().getName() + "] Processando: " + url);
 
-                if (url == null) {                 // Verifica se a URL já foi processada
-                    System.out.println("Nenhuma URL disponível para processasmento");
-                    Thread.sleep(1000);
-                    continue;
-                }
+                 // 1. Baixar conteúdo (Jsoup)
+                 Document doc = Jsoup.connect(url)
+                                   .userAgent("MeuCrawlerMultiThread/1.0")
+                                   .timeout(15000) // Aumentar timeout talvez
+                                   .get();
 
-                if (urlsProcessadas.contains(url)) {
-                    System.out.println("URL já processada: " + url);
-                    continue;
-                }
+                 // 2. Processar palavras
+                 String textoCompleto = doc.wholeText();
+                 String[] palavras = textoCompleto.split("\\s+");
 
-                System.out.println("Baixando: " + url);
-                urlsProcessadas.add(url);  // marca a URL como processada.
-                Document doc = Jsoup.connect(url).get();   // carrega a URL que está no Jsoup.
-                Elements anchors = doc.select("a");
+                 for (String palavra : palavras) {
+                     palavra = palavra.trim().toLowerCase().replaceAll("[^a-z0-9]", "");
 
-                // envia novas URLs encontradas para indexar.
-                for (Element anchor : anchors) {
-                    String href = anchor.attr("href");
-                    // Verifica se a URL é absoluta e não foi processada
-                    if (!href.isEmpty() && !urlsProcessadas.contains(href) && (href.startsWith("http://") || href.startsWith("https://"))) {
-                        barrel.put_url(href);
-                    }
-                }
+                     // Verifica se não é stopword ANTES de indexar/contar
+                     if (palavra.length() > 2 && !stopWords.contains(palavra)) {
+                         // Indexar no Barrel (se ainda não indexado para esta URL)
+                         String chaveIndex = palavra + "_" + url;
+                         // add retorna true se o elemento não estava presente
+                         if (palavrasProcessadas.add(chaveIndex)) {
+                             try {
+                                 barrel.indexar_URL(palavra, url);
+                             } catch (RemoteException re) {
+                                 System.err.println("[" + Thread.currentThread().getName() + "] Erro RMI ao indexar '" + palavra + "': " + re.getMessage());
+                                 // Remover da lista de indexados se falhou? Opcional.
+                                 palavrasProcessadas.remove(chaveIndex);
+                             }
+                         }
 
-                // processa palavras e envia ao Gateway.
-                String[] palavras = Jsoup.parse(doc.html()).wholeText().split(" ");
-                for (String palavra : palavras) {
-                    palavra = palavra.trim().toLowerCase();  // remove espaços e converte para minúsculas.
-
-                     // verifica se a palavra é uma stop word.
-                     if (stopWords.contains(palavra)) {
-                        continue; // pula a palavra se for uma stop word.
-                    }
-
-                    contagemPalavras.put(palavra, contagemPalavras.getOrDefault(palavra, 0) + 1);
-
-                     // cria uma chave única para a palavra + URL.
-                     String chaveUnica = palavra + "_" + url;
-                     if (palavra.length() > 3 && !palavrasProcessadas.contains(chaveUnica)) {
-                         barrel.indexar_URL(palavra, url);
-                         palavrasProcessadas.add(chaveUnica);
-                         salvarURLNoArquivo(palavra, url);
+                         // Contar a palavra (thread-safe)
+                         contagemPalavras.computeIfAbsent(palavra, k -> new AtomicInteger(0)).incrementAndGet();
                      }
+                 }
+
+                 // 3. Extrair e adicionar novos links à fila do Barrel
+                 Elements links = doc.select("a[href]");
+                 for (Element link : links) {
+                     String nextUrl = link.absUrl("href");
+                     // Verifica se é válido e se JÁ FOI SUBMETIDO para processamento por alguma thread
+                     if (nextUrl != null && !nextUrl.isEmpty() && nextUrl.startsWith("http") && urlsProcessadas.add(nextUrl)) {
+                         // Se add retornou true, a URL era nova neste set.
+                         // Adiciona à fila do Barrel (put_url é thread-safe no servidor)
+                         try {
+                             barrel.put_url(nextUrl);
+                         } catch (RemoteException re) {
+                             System.err.println("[" + Thread.currentThread().getName() + "] Erro RMI ao adicionar link '" + nextUrl + "': " + re.getMessage());
+                             // Remover de urlsProcessadas para tentar novamente depois? Opcional.
+                             urlsProcessadas.remove(nextUrl);
+                         }
+                     }
+                     // Se urlsProcessadas.add(nextUrl) retornou false, outra thread já submeteu/processou.
+                 }
+
+                 // 4. Incrementa contador de páginas processadas
+                 long paginasProcessadas = paginasProcessadasDesdeUltimaVerificacao.incrementAndGet();
+
+                 // 5. Verifica necessidade de atualizar stop words (disparado por uma das threads)
+                 // Faz a verificação aqui dentro, mas a atualização em si é sincronizada
+                 int checkThreshold = 50; // Verifica a cada 50 páginas (total, não por thread)
+                 if (paginasProcessadas % checkThreshold == 0) {
+                     System.out.println("[" + Thread.currentThread().getName() + "] Atingido threshold para verificar stop words ("+ paginasProcessadas +").");
+                     atualizarStopWords(); // Método interno é sincronizado
+                 }
+                 System.out.println("[" + Thread.currentThread().getName() + "] Concluído: " + url);
+
+
+            } catch (IOException | IllegalArgumentException e) {
+                 System.err.println("[" + Thread.currentThread().getName() + "] Erro ao baixar/processar URL '" + url + "': " + e.getMessage());
+                 // Não fazer nada, a URL foi marcada como processada (urlsProcessadas.add)
+            } catch (Exception e) {
+                  System.err.println("[" + Thread.currentThread().getName() + "] Erro inesperado processando URL '" + url + "': " + e.getMessage());
+                  e.printStackTrace(); // Imprime stack trace para erros inesperados
+            }
+        } // Fim do run()
+    } // Fim da classe interna ProcessUrlTask
+
+
+    //basicamente pega as URLs do barrel, processa e encontra novos links --> alimenta o pool de threads com URLs da fila do Barrel
+    public void executar(){
+        if (barrel == null) {
+            System.err.println("Downloader sem conexão com Barrel.");
+            return;
+        }
+        System.out.println("Downloader iniciado com " + numero_threads + " threads.");
+
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                // Verifica se o pool de threads está ativo
+                if (threadPool.isShutdown()) {
+                    System.out.println("Thread pool desligado. Encerrando loop principal.");
+                    break;
                 }
 
-                atualizarStopWords();
+                String url = null;
+                try {
+                    url = barrel.get_url();   //obtém a próxima URL para baixar
+                } 
+                catch (RemoteException e) {
+                     System.err.println("Erro RMI ao obter URL do Barrel: " + e.getMessage() + ". Esperando...");
+                     Thread.sleep(5000);    //pausa antes de tentar de novo
+                     continue;
+                }
+                
 
-                System.out.println("Página processada e enviada ao Barrel.");
-                Thread.sleep(1000);                    // para evitar sobrecarga do servidor.
-            }
-        } catch (Exception e) {
+                if (url != null) {               //if pra verificar se a URL já foi processada
+                    // Adiciona ao set ANTES de submeter para evitar que múltiplas threads peguem a mesma URL
+                    // da fila rapidamente antes que a primeira possa marcá-la como processada.
+                    if (urlsProcessadas.add(url)) {
+                        //se add retornou true, a URL é nova, submete a tarefa
+                        threadPool.submit(new ProcessUrlTask(url));
+                        System.out.println("URL colocada em processamento: " + url); 
+                    } 
+                    else {
+                        //se add retornou false, a URL já foi processada, daí ignora
+                        System.out.println("URL já processada, ignorando: " + url); 
+                    }
+                } else {
+                    //fila vazia -> espera um pouco
+                    System.out.println("Fila do Barrel vazia. Esperando..."); 
+                    Thread.sleep(3000);           //espera 3 segundos antes de verificar dnv
+                }
+
+                //pausa curta no loop principal p/ não sobrecarregar a CPU apenas verificando a fila
+                Thread.sleep(100);
+
+            } // Fim do while
+        } catch (InterruptedException e) {
+            System.out.println("Loop principal do Downloader interrompido.");
+            Thread.currentThread().interrupt();
+       } catch (Exception e) {
+            System.err.println("Erro inesperado no loop principal do Downloader: " + e.getMessage());
             e.printStackTrace();
-        }
+       } finally {
+            System.out.println("Encerrando loop principal do Downloader.");
+            shutdown(); // Garante que o shutdown seja chamado ao sair do loop
+       }
     }
 
-    public void verificarFila() {
-        try {
-            if (barrel.isQueueEmpty()) {
-                System.out.println("A fila de URLs está vazia.");
-            } else {
-                System.out.println("A fila de URLs contém elementos.");
+    //Desliga o pool de threads de forma organizada
+    public void shutdown() {
+        System.out.println("Iniciando desligamento do Downloader...");
+
+        if (threadPool != null && !threadPool.isShutdown()) {
+            threadPool.shutdown(); // Desabilita novas tarefas
+            
+            try {
+                // Espera um tempo para as tarefas existentes terminarem
+                if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    System.err.println("Pool de threads não terminou em 60 segundos, forçando desligamento...");
+                    threadPool.shutdownNow(); // Cancela tarefas em execução
+                    // Espera um pouco mais pelo cancelamento
+                    if (!threadPool.awaitTermination(60, TimeUnit.SECONDS))
+                        System.err.println("Pool de threads não desligou.");
+                } 
+                else {
+                     System.out.println("Pool de threads desligado com sucesso.");
+                }
+            } 
+            catch (InterruptedException ie) {
+                System.err.println("Interrompido durante o desligamento do pool.");
+                threadPool.shutdownNow();
+                Thread.currentThread().interrupt();
             }
-        } catch (RemoteException e) {
-            System.err.println("Erro ao verificar a fila: " + e.getMessage());
         }
+        //tenta atualizar stop words uma última vez
+        System.out.println("Tentando atualização final de stop words...");
+        atualizarStopWords();
+        System.out.println("Downloader desligado.");
     }
 
     public static void main(String[] args) {
-        Downloader down;
         try {
-            down = new Downloader();
+            Downloader down = new Downloader();
             down.executar();
-        } catch (RemoteException e) {
+
+            //p prog pode terminar aqui se executar() retornar, mas as threads do pool continuarão rodando - o shutdown hook cuida do desligamento
+        } 
+        catch (RemoteException e) {
+            System.err.println("Falha ao iniciar Downloader: " + e.getMessage());
             e.printStackTrace();
+            System.exit(1);    //sai se não conseguir iniciar
         }
     }
 }
