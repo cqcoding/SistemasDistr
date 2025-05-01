@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Demonstração de Escopos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        .scope-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .scope-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .counter {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Demonstração de Escopos de Variáveis</h1>
+    
+    <div class="scope-box">
+        <div class="scope-title">Request Scope (Novo a cada requisição)</div>
+        <div class="counter" th:text="${requestCounter}">0</div>
+        <p>Este contador é reiniciado a cada vez que você atualiza a página.</p>
+    </div>
+    
+    <div class="scope-box">
+        <div class="scope-title">Session Scope (Mantido na sessão do usuário)</div>
+        <div class="counter" th:text="${sessionCounter}">0</div>
+        <p>Este contador é mantido enquanto você mantém a sessão do navegador aberta.</p>
+    </div>
+    
+    <div class="scope-box">
+        <div class="scope-title">Application Scope (Compartilhado entre todos os usuários)</div>
+        <div class="counter" th:text="${applicationCounter}">0</div>
+        <p>Este contador é incrementado por todos os usuários que acessam a aplicação.</p>
+    </div>
+    
+    <p>
+        <a th:href="@{/counters}">Atualizar Página</a> |
+        <a th:href="@{/create-project}">Criar Projeto</a>
+    </p>
+</body>
+</html> 
