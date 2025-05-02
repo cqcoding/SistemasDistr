@@ -287,7 +287,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     }
 
     /**
-      * Classe interna para representar um resultado de pesquisa, contendo URL, título e citação.
+      * Organizar os dados de cada resultado da pesquisa: URL, título e citação
       */
       private static class ResultadoPesquisa {
         String url;
@@ -456,45 +456,61 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     @Override
     public String pagina_estatisticas() throws RemoteException {
         StringBuilder relatorioEstatisticas = new StringBuilder();
-
+    
         relatorioEstatisticas.append("---- ESTATÍSTICAS ----\n");
+    
+        gerarRelatorioPesquisasFrequentes(relatorioEstatisticas);
+        gerarRelatorioBarrelsAtivos(relatorioEstatisticas);
+        gerarRelatorioTemposResposta(relatorioEstatisticas);
+    
+        return relatorioEstatisticas.toString();     // retorna o relatório final como string
+    }
 
+    /** Lista das 10 pesquisas mais frequentes */
+    private void gerarRelatorioPesquisasFrequentes(StringBuilder relatorio) {
         /** Visualiza o conteúdo do mapa pesquisasFrequentes e mostra no terminal do servidor. */
-        System.out.println("Pesquisas frequentes: " + pesquisasFrequentes);
-
-         /** append -> adiciona texto na stringbuilder, nesse caso um título para o relatório. */
-        relatorioEstatisticas.append("Top 10 pesquisas mais comuns:\n");     
- 
+        System.out.println("Pesquisas frequentes: " + pesquisasFrequentes); 
+        
+        /** append -> adiciona texto na stringbuilder, nesse caso um título para o relatório */
+        relatorio.append("Top 10 pesquisas mais comuns:\n");
+    
         pesquisasFrequentes.entrySet().stream()                             // converte pesquisasFrequentes (palavra -> quantidade) em um fluxo de dados.
             .sorted((a, b) -> b.getValue().compareTo(a.getValue()))         // ordena os resultados do maior para o menor número de pesquisas.
-            .limit(10)                                              // mantém só os 10 + pesquisados.
-            .forEach(entry -> relatorioEstatisticas.append(entry.getKey())  // para cada entrada, adiciona a palavra pesquisada.
-                                .append(": ")          // adiciona um separador.
-                                .append(entry.getValue())  // adiciona o número de vezes que foi pesquisada.
-                                .append("\n"));        // pula para a próxima linha.
+            .limit(10)                                              // mantém só os 10 + pesquisados
+            .forEach(entry -> relatorio.append(entry.getKey())  // para cada entrada, adiciona a palavra pesquisada
+                                .append(": ")          // adiciona um separador
+                                .append(entry.getValue())  // adiciona o número de vezes que foi pesquisada
+                                .append("\n"));        // pula para a próxima linha
+    }
 
-        System.out.println("Barrels ativos: " + barrelsAtivos);
+
+    /** Lista de Barrels ativos e tamanhos do índice */
+    private void gerarRelatorioBarrelsAtivos(StringBuilder relatorio) {
+        System.out.println("Barrels ativos: " + barrelsAtivos); 
+        
+        relatorio.append("\nBarrels ativos e tamanho do índice:\n");
     
-        /** Lista de Barrels ativos e tamanhos do índice. */
-        relatorioEstatisticas.append("\nBarrels ativos e tamanho do índice:\n");                          
-
         barrelsAtivos.forEach((barrel, tamanho) ->        // percorre barrelsAtivos (Barrel -> tamanho do índice).
-        relatorioEstatisticas.append(barrel)              // adiciona o nome do Barrel.
+        relatorio.append(barrel)              // adiciona o nome do Barrel.
                 .append(": ")                         
                 .append(tamanho)                          // adiciona o tamanho do índice (número de URLs indexados).
                 .append(" URLs\n"));                  // especifica que o valor representa URLs e pula para a próxima linha.
+    }
+    
 
-        System.out.println("Tempos de resposta por Barrel: " + temposResposta);
+    /** Lista de tempos de resposta dos barrels */
+    private void gerarRelatorioTemposResposta(StringBuilder relatorio) {
+        System.out.println("Tempos de resposta por Barrel: " + temposResposta); 
 
-        relatorioEstatisticas.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");  
-        
+        relatorio.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");
+    
         for (var entry : temposResposta.entrySet()) {      // percorre temposResposta (Barrel -> lista de tempos de resposta).
             String barrel = entry.getKey();                // obtém o nome do Barrel.
             List<Long> tempos = entry.getValue();          // obtém a lista de tempos de resposta para esse Barrel.
         
             /** Verifica se há tempos registrados para o Barrel. */
             if (tempos.isEmpty()) {
-                relatorioEstatisticas.append(barrel).append(": Sem dados\n");    // exibe "Sem dados" caso não haja tempos.
+                relatorio.append(barrel).append(": Sem dados\n");    // exibe "Sem dados" caso não haja tempos.
             } 
             else {
                 long media = tempos.stream()                   // converte a lista de tempos de resposta em um fluxo de dados.
@@ -504,14 +520,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 /** Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo). */
                 long mediaEmMicrosegundos = media / 1000;
 
-                relatorioEstatisticas.append(barrel)           
+                relatorio.append(barrel)           
                     .append(": ")                          
                     .append(mediaEmMicrosegundos)          // adiciona o tempo médio de resposta.
                     .append("\n");   
             }                      
         }
-
-        return relatorioEstatisticas.toString();           // retorna o relatório final como string.
     }
 
     /**
@@ -534,5 +548,15 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         } catch (IOException e) {
             System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
         }
+    }
+    @Override
+    public int getTotalPaginas(String palavra) throws RemoteException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTotalPaginas'");
+    }
+    @Override
+    public String getPaginaAtual(String palavra, int numeroPagina) throws RemoteException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPaginaAtual'");
     }
 }
