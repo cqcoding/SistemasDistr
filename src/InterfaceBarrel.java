@@ -53,9 +53,6 @@ public interface InterfaceBarrel extends Remote {
 
     /** Retorna a próxima URL a ser baixada pelo Downloader. */
     String get_url() throws RemoteException;
-
-    /** Adiciona uma nova URL à fila do index, permitindo que o Downloader envie novos links encontrados. */
-    void put_url(String url) throws RemoteException;
     
     boolean isQueueEmpty() throws RemoteException;
 

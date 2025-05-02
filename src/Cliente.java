@@ -59,14 +59,12 @@ public class Cliente {
                     String url = scanner.nextLine();
 
                     gateway.enviarURLParaProcessamento(url);       // adiciona a URL à lista de processamento dos Barrels.
-                    System.out.println("URL indexada com sucesso!");      
+                    System.out.println("URL indexada com sucesso!"); 
                 }
 
                 else if (opcao == 3){
                     String estatisticas = gateway.pagina_estatisticas();  // coleta as estatísticas.
-                    System.out.println(estatisticas);                    
-                    
-                    System.out.println("Estatísticas mostradas com sucesso!");      
+                    System.out.println(estatisticas);                         
                 }
 
                 else if (opcao == 4){
@@ -82,6 +80,9 @@ public class Cliente {
         catch (Exception e){
             System.err.println("Erro no cliente: " + e.getMessage());
             e.printStackTrace();
+        }
+        finally {
+            System.out.println("Cliente finalizado."); // Mensagem final
         }
 
     }

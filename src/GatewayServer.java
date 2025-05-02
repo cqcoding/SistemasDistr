@@ -169,8 +169,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
 
         if (melhorBarrel != null) {
+            //melhorBarrel.adicionarURLNaFila(url);
+            //System.out.println("URL enviada para processamento no Barrel.");
+
+            System.out.println("Gateway: Enviando URL '" + url + "' para " + melhorBarrel.getNomeBarrel()); 
             melhorBarrel.adicionarURLNaFila(url);
-            System.out.println("URL enviada para processamento no Barrel.");
+            System.out.println("Gateway: URL enviada para processamento no Barrel. Novo tamanho da fila: " + melhorBarrel.tamanhoFilaURLs()); 
         } 
         else {
             System.out.println("Nenhum Barrel disponível para receber a URL.");

@@ -83,19 +83,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public String get_url() throws RemoteException {
-        return urlQueue.poll();
-    }
-
-    /**
-     * Adiciona uma nova URL à fila.
-     *
-     * @param url URL a ser adicionada.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
-     */
-    @Override
-    public void put_url(String url) throws RemoteException {
-        urlQueue.add(url);
-        System.out.println("Nova URL adicionada à fila: " + url);
+        //return urlQueue.poll();
+        System.out.println(nome + ": get_url chamada. Tamanho atual da fila: " + urlQueue.size());
+        String url = urlQueue.poll();
+        System.out.println(nome + ": get_url retornando: " + url);
+        return url;
     }
 
     /**
@@ -171,8 +163,9 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void adicionarURLNaFila(String url) throws RemoteException {
+        System.out.println(this.nome + ": Método adicionarURLNaFila chamado com URL: " + url + ". Tamanho atual da fila: " + urlQueue.size());
         urlQueue.add(url);
-        System.out.println("URL adicionada à fila: " + url);
+        System.out.println("URL adicionada à fila: " + url + ". Novo tamanho da fila: " + urlQueue.size());
     }
 
     /**

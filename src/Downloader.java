@@ -204,7 +204,9 @@ public class Downloader{
                 try {
                     //pega URL da fila do barrel
                     url = barrel.get_url(); 
-
+                    // ---- LOG ------
+                    System.out.println("Downloader Thread " + Thread.currentThread() + ": URL recebida de get_url(): '" + url + "'");
+                    
                     if (url == null) {
                         // Fila do Barrel vazia, espera um pouco antes de tentar novamente
                          System.out.println("Thread " + Thread.currentThread() + ": Fila do Barrel vazia. Aguardando...");
@@ -225,9 +227,11 @@ public class Downloader{
                 }
 
                 //processamento da URL obtida 
+                System.out.println("Downloader Thread " + Thread.currentThread() + ": Processando URL: " + url);
+
                 // Verifica se já processou a URL
                 if (!urlsProcessadas.add(url)) {
-                    //System.out.println("URL já processada por esta instância: " + url);
+                    System.out.println("URL já processada por esta instância: " + url);
                     continue; // Pega a próxima URL
                 }
 
@@ -286,7 +290,7 @@ public class Downloader{
                                 try {
                                     //verifica urlsProcessadas antes de enviar
                                     if (!urlsProcessadas.contains(nextUrl)) {        
-                                        barrel.put_url(nextUrl); 
+                                        barrel.adicionarURLNaFila(nextUrl); 
                                     }
                                 } catch (RemoteException e) {
                                      System.err.println("Thread " + Thread.currentThread() + ": Erro RMI ao enviar novo link '" + nextUrl + "' para Barrel: " + e.getMessage());
