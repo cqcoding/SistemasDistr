@@ -44,13 +44,14 @@ public class Cliente {
                     if (resultados.isEmpty()) {          // se a lista estiver vazia, irá aparecer a mensagem informando que não encontrou resultado.
                         System.out.println("Nenhum resultado encontrado.");
                     } 
-
                     else {     // se não, irá printar os resultados.
-                        System.out.println("Resultados:");
+                        /*System.out.println("Resultados:");
                        
                         for (String url : resultados) {             // percorre todas as URLs armazenadas em 'resultados'.
                             System.out.println("- " + url);
-                        }
+                        }*/
+
+                        exibirResultadosPaginados(resultados, scanner, gateway);
                     }    
                 }
 
@@ -85,6 +86,52 @@ public class Cliente {
             System.out.println("Cliente finalizado."); // Mensagem final
         }
 
+    }
+
+    private static void exibirResultadosPaginados(List<String> resultados, Scanner scanner,
+        InterfaceGatewayServer gateway) throws java.rmi.RemoteException {
+        
+            int paginaAtual = 0;
+        int totalPaginas = (int) Math.ceil((double) resultados.size() / 10);
+ 
+        while (true) {
+            System.out.println("\n--- Página " + (paginaAtual + 1) + " de " + totalPaginas + " ---");
+            
+            for (int i = paginaAtual * 10; i < Math.min((paginaAtual + 1) * 10, resultados.size()); i++) {
+                System.out.println(resultados.get(i));
+                System.out.println("---");
+            }
+ 
+            System.out.println("\nOpções: \n1 - Próxima Página \n2 - Página Anterior \n3 - Voltar ao Menu Principal");
+            int escolha = scanner.nextInt();
+            scanner.nextLine(); // Consumir a nova linha
+ 
+            if (escolha == 1) {
+                if (paginaAtual < totalPaginas - 1) {
+                    paginaAtual++;
+                } 
+                else {
+                    System.out.println("Você está na última página.");
+                }
+            } 
+             
+            else if (escolha == 2) {
+                if (paginaAtual > 0) {
+                    paginaAtual--;
+                } 
+                else {
+                    System.out.println("Você está na primeira página.");
+                }
+            } 
+            
+            else if (escolha == 3) {
+                break;
+            } 
+            
+            else {
+                System.out.println("Opção inválida.");
+            }
+        }
     }
     
 }

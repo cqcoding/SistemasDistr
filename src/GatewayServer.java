@@ -1,6 +1,9 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Properties;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
-//import java.io.BufferedWriter;
-//import java.io.File;
 import java.io.FileReader;
-//import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -50,7 +50,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** Estruturas necessárias para nextpage, previous e link.
      * Lista contendo os resultados da última pesquisa. 
     */
-    private List<String> resultadosPesquisa;            // usa list, pois não precisa estar associada a uma chave, são só URLs.
+    private List<ResultadoPesquisa> resultadosPesquisa;           // usa list, pois não precisa estar associada a uma chave, são só URLs.
     
     /** Índice da página atual de resultados. */
     private int paginaAtual;
@@ -287,6 +287,26 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     }
 
     /**
+      * Classe interna para representar um resultado de pesquisa, contendo URL, título e citação.
+      */
+      private static class ResultadoPesquisa {
+        String url;
+        String titulo;
+        String citacao;
+
+        public ResultadoPesquisa(String url, String titulo, String citacao) {
+            this.url = url;
+            this.titulo = titulo;
+            this.citacao = citacao;
+        }
+
+        @Override
+        public String toString() {
+            return "Título: " + titulo + "\nURL: " + url + "\nCitação: " + citacao;
+        }
+    }
+
+    /**
      * Realiza uma pesquisa distribuída nos Barrels.
      *
      * @param palavra palavra-chave da pesquisa.
@@ -296,6 +316,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
         List<String> resultados = new ArrayList<>();
+        List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
 
         /** Consultar cada Barrel e combinar os resultados. */
         for (InterfaceBarrel barrel : barrels) {
@@ -312,14 +333,48 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             temposResposta.get(nomeBarrel).add(duracao);
         }
 
+        for (String url : resultados) {
+            ResultadoPesquisa resultado = obterDetalhesDaURL(url);
+            if (resultado != null) {
+                resultadosComDetalhes.add(resultado);
+            }
+        }
+
         /** Atualiza a contagem da palavra pesquisada - estatísticas. */
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
 
-        this.resultadosPesquisa = resultados;
+        this.resultadosPesquisa = resultadosComDetalhes;
         this.paginaAtual = 0;
-
-        return resultados;
+        
+        // Converter para List<String> para manter a compatibilidade com a assinatura do método
+        List<String> resultadosFormatados = new ArrayList<>();
+        for (ResultadoPesquisa resultado : resultadosPesquisa) {
+            resultadosFormatados.add(resultado.toString());
+        }
+ 
+        return resultadosFormatados;
     }
+
+    /**
+     * Extrai o título e uma citação curta de uma página da web.
+     *
+     * @param url URL da página.
+     * @return um objeto ResultadoPesquisa contendo a URL, o título e a citação, ou null em caso de erro.
+     */
+    private ResultadoPesquisa obterDetalhesDaURL(String url) {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            String titulo = doc.title();
+            Element primeiroParagrafo = doc.select("p").first();
+            String citacao = primeiroParagrafo != null ? primeiroParagrafo.text() : "Sem citação disponível.";
+            return new ResultadoPesquisa(url, titulo, citacao);
+        } 
+        catch (IOException e) {
+            System.err.println("Erro ao obter detalhes da URL: " + url + " - " + e.getMessage());
+            return null;
+        }
+    }
+
 
     /**
      * Avança para a próxima página de resultados da pesquisa, se disponível.
@@ -329,13 +384,13 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public String next_page() throws RemoteException {
-        if (resultadosPesquisa.isEmpty()) {
+        if (resultadosPesquisa == null || resultadosPesquisa.isEmpty()) {
             return "Nenhum resultado disponível.";
         }
         if ((paginaAtual + 1) * TAMANHO_PAGINA < resultadosPesquisa.size()) {
             paginaAtual++;
         }
-        return String.join("\n", getResultadosPaginaAtual());
+        return formatarResultadosDaPagina();
     }
 
     /**
@@ -349,7 +404,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         if (paginaAtual > 0) {
             paginaAtual--;
         }
-        return String.join("\n", getResultadosPaginaAtual());
+        return formatarResultadosDaPagina();
     }
 
     /**
@@ -360,7 +415,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public List<String> links_to_page() throws RemoteException {
-        return getResultadosPaginaAtual();
+        List<String> links = new ArrayList<>();
+         for (ResultadoPesquisa resultado : getResultadosPaginaAtual()) {
+             links.add(resultado.url);
+         }
+         return links;
     }
 
     /**
@@ -368,10 +427,22 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      *
      * @return sublista dos resultados da pesquisa, correspondente à página atual.
      */
-    private List<String> getResultadosPaginaAtual() {
+    private List<ResultadoPesquisa> getResultadosPaginaAtual() {
+        if (resultadosPesquisa == null) {
+            return new ArrayList<>();
+        }
+
         int inicio = paginaAtual * TAMANHO_PAGINA;
         int fim = Math.min(inicio + TAMANHO_PAGINA, resultadosPesquisa.size());
         return resultadosPesquisa.subList(inicio, fim);
+    }
+
+    private String formatarResultadosDaPagina() {
+        StringBuilder sb = new StringBuilder();
+        for (ResultadoPesquisa resultado : getResultadosPaginaAtual()) {
+            sb.append(resultado.toString()).append("\n\n");
+        }
+        return sb.toString();
     }
 
     /**
