@@ -58,4 +58,5 @@ public interface InterfaceBarrel extends Remote {
     void put_url(String url) throws RemoteException;
     
     boolean isQueueEmpty() throws RemoteException;
+
 }
