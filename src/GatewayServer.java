@@ -502,7 +502,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     private void gerarRelatorioTemposResposta(StringBuilder relatorio) {
         System.out.println("Tempos de resposta por Barrel: " + temposResposta); 
 
-        relatorio.append("\nTempo médio de resposta por Barrel (décimos de segundo):\n");
+        relatorio.append("\nTempo médio de resposta por Barrel (nanossegundos):\n");
     
         for (var entry : temposResposta.entrySet()) {      // percorre temposResposta (Barrel -> lista de tempos de resposta).
             String barrel = entry.getKey();                // obtém o nome do Barrel.
@@ -513,17 +513,16 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 relatorio.append(barrel).append(": Sem dados\n");    // exibe "Sem dados" caso não haja tempos.
             } 
             else {
-                long media = tempos.stream()                   // converte a lista de tempos de resposta em um fluxo de dados.
-                            .mapToLong(Long::longValue)        // converte a lista de objetos Long para primitivos long - conversão necessária pq ArrayList<Long> armazena objetos Long, não primitivos long e funções matemáticas trabalham com tipos primitivos p/ + eficiência
-                            .sum() / tempos.size();            // calcula a média somando todos os valores e dividindo pelo total.
-
-                /** Converte para microsegundos dividindo por 1000 (porque estamos em nanossegundos no cálculo de tempo). */
-                long mediaEmMicrosegundos = media / 1000;
+                long soma = 0;
+                for (Long tempo : tempos) {
+                    soma += tempo;
+                }
+                double media = (double) soma / tempos.size();  // Calcula a média em nanossegundos
 
                 relatorio.append(barrel)           
                     .append(": ")                          
-                    .append(mediaEmMicrosegundos)          // adiciona o tempo médio de resposta.
-                    .append("\n");   
+                    .append(String.format("%.2f", media))  // Adiciona o tempo médio de resposta formatado
+                    .append(" nanossegundos\n");   
             }                      
         }
     }
@@ -548,15 +547,5 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         } catch (IOException e) {
             System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
         }
-    }
-    @Override
-    public int getTotalPaginas(String palavra) throws RemoteException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalPaginas'");
-    }
-    @Override
-    public String getPaginaAtual(String palavra, int numeroPagina) throws RemoteException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPaginaAtual'");
     }
 }

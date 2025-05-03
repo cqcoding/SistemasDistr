@@ -53,8 +53,4 @@ public interface InterfaceGatewayServer extends Remote {
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
     String pagina_estatisticas() throws RemoteException;  
-    
-    int getTotalPaginas(String palavra) throws RemoteException; 
-    
-    String getPaginaAtual(String palavra, int numeroPagina) throws RemoteException; 
 }
