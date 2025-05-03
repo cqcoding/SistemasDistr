@@ -70,10 +70,17 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void indexar_URL(String palavra, String url) throws RemoteException {
-        urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url);     //forma compacta de verificar se a chave existe, criar a lista, e adicionar — tudo em uma linha --> Evita nulos e simplifica o código
-        salvarURLs();
-        System.out.println("URL indexado: " + palavra + " -> " + url);
+        urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>());
+
+        List<String> urls = urlsIndexados.get(palavra);
+        if (!urls.contains(url)) {
+            urls.add(url);
+            salvarURLs();
+            System.out.println("URL indexada: " + palavra + " -> " + url);
+        } else {
+        System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
     }
+}
 
     /**
      * Retorna a próxima URL da fila para o Downloader.
@@ -226,16 +233,14 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ArquivoURLS))) {
             for (Map.Entry<String, List<String>> entry : urlsIndexados.entrySet()) {
                 String palavra = entry.getKey();
-                for (String url : entry.getValue()) {
+                List<String> urlsUnicas = new ArrayList<>(new HashSet<>(entry.getValue())); // remove duplicadas
+            
+                for (String url : urlsUnicas) {
                     writer.write(palavra + " -> " + url);
                     writer.newLine();
                 }
             }
-            System.out.println("URLs salvas com sucesso no arquivo.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        }             
 
     /**
      * Carrega as URLs indexadas do arquivo de texto.
@@ -247,16 +252,16 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         try (BufferedReader reader = new BufferedReader(new FileReader(ArquivoURLS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split(" -> "); // separa a linha em duas partes, sendo uma de palavra e outra de URL.
-                if (partes.length == 2) {  // se tiver separada é porque a palavra está indexada.
+                String[] partes = linha.split(" -> ");
+                if (partes.length == 2) {
                     String palavra = partes[0];
                     String url = partes[1];
-                    urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url); // se não estiver separada, computa uma nova URL.
+            
+                    urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>());
+            
+                    List<String> urls = urlsIndexados.get(palavra);
+                    if (!urls.contains(url)) {
+                        urls.add(url);
                 }
             }
-            System.out.println("URLs carregadas do arquivo.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
+        }            
