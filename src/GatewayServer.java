@@ -14,7 +14,9 @@ import java.rmi.registry.LocateRegistry;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -58,6 +60,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** Número de resultados exibidos por página. */                                
     private static final int TAMANHO_PAGINA = 10; 
 
+    /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
+    private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
+
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -72,7 +77,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.barrelsAtivos = new HashMap<>();
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
-        this.paginaAtual = 0;                           
+        this.paginaAtual = 0;                       
 
         /** Lista de Barrels disponíveis para conexão. */
         List<String> barrelUrls = Arrays.asList(
@@ -83,10 +88,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         conectarBarrels(barrelUrls);
         carregarURLs();
+        carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
     }
         public static void main(String[] args) {
+            GatewayServer server = null; 
             try {
                 /** Carrega propriedades do arquivo. */
                 Properties properties = new Properties();
@@ -98,7 +105,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 String serverIp = properties.getProperty("server.ip", "localhost");
                 String objName = "rmi://" + serverIp + "/server";
     
-                GatewayServer server = new GatewayServer(serverIp);
+                server = new GatewayServer(serverIp);
     
                 System.out.println("Registrando objeto no RMIRegistry...");
     
@@ -113,9 +120,10 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 Naming.rebind(objName, server);  
     
                 System.out.println("Servidor RMI pronto...");
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 e.printStackTrace(); 
-            }
+            } 
         }
 
     /**
@@ -130,8 +138,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     InterfaceBarrel barrel = (InterfaceBarrel) Naming.lookup(barrelUrl); // conecta os Barrels usando a URL fornecida.
                     barrels.add(barrel);       // adiciona o Barrel conectado à lista de Barrels.
                     System.out.println("Conectado ao barrel: " + barrelUrl);
-                
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
                 System.err.println("Erro ao conectar aos barrels " + barrelUrl);
                 e.printStackTrace();
             }
@@ -306,6 +314,47 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+
+    //salvar as 10 pesquisas + frequentes em um arquivo, será chamado antes do servidor ser encerrado
+    private void salvarPesquisasFrequentes() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoPesquisas))) {
+            pesquisasFrequentes.entrySet().stream()
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .limit(10)
+                .forEach(entry -> {
+                    try {
+                        writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            System.out.println("Pesquisas frequentes salvas com sucesso.");
+        } 
+        catch (IOException e) {
+            System.err.println("Erro ao salvar pesquisas frequentes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    //carregar as pesquisas do arquivo para a memória quando o servidor iniciar
+    private void carregarPesquisasFrequentes() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoPesquisas))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] partes = linha.split(":");
+                if (partes.length == 2) {
+                    String palavra = partes[0];
+                    int frequencia = Integer.parseInt(partes[1]);
+                    pesquisasFrequentes.put(palavra, frequencia);
+                }
+            }
+            System.out.println("Pesquisas frequentes carregadas com sucesso.");
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar pesquisas frequentes: " + e.getMessage());
+        }
+    }
+
     /**
      * Realiza uma pesquisa distribuída nos Barrels.
      *
@@ -342,6 +391,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         /** Atualiza a contagem da palavra pesquisada - estatísticas. */
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
+        salvarPesquisasFrequentes(); // Salva após cada pesquisa
 
         this.resultadosPesquisa = resultadosComDetalhes;
         this.paginaAtual = 0;
@@ -351,7 +401,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         for (ResultadoPesquisa resultado : resultadosPesquisa) {
             resultadosFormatados.add(resultado.toString());
         }
- 
+
         return resultadosFormatados;
     }
 
