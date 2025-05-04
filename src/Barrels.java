@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -78,9 +79,9 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
             salvarURLs();
             System.out.println("URL indexada: " + palavra + " -> " + url);
         } else {
-        System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
+            System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
+        }
     }
-}
 
     /**
      * Retorna a próxima URL da fila para o Downloader.
@@ -215,16 +216,17 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      * @return Lista de palavras que têm essa URL associada.
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
+    // É PARA OBTER AS LIGAÇÕES DOS LINKS PARA O RANKING AQUI 
     @Override
     public List<String> obterPaginasApontandoPara(String url) throws RemoteException {
         List<String> palavrasApontando = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : urlsIndexados.entrySet()) {
             if (entry.getValue().contains(url)) {
                 palavrasApontando.add(entry.getKey());
+            }
         }
+        return palavrasApontando;
     }
-    return palavrasApontando;
-}
 
     /**
      * Salva as URLs indexadas no arquivo de texto.
@@ -240,7 +242,10 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                     writer.newLine();
                 }
             }
-        }             
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Carrega as URLs indexadas do arquivo de texto.
@@ -256,12 +261,17 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                 if (partes.length == 2) {
                     String palavra = partes[0];
                     String url = partes[1];
-            
+
                     urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>());
-            
+
                     List<String> urls = urlsIndexados.get(palavra);
                     if (!urls.contains(url)) {
                         urls.add(url);
+                    }
                 }
             }
-        }            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}     
