@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 /** 
  * Implementação do servidor Barrel, responsável por indexar URLs associadas a palavras-chaves e gerenciar uma fila de URLs para download.
@@ -22,15 +23,18 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private static final String ArquivoURLS = "urlsIndexados.txt";
     private Queue<String> urlQueue;
     private String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
+    private Set<String> stopWords; 
+
 
     /**
      * Construtor do BarrelServer.
      * @param nome 
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
-    protected BarrelServer(String nome) throws RemoteException {
+    protected BarrelServer(String nome) throws RemoteException, IOException {
         super();
         this.nome = nome;
+        this.stopWords = StopWords.carregarWords("stopwords.txt");
         urlsIndexados = new HashMap<>();        // estrutura de dados que guarda chave (palavra pesquisada) e valor(url).
         urlQueue = new ArrayDeque<>(); // inicializa a fila de URLs.
         carregarURLs();
@@ -67,10 +71,21 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      *
      * @param palavra Palavra-chave a ser indexada.
      * @param url URL associada à palavra.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
     @Override
-    public void indexar_URL(String palavra, String url) throws RemoteException {
+    public void indexar_URL(String palavra, String url) {
+        // Carrega as stop words uma única vez (você pode mover isso para o construtor depois, se preferir)
+        Set<String> stopWords = null;
+        try {
+            stopWords = StopWords.carregarWords("stopwords.txt");
+        } catch (IOException ex) {
+        }
+
+        // Se a palavra for uma stop word, ignora o indexamento
+        if (stopWords.contains(palavra.toLowerCase())) {
+            System.out.println("Palavra ignorada (stop word): " + palavra);
+            return;
+    }
         urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>());
 
         List<String> urls = urlsIndexados.get(palavra);
