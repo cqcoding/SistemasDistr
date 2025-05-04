@@ -1,10 +1,10 @@
-bruna:3
+bruna:4
 cinco:2
 kayanne:2
 um:2
 tres:2
 prepare:1
 oito:1
+gamb�:1
 quatro:1
 sete:1
-dois:1
