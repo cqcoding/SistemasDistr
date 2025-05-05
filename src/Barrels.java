@@ -6,8 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -148,14 +148,17 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
 
     /**
      * Sincroniza os dados entre os servidores Barrel.
-     *
+     * Aceita List<String>, mas armazena como Set<String>.
      * @param dados Contém as palavras-chave e suas URLs indexadas.
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
     @Override
     public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException {
         for (Map.Entry<String, List<String>> entry : dados.entrySet()) {
-            urlsIndexados.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).addAll(entry.getValue());
+            Set<String> urlsExistentes = urlsIndexados.computeIfAbsent(entry.getKey(), k -> new HashSet<>());
+            for (String url : entry.getValue()) {
+                urlsExistentes.add(url); // como é Set, duplicadas não entram.
+            }
         }
         salvarURLs();
         System.out.println("Dados sincronizados com sucesso.");
