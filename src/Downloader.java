@@ -28,7 +28,6 @@ encontrar novos links (e enviá-los de volta ao Barrel) e indexar palavras em um
 */
 public class Downloader{
     InterfaceBarrel barrel;     //conexão RMI com barrel
-   
     private Set<String> urlsProcessadas;    //URLs já processadas/visitadas pelo downloader
     private Set<String> palavrasProcessadas;   //pares palavra_url já enviados
     private ConcurrentMap<String, AtomicInteger> contagemPalavras;
