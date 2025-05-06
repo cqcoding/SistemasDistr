@@ -366,78 +366,78 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
     @Override
-        public List<String> pesquisar(String palavra) throws RemoteException {
-        Set<String> urlsUnicas = new HashSet<>(); // Deduplicação de URLs
-        List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
-        Map<String, Integer> ligacoesPorUrl = new HashMap<>();
-    
-        /** Consultar cada Barrel e combinar os resultados. */
+    public List<String> pesquisar(String palavra) throws RemoteException {
+    Set<String> urlsUnicas = new HashSet<>(); // Deduplicação de URLs
+    List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
+    Map<String, Integer> ligacoesPorUrl = new HashMap<>();
+
+    /** Consultar cada Barrel e combinar os resultados. */
+    for (InterfaceBarrel barrel : barrels) {
+        long inicio = System.nanoTime();
+
+        List<String> barrelResultados = barrel.pesquisar(palavra);
+        for (String url : barrelResultados) {
+            urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
+        }
+
+        long duracao = (System.nanoTime() - inicio) / 100000;
+
+        String nomeBarrel = barrel.getNomeBarrel();
+        temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
+        temposResposta.get(nomeBarrel).add(duracao);
+    }
+
+    /** Calcular ligações para cada URL única */
+    for (String url : urlsUnicas) {
+        int totalLigacoes = 0;
         for (InterfaceBarrel barrel : barrels) {
-            long inicio = System.nanoTime();
-    
-            List<String> barrelResultados = barrel.pesquisar(palavra);
-            for (String url : barrelResultados) {
-                urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
-            }
-    
-            long duracao = (System.nanoTime() - inicio) / 100000;
-    
-            String nomeBarrel = barrel.getNomeBarrel();
-            temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
-            temposResposta.get(nomeBarrel).add(duracao);
-        }
-    
-        /** Calcular ligações para cada URL única */
-        for (String url : urlsUnicas) {
-            int totalLigacoes = 0;
-            for (InterfaceBarrel barrel : barrels) {
-                try {
-                    List<String> apontadores = barrel.obterPaginasApontandoPara(url);
-                    totalLigacoes += apontadores.size();
-                } catch (RemoteException e) {
-                    System.err.println("Erro ao obter backlinks para " + url + ": " + e.getMessage());
-                }
-            }
-            ligacoesPorUrl.put(url, totalLigacoes);
-        }
-    
-        /** Ordenar os resultados pela contagem de backlinks (maior primeiro) */
-        List<String> resultadosOrdenados = new ArrayList<>(urlsUnicas);
-        resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
-    
-        /** Obter detalhes de cada URL */
-        for (String url : resultadosOrdenados) {
-            ResultadoPesquisa resultado = obterDetalhesDaURL(url);
-            if (resultado != null) {
-                resultadosComDetalhes.add(resultado);
+            try {
+                List<String> apontadores = barrel.obterPaginasApontandoPara(url);
+                totalLigacoes += apontadores.size();
+            } catch (RemoteException e) {
+                System.err.println("Erro ao obter backlinks para " + url + ": " + e.getMessage());
             }
         }
-    
-        /** Atualiza estatísticas */
-        pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
-        salvarPesquisasFrequentes();
-    
-        this.resultadosPesquisa = resultadosComDetalhes;
-        this.paginaAtual = 0;
-    
-        /** Formatar para List<String> */
-        List<String> resultadosFormatados = new ArrayList<>();
-        for (ResultadoPesquisa resultado : resultadosPesquisa) {
-            resultadosFormatados.add(resultado.toString());
-        }
-    
-        return resultadosFormatados;
+        ligacoesPorUrl.put(url, totalLigacoes);
     }
-    
-    /** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
-    private String normalizarURL(String url) {
-        if (url == null) return "";
-        url = url.trim().toLowerCase();
-        if (url.endsWith("/")) {
-            url = url.substring(0, url.length() - 1);
+
+    /** Ordenar os resultados pela contagem de backlinks (maior primeiro) */
+    List<String> resultadosOrdenados = new ArrayList<>(urlsUnicas);
+    resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
+
+    /** Obter detalhes de cada URL */
+    for (String url : resultadosOrdenados) {
+        ResultadoPesquisa resultado = obterDetalhesDaURL(url);
+        if (resultado != null) {
+            resultadosComDetalhes.add(resultado);
         }
-        return url;
     }
+
+    /** Atualiza estatísticas */
+    pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
+    salvarPesquisasFrequentes();
+
+    this.resultadosPesquisa = resultadosComDetalhes;
+    this.paginaAtual = 0;
+
+    /** Formatar para List<String> */
+    List<String> resultadosFormatados = new ArrayList<>();
+    for (ResultadoPesquisa resultado : resultadosPesquisa) {
+        resultadosFormatados.add(resultado.toString());
+    }
+
+    return resultadosFormatados;
+}
+
+/** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
+private String normalizarURL(String url) {
+    if (url == null) return "";
+    url = url.trim().toLowerCase();
+    if (url.endsWith("/")) {
+        url = url.substring(0, url.length() - 1);
+    }
+    return url;
+}
 
     /**
      * Extrai o título e uma citação curta de uma página da web.
