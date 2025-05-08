@@ -19,11 +19,10 @@ import java.util.Set;
  * Implementação do servidor Barrel, responsável por indexar URLs associadas a palavras-chaves e gerenciar uma fila de URLs para download.
  */ 
 class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
-    private Map<String, Set<String>> urlsIndexados;
+    private final Map<String, Set<String>> urlsIndexados;
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private Queue<String> urlQueue;
-    private String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
-    private Set<String> stopWords; 
+    private final Queue<String> urlQueue;
+    private final String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
 
     /**
      * Construtor do BarrelServer.
@@ -33,7 +32,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     protected BarrelServer(String nome) throws RemoteException, IOException {
         super();
         this.nome = nome;
-        this.stopWords = StopWords.carregarWords("stopwords.txt");
         urlsIndexados = new HashMap<>();        // estrutura de dados que guarda chave (palavra pesquisada) e valor(url).
         urlQueue = new ArrayDeque<>(); // inicializa a fila de URLs.
         carregarURLs();
@@ -73,13 +71,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void indexar_URL(String palavra, String url) {
-        // Se a palavra for uma stop word, ignora o indexamento
-        if (stopWords.contains(palavra.toLowerCase())) {
-            System.out.println("Palavra ignorada (stop word): " + palavra);
-            return;
-        }
         urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>());
-
         Set<String> urls = urlsIndexados.get(palavra);
         if (urls.add(url)) { // retorna true se a URL não estava presente
             salvarURLs();
