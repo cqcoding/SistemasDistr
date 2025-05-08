@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+
 /*Classe responsável por consumir URLs da fila de um Barrel remoto, baixar o conteúdo, extrair palavras, 
 encontrar novos links (e enviá-los de volta ao Barrel) e indexar palavras em um servidor Barrel via RMI, usando múltiplas threads
 */
@@ -92,9 +93,6 @@ public class Downloader{
                 }
                 properties.load(input);
             }
-
-            // Obter o IP do servidor a partir das propriedades
-            String serverIp = properties.getProperty("server.ip", "localhost");
             
             // Obter todas as URLs dos barrels a partir das propriedades
             String barrelUrlsString = properties.getProperty("barrel.urls");
@@ -157,7 +155,7 @@ public class Downloader{
         Set<String> novasStopWords = new HashSet<>();
         
         contagemPalavras.forEach((palavra, contagem) -> {
-            if (contagem.get() > 100 && !stopWords.contains(palavra)) { // Verifica se já não é stopword
+            if (StopwordClassificador.ehProvavelStopword(palavra, contagem.get(), 1) && !stopWords.contains(palavra)) { // Verifica se já não é stopword
                 novasStopWords.add(palavra);
             }
         });
