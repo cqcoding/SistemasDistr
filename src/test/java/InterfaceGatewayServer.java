@@ -1,6 +1,6 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.List;
 
 /**
  * Interface que define os métodos para o Gateway Server, permitindo a comunicação remota para indexação de URLs, pesquisa, navegação de páginas de resultados

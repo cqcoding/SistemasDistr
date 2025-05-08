@@ -32,14 +32,14 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
-    private List<InterfaceBarrel> barrels;
+    private final List<InterfaceBarrel> barrels;
 
     /** Lista de palavras-chave utilizadas para indexação. */
     private static final String[] palavras_chave = {""};
 
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private List<String> urlsIndexados;
+    private final List<String> urlsIndexados;
 
     /** Estruturas necessárias para armazenar estatísticas.
      * Contagem das pesquisas mais comuns.
@@ -413,14 +413,14 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    /** Atualiza estatísticas */
+    /** Atualiza a contagem da palavra pesquisada - estatísticas. */
     pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
     salvarPesquisasFrequentes();
 
     this.resultadosPesquisa = resultadosComDetalhes;
     this.paginaAtual = 0;
 
-    /** Formatar para List<String> */
+    /** Converter para List<String> para manter a compatibilidade com a assinatura do método */
     List<String> resultadosFormatados = new ArrayList<>();
     for (ResultadoPesquisa resultado : resultadosPesquisa) {
         resultadosFormatados.add(resultado.toString());

@@ -1,6 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.HashSet;
@@ -14,27 +17,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /*Classe responsável por consumir URLs da fila de um Barrel remoto, baixar o conteúdo, extrair palavras, 
 encontrar novos links (e enviá-los de volta ao Barrel) e indexar palavras em um servidor Barrel via RMI, usando múltiplas threads
 */
 public class Downloader{
-    private InterfaceBarrel barrel;     //conexão RMI com barrel
-    private Set<String> urlsProcessadas;    //URLs já processadas/visitadas pelo downloader
-    private Set<String> palavrasProcessadas;   //pares palavra_url já enviados
-    private ConcurrentMap<String, AtomicInteger> contagemPalavras;
-    private Set<String> stopWords;
+    InterfaceBarrel barrel;     //conexão RMI com barrel
+    private final Set<String> urlsProcessadas;    //URLs já processadas/visitadas pelo downloader
+    private final Set<String> palavrasProcessadas;   //pares palavra_url já enviados
+    private final ConcurrentMap<String, AtomicInteger> contagemPalavras;
+    private final Set<String> stopWords;
     private final int numThreads;  //número de threads a serem usadas
     
-    private ExecutorService executorService; // Pool de threads para processamento
+    private final ExecutorService executorService; // Pool de threads para processamento
 
     /** Limite de páginas para evitar loops infinitos (aplicado a este Downloader). */
     private static final int MAX_PAGES = 10;     //limite por instância do Downloader
