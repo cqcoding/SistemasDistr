@@ -88,7 +88,7 @@ public class Downloader{
 
             try (InputStream input = Downloader.class.getClassLoader().getResourceAsStream("config.properties")) {
                 if (input == null) {
-                    System.out.println("Desculpe, não foi possível encontrar config.properties");
+                    System.out.println("Não encontrou config.properties");
                     return;
                 }
                 properties.load(input);
@@ -97,7 +97,7 @@ public class Downloader{
             // Obter todas as URLs dos barrels a partir das propriedades
             String barrelUrlsString = properties.getProperty("barrel.urls");
             if (barrelUrlsString == null || barrelUrlsString.trim().isEmpty()) {
-                System.err.println("Nenhuma URL de Barrel encontrada em config.properties. Use a propriedade 'barrel.urls' (ex: rmi://host/barrel1,rmi://host/barrel2).");
+                System.err.println("Nenhuma URL de Barrel encontrada em config.properties.");
                 return;        //Não vai p/ frente sem URLs de barrels
             }
 
@@ -261,26 +261,27 @@ public class Downloader{
                         int indexPraTentar = barrelAtualIndex.getAndUpdate(i -> (i + 1) % numeroDeBarrels);
                         barrelAtual = barrels.get(indexPraTentar);
 
-                        System.out.println("Thread do Downloader " + Thread.currentThread() + ": Tentando pegar URL do Barrel: " + barrelAtual.getNomeBarrel());
+                        //para testes no terminal
+                        //System.out.println("Thread do Downloader " + Thread.currentThread() + ": Tentando pegar URL do Barrel: " + barrelAtual.getNomeBarrel());
 
                         url = barrelAtual.get_url();
 
                         if (url != null) {
-                            System.out.println("Thread do Downloader " + Thread.currentThread() + ": URL recebida do Barrel '" + barrelAtual.getNomeBarrel() + "': '" + url + "'");
+                            //System.out.println("Thread do Downloader " + Thread.currentThread() + ": URL recebida do Barrel '" + barrelAtual.getNomeBarrel() + "': '" + url + "'");
                             urlFound = true;
                             break;    //URL encontrada, sai do loop interno
                         } else {
-                            System.out.println("Thread do Downloader " + Thread.currentThread() + ": Barrel '" + barrelAtual.getNomeBarrel() + "' fila vazia.");
+                            //System.out.println("Thread do Downloader " + Thread.currentThread() + ": Barrel '" + barrelAtual.getNomeBarrel() + "' fila vazia.");
                             barrelsTentados++;    //Conta esse barrel como tentado
                         }
                     }
                     catch (RemoteException e) {
-                        System.err.println("Thread " + Thread.currentThread() + ": Erro ao tentar pegar URL: " + e.getMessage());
+                        //System.err.println("Thread " + Thread.currentThread() + ": Erro ao tentar pegar URL: " + e.getMessage());
                         barrelsTentados++;   //conta como tentado por causa do erro
                     }
                     catch (IndexOutOfBoundsException e) {
-                         System.err.println("Thread " + Thread.currentThread() + ": Índice de barrel inválido. Número de barrels: " + numeroDeBarrels);
-                         barrelsTentados++;
+                        //System.err.println("Thread " + Thread.currentThread() + ": Índice de barrel inválido. Nº de barrels: " + numeroDeBarrels);
+                        barrelsTentados++;
                     }
                 }
 
@@ -304,7 +305,7 @@ public class Downloader{
 
                 // Verifica se já processou a URL
                 if (!urlsProcessadas.add(url)) {
-                    System.out.println("URL já processada por esta instância: " + url);
+                    //System.out.println("URL já processada por esta instância: " + url);
                     continue; // Pega a próxima URL
                 }
 
