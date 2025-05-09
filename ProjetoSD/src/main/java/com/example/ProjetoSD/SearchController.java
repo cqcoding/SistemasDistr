@@ -44,6 +44,11 @@ public class SearchController {
         
         return "search";
     }
+
+    @GetMapping("/statistics")
+    public String statistics() {
+        return "statistics";
+    }
 }
 
 class SearchResult {
