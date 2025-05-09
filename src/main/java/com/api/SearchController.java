@@ -1,4 +1,4 @@
-package mainFront.java.com.api;
+package com.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
