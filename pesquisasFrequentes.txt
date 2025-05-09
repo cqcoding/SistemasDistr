@@ -5,6 +5,6 @@ um:2
 tres:2
 prepare:1
 oito:1
-gamb�:1
+sair:1
 quatro:1
-sete:1
+deus:1

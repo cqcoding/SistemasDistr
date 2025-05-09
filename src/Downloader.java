@@ -437,7 +437,7 @@ public class Downloader{
 
     //INCIAR O DOWNLODER
     public static void main(String[] args) {
-        int numThreads = 5; //num de threads
+        int numThreads = 10; //num de threads
 
         try {
             Downloader downloader = new Downloader(numThreads);

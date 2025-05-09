@@ -1,6 +1,8 @@
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Properties;
+import java.util.Set;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.rmi.registry.LocateRegistry;
@@ -364,15 +367,18 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        List<String> resultados = new ArrayList<>();
+        Set<String> urlsUnicas = new HashSet<>(); // Deduplicação de URLs
         List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
+        Map<String, Integer> ligacoesPorUrl = new HashMap<>();
 
         /** Consultar cada Barrel e combinar os resultados. */
         for (InterfaceBarrel barrel : barrels) {
             long inicio = System.nanoTime();    //tempo em nanossegundos (1 segundo = 1.000.000.000 nanossegundos)
             
             List<String> barrelResultados = barrel.pesquisar(palavra);
-            resultados.addAll(barrelResultados);
+            for (String url : barrelResultados) {
+                urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
+            }
 
             long duracao = (System.nanoTime() - inicio) / 100000; //dividindo por 100.000 transformaria p 10 microsegundos depois no relatorio eu divido por mais 1000 pra virar decimos de segundo
 
@@ -382,7 +388,24 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             temposResposta.get(nomeBarrel).add(duracao);
         }
 
-        for (String url : resultados) {
+        for (String url : urlsUnicas) {
+            int totalLigacoes = 0;
+            for (InterfaceBarrel barrel : barrels) {
+                try {
+                    List<String> apontadores = barrel.obterPaginasApontandoPara(url);
+                    totalLigacoes += apontadores.size();
+                } 
+                catch (RemoteException e) {
+                    System.err.println("Erro ao obter backlinks para " + url + ": " + e.getMessage());
+                }
+            }
+            ligacoesPorUrl.put(url, totalLigacoes);
+        }
+
+        List<String> resultadosOrdenados = new ArrayList<>(urlsUnicas);
+        resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
+
+        for (String url : resultadosOrdenados) {
             ResultadoPesquisa resultado = obterDetalhesDaURL(url);
             if (resultado != null) {
                 resultadosComDetalhes.add(resultado);
@@ -403,6 +426,16 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
 
         return resultadosFormatados;
+    }
+
+    /** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
+    private String normalizarURL(String url) {
+        if (url == null) return "";
+        url = url.trim().toLowerCase();
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
     }
 
     /**

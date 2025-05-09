@@ -56,4 +56,5 @@ public interface InterfaceBarrel extends Remote {
     
     boolean isQueueEmpty() throws RemoteException;
 
+    List<String> obterPaginasApontandoPara(String url) throws RemoteException;
 }
