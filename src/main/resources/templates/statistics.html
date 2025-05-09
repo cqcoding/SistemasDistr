@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas do Sistema</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            color: #2c3e50;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+        }
+        .stat-card .card-body {
+            color: #ffffff;
+        }
+        .stat-card h5 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #ffffff;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .display-4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-weight: 500;
+        }
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #0d1b69 0%, #0a3d8c 100%);
+            color: #ffffff;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 1rem;
+        }
+        .table th {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        .table td {
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+        .badge {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão Voltar -->
+    <a href="/search" class="btn back-btn">
+        <i class="fas fa-arrow-left"></i> Voltar para Busca
+    </a>
+
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Estatísticas do Sistema</h1>
+        
+        <!-- Cards de Estatísticas Gerais -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total de Pesquisas</h5>
+                        <h2 class="display-4" id="totalPesquisas">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Barrels Ativos</h5>
+                        <h2 class="display-4" id="barrelsAtivos">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">URLs Indexadas</h5>
+                        <h2 class="display-4" id="urlsIndexadas">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Pesquisas</h5>
+                        <div class="chart-container">
+                            <canvas id="pesquisasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tempo Médio de Resposta</h5>
+                        <div class="chart-container">
+                            <canvas id="tempoRespostaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Barrels -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Status dos Barrels</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Barrel</th>
+                                <th>Status</th>
+                                <th>URLs Indexadas</th>
+                                <th>Tempo Médio (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="barrelsTable">
+                            <!-- Dados serão inseridos via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão de Atualização -->
+    <button class="btn btn-primary refresh-btn" onclick="atualizarEstatisticas()">
+        <i class="fas fa-sync-alt"></i> Atualizar
+    </button>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>
+        // Dados de exemplo (substituir por dados reais posteriormente)
+        const dadosExemplo = {
+            pesquisasFrequentes: {
+                "java": 150,
+                "python": 120,
+                "javascript": 100,
+                "c++": 80,
+                "ruby": 60,
+                "php": 50,
+                "swift": 40,
+                "kotlin": 30,
+                "rust": 20,
+                "go": 10
+            },
+            barrelsAtivos: {
+                "Barrel1": 1000,
+                "Barrel2": 800,
+                "Barrel3": 600
+            },
+            temposResposta: {
+                "Barrel1": 150,
+                "Barrel2": 180,
+                "Barrel3": 200
+            }
+        };
+
+        // Inicialização dos gráficos
+        function inicializarGraficos() {
+            // Gráfico de Pesquisas
+            const ctxPesquisas = document.getElementById('pesquisasChart').getContext('2d');
+            new Chart(ctxPesquisas, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dadosExemplo.pesquisasFrequentes),
+                    datasets: [{
+                        label: 'Número de Pesquisas',
+                        data: Object.values(dadosExemplo.pesquisasFrequentes),
+                        backgroundColor: 'rgba(26, 35, 126, 0.8)',
+                        borderColor: 'rgba(13, 71, 161, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Tempo de Resposta
+            const ctxTempo = document.getElementById('tempoRespostaChart').getContext('2d');
+            new Chart(ctxTempo, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(dadosExemplo.temposResposta),
+                    datasets: [{
+                        label: 'Tempo Médio (ms)',
+                        data: Object.values(dadosExemplo.temposResposta),
+                        borderColor: 'rgba(26, 35, 126, 1)',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Atualizar estatísticas
+        function atualizarEstatisticas() {
+            document.getElementById('loading').style.display = 'flex';
+            
+            // Simular atualização (substituir por chamada real à API)
+            setTimeout(() => {
+                atualizarCards();
+                atualizarTabelaBarrels();
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+        }
+
+        // Atualizar cards de estatísticas
+        function atualizarCards() {
+            const totalPesquisas = Object.values(dadosExemplo.pesquisasFrequentes).reduce((a, b) => a + b, 0);
+            const totalBarrels = Object.keys(dadosExemplo.barrelsAtivos).length;
+            const totalUrls = Object.values(dadosExemplo.barrelsAtivos).reduce((a, b) => a + b, 0);
+
+            document.getElementById('totalPesquisas').textContent = totalPesquisas;
+            document.getElementById('barrelsAtivos').textContent = totalBarrels;
+            document.getElementById('urlsIndexadas').textContent = totalUrls;
+        }
+
+        // Atualizar tabela de barrels
+        function atualizarTabelaBarrels() {
+            const tbody = document.getElementById('barrelsTable');
+            tbody.innerHTML = '';
+
+            Object.entries(dadosExemplo.barrelsAtivos).forEach(([barrel, urls]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${barrel}</td>
+                    <td><span class="badge bg-success">Ativo</span></td>
+                    <td>${urls}</td>
+                    <td>${dadosExemplo.temposResposta[barrel]} ms</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Inicializar página
+        window.onload = function() {
+            inicializarGraficos();
+            atualizarCards();
+            atualizarTabelaBarrels();
+        };
+    </script>
+</body>
+</html>
