@@ -72,7 +72,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * Protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente.
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
-    protected GatewayServer(String serverIp) throws RemoteException {    
+    protected GatewayServer(String serverIp, List<String> barrelUrls) throws RemoteException {    
         super();              // NOTE: exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas.
         this.barrels = new ArrayList<>();
         this.urlsIndexados = new ArrayList<>();    
@@ -81,13 +81,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;                       
-
-        /** Lista de Barrels disponíveis para conexão. */
-        List<String> barrelUrls = Arrays.asList(
-            "rmi://" + serverIp + "/barrel1",
-            "rmi://" + serverIp + "/barrel2",
-            "rmi://" + serverIp + "/barrel3"
-        );
 
         conectarBarrels(barrelUrls);
         carregarURLs();
@@ -106,9 +99,25 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     
                 /** Obtém o IP do servidor a partir das propriedades. */
                 String serverIp = properties.getProperty("server.ip", "localhost");
-                String objName = "rmi://" + serverIp + "/server";
     
-                server = new GatewayServer(serverIp);
+                /** Obtém as URLs dos barrels a partir das propriedades. */
+                String barrelUrlsString = properties.getProperty("barrel.urls");
+                List<String> barrelUrls = new ArrayList<>();
+                
+                if (barrelUrlsString != null && !barrelUrlsString.trim().isEmpty()) {
+                    String[] urlsArray = barrelUrlsString.split(",");
+                    for (String url : urlsArray) {
+                        barrelUrls.add(url.trim()); // Adiciona a URL após remover espaços em branco
+                    }
+                } 
+                else {
+                    System.err.println("Propriedade 'barrel.urls' não encontrada ou vazia em config.properties.");
+                }
+
+                String objName = "rmi://" + serverIp + "/server";
+
+                // Passa a lista de URLs lidas do arquivo para o construtor
+                server = new GatewayServer(serverIp, barrelUrls);
     
                 System.out.println("Registrando objeto no RMIRegistry...");
     
