@@ -121,7 +121,7 @@
 <body>
     <!-- Botão Voltar -->
     <a href="/search" class="btn back-btn">
-        <i class="fas fa-arrow-left"></i> Voltar para Busca
+        <i class="fas fa-arrow-left"></i> Voltar a Busca
     </a>
 
     <div class="container py-5">
@@ -133,7 +133,7 @@
                 <div class="card stat-card">
                     <div class="card-body text-center">
                         <h5 class="card-title">Total de Pesquisas</h5>
-                        <h2 class="display-4" th:text="${pesquisasFrequentes != null ? pesquisasFrequentes.size() : 0}">0</h2>
+                        <h2 class="display-4" th:text="${totalPesquisas}">0</h2>
                     </div>
                 </div>
             </div>
@@ -155,30 +155,6 @@
             </div>
         </div>
 
-        <!-- Gráficos -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Top 10 Pesquisas</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="pesquisa : ${pesquisasFrequentes}" th:text="${pesquisa}">Pesquisa</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Tempo Médio de Resposta</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="barrel, tempo : ${temposResposta}" th:text="'Barrel: ' + barrel + ' - Tempo: ' + tempo + ' ms'">Tempo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Tabela de Barrels -->
         <div class="card mt-4">
             <div class="card-body">
@@ -194,11 +170,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="entry : ${barrelsAtivos.entrySet()}">
+                            <tr th:each="entry : ${barrelsAtivos.entrySet()}" th:if="${barrelsAtivos != null}">
                                 <td th:text="${entry.key}">Barrel</td>
                                 <td><span class="badge bg-success">Ativo</span></td>
                                 <td th:text="${entry.value}">0</td>
-                                <td th:text="${temposResposta[entry.key]}">0 ms</td>
+                                <td th:text="${temposResposta[entry.key]!= null ? temposResposta[entry.key] : '0.0'} + 'ns'">0 ns</td>
                             </tr>
                         </tbody>
                     </table>
@@ -207,6 +183,22 @@
         </div>
     </div>
 
+
+        <!-- Gráficos -->
+        <h2 class="section-title text-center">Top 10 Pesquisas</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="pesquisa : ${pesquisasFrequentes}" th:text="${pesquisa}">Pesquisa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
     <!-- Botão de Atualização -->
     <button class="btn btn-primary refresh-btn" onclick="atualizarEstatisticas()">
         <i class="fas fa-sync-alt"></i> Atualizar

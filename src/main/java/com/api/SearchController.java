@@ -86,8 +86,18 @@ public class SearchController {
         
             List<String> pesquisasFrequentes = gateway.obterPesquisasMaisFrequentes();
             Map<String, Integer> barrelsAtivos = gateway.obterBarrelsAtivos();
-            Map<String, Integer> tamanhoIndices = new HashMap<>();
-            Map<String, Integer> temposResposta = new HashMap<>();
+            Map<String, Double> temposResposta = gateway.obterTemposResposta();
+
+            // Sincronizar temposResposta com barrelsAtivos
+            Map<String, Double> temposRespostaSincronizados = new HashMap<>();
+            for (String barrel : barrelsAtivos.keySet()) {
+                temposRespostaSincronizados.put(barrel, temposResposta.getOrDefault(barrel, 0.0));
+            }
+
+                // Calcular o total de pesquisas realizadas
+            int totalPesquisas = pesquisasFrequentes.stream()
+            .mapToInt(p -> Integer.parseInt(p.split(":")[1].trim())) // Extrai o número após ":"
+            .sum();
 
             // Contar o número total de URLs indexadas no arquivo
             int totalUrlsIndexadas = 0;
@@ -100,24 +110,12 @@ public class SearchController {
             }
                 
             
-            for (String barrel : barrelsAtivos.keySet()) {
-                try {
-                    InterfaceBarrel barrelProxy = (InterfaceBarrel) Naming.lookup("rmi://" + serverIp + "/" + barrel);
-                    tamanhoIndices.put(barrel, barrelProxy.getTamanhoIndice());
-                    temposResposta.put(barrel, barrelProxy.tamanhoFilaURLs()); 
-                } catch (Exception e) {
-                    System.err.println("Erro ao acessar o Barrel: " + barrel + " - " + e.getMessage());
-                    tamanhoIndices.put(barrel, 0);
-                    temposResposta.put(barrel, 0);
-                }
-            }
-            
             // Adicionar dados ao modelo
             model.addAttribute("pesquisasFrequentes", pesquisasFrequentes);
             model.addAttribute("barrelsAtivos", barrelsAtivos);
-            model.addAttribute("tamanhoIndices", tamanhoIndices);
             model.addAttribute("temposResposta", temposResposta);
             model.addAttribute("totalUrlsIndexadas", totalUrlsIndexadas);
+            model.addAttribute("totalPesquisas", totalPesquisas);
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
@@ -125,10 +123,9 @@ public class SearchController {
             // Inicializar variáveis vazias em caso de erro
             model.addAttribute("pesquisasFrequentes", new ArrayList<>());
             model.addAttribute("barrelsAtivos", new HashMap<>());
-            model.addAttribute("tamanhoIndices", new HashMap<>());
             model.addAttribute("temposResposta", new HashMap<>());
             model.addAttribute("totalUrlsIndexadas", 0);
-            model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
+            model.addAttribute("totalPesquisas", 0);
         }
    
     

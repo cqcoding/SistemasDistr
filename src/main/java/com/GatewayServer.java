@@ -11,7 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -673,39 +672,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    @Override
-    public List<String> obterPesquisasMaisFrequentes() throws RemoteException {
-        List<String> pesquisasMaisFrequentes = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoPesquisas))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split(":");
-                if (partes.length == 2) {
-                    String palavra = partes[0];
-                    int frequencia = Integer.parseInt(partes[1]);
-                    pesquisasFrequentes.put(palavra, frequencia);
-                }
-            }
-            // Ordenar e pegar as 10 mais frequentes
-            pesquisasFrequentes.entrySet().stream()
-                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
-                .limit(10)
-                .forEach(entry -> pesquisasMaisFrequentes.add(entry.getKey() + " (" + entry.getValue() + ")"));
-        } catch (IOException e) {
-            System.err.println("Erro ao carregar pesquisas frequentes: " + e.getMessage());
-        }
-        return pesquisasMaisFrequentes;
-    }
-
-    @Override
-    public Map<String, Integer> obterBarrelsAtivos() throws RemoteException {
-        Map<String, Integer> barrelsAtivosMap = new HashMap<>();
-        barrelsAtivos.forEach((barrel, tamanho) -> {
-            barrelsAtivosMap.put(barrel, tamanho);
-        });
-        return barrelsAtivosMap;
-    }
-
+    
     /**
      * Busca as "top stories" do Hacker News e retorna URLs que contenham o termo de pesquisa no título ou URL.
      *
@@ -742,4 +709,44 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
         return urlsEncontradas;
     }
+
+    @Override
+    public List<String> obterPesquisasMaisFrequentes() throws RemoteException {
+        List<String> pesquisas = new ArrayList<>();
+        pesquisasFrequentes.entrySet().stream()
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+            .limit(10)
+            .forEach(entry -> pesquisas.add(entry.getKey() + ": " + entry.getValue()));
+        return pesquisas;
+    }
+    
+    @Override
+    public Map<String, Integer> obterBarrelsAtivos() throws RemoteException {
+        return new HashMap<>(barrelsAtivos);
+    }
+    
+    @Override
+    public Map<String, Double> obterTemposResposta() throws RemoteException {
+        Map<String, Double> temposMedios = new HashMap<>();
+
+        for (var entry : temposResposta.entrySet()) {
+            String barrel = entry.getKey();
+            List<Long> tempos = entry.getValue();
+            
+            if (tempos.isEmpty()) {
+                temposMedios.put(barrel, 0.0); // Sem dados, retorna 0.0
+            } else {
+                long soma = 0;
+                for (Long tempo : tempos) {
+                    soma += tempo;
+                }
+                double media = (double) soma / tempos.size(); // Média em nanossegundos
+                temposMedios.put(barrel, media);
+            }
+        }
+        return temposMedios;
+    }
+
+
+
 }
