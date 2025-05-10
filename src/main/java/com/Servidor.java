@@ -1,6 +1,8 @@
 package com;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.io.InputStream;
 
@@ -18,10 +20,29 @@ public class Servidor {
             }
 
             // Obter o IP do servidor a partir das propriedades
+            
             String serverIp = properties.getProperty("server.ip", "localhost");
+            
+            /** Obter as URLs dos barrels a partir das propriedades. */
+            String barrelUrlsString = properties.getProperty("barrel.urls");
+            List<String> barrelUrls = new ArrayList<>(); // Importar java.util.ArrayList
+            
+            if (barrelUrlsString != null && !barrelUrlsString.trim().isEmpty()) {
+                String[] urlsArray = barrelUrlsString.split(",");
+               
+                for (String url : urlsArray) {
+                    barrelUrls.add(url.trim()); // Adiciona a URL após remover espaços em branco
+                }
+            } 
+            else {
+                System.err.println("Propriedade 'barrel.urls' não encontrada ou vazia em config.properties.");
+            }
+            
+            
+            
             String objName = "rmi://" + serverIp + "/server";
 
-            GatewayServer server = new GatewayServer(serverIp);   // Instancia o servidor
+            GatewayServer server = new GatewayServer(serverIp, barrelUrls);   // Instancia o servidor
 
             System.out.println("Registrando objeto no RMIRegistry...");
 

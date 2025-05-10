@@ -49,14 +49,8 @@ public interface InterfaceBarrel extends Remote {
 
     /** Método para identificar os Barrels porque se não, no cliente, irá aparecer o nome do proxy RMI no lugar do nome do Barrel. */
     String getNomeBarrel() throws RemoteException;      
-
-    /** Para as estatísticas - mostra o tamanho do índice. */
-    int getTamanhoIndice() throws RemoteException;    
-
-    /** Retorna a próxima URL a ser baixada pelo Downloader. */
-    String get_url() throws RemoteException;
-    
+    int getTamanhoIndice() throws RemoteException;  /** Para as estatísticas - mostra o tamanho do índice. */ 
+    String get_url() throws RemoteException; /** Retorna a próxima URL a ser baixada pelo Downloader. */
     boolean isQueueEmpty() throws RemoteException;
-
     List<String> obterPaginasApontandoPara(String url) throws RemoteException;
 }

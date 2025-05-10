@@ -161,9 +161,9 @@
             </div>
 
             <!-- Results section -->
-            <div class="results-container" th:if="${results != null}">
-                <h2>Resultados da Busca</h2>
-                <div class="list-group">
+            <div class="results-container">
+                <h2 th:if="${results != null && !results.isEmpty()}">Resultados da Busca</h2>
+                <div class="list-group" th:if="${results != null && !results.isEmpty()}">
                     <a href="#" class="list-group-item list-group-item-action" th:each="result : ${results}" th:href="${result.url}">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" th:text="${result.title}">Título</h5>
@@ -171,6 +171,11 @@
                         <p class="mb-1" th:text="${result.citation}">Citação</p>
                         <small th:text="${result.url}">URL</small>
                     </a>
+                </div>
+            
+                <!-- Mensagem para quando não houverem resultados -->
+                <div class="alert alert-warning mt-4" th:if="${results != null && results.isEmpty()}">
+                    Sem resultados para essa busca.
                 </div>
             </div>
 

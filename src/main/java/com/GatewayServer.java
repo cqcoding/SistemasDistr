@@ -75,7 +75,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * Protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente.
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
-    protected GatewayServer(String serverIp) throws RemoteException {    
+    protected GatewayServer(String serverIp, List<String> barrelUrls) throws RemoteException {    
         super();              // NOTE: exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas.
         this.barrels = new ArrayList<>();
         this.urlsIndexados = new ArrayList<>();    
@@ -85,12 +85,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;                       
 
-        /** Lista de Barrels disponíveis para conexão. */
-        List<String> barrelUrls = Arrays.asList(
-            "rmi://" + serverIp + "/barrel1",
-            "rmi://" + serverIp + "/barrel2",
-            "rmi://" + serverIp + "/barrel3"
-        );
 
         conectarBarrels(barrelUrls);
         carregarURLs();
@@ -112,9 +106,26 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     
                 /** Obtém o IP do servidor a partir das propriedades. */
                 String serverIp = properties.getProperty("server.ip", "localhost");
+                
+                
+                /** Obtém as URLs dos barrels a partir das propriedades. */
+                String barrelUrlsString = properties.getProperty("barrel.urls");
+                List<String> barrelUrls = new ArrayList<>();
+
+                if (barrelUrlsString != null && !barrelUrlsString.trim().isEmpty()) {
+                    String[] urlsArray = barrelUrlsString.split(",");
+                    for (String url : urlsArray) {
+                        barrelUrls.add(url.trim()); // Adiciona a URL após remover espaços em branco
+                    }
+                } 
+                else {
+                    System.err.println("Propriedade 'barrel.urls' não encontrada ou vazia em config.properties.");
+                }
+                
                 String objName = "rmi://" + serverIp + "/server";
-    
-                server = new GatewayServer(serverIp);
+                
+                // Passa a lista de URLs lidas do arquivo para o construtor
+                server = new GatewayServer(serverIp, barrelUrls);
     
                 System.out.println("Registrando objeto no RMIRegistry...");
     
@@ -396,6 +407,17 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             String nomeBarrel = barrel.getNomeBarrel();            // obtém o nome real do Barrel usado.
             temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
             temposResposta.get(nomeBarrel).add(duracao);
+        }
+
+            // Buscar URLs no Hacker News
+        List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra);
+        urlsUnicas.addAll(urlsHackerNews);
+
+        // Indexar URLs do Hacker News nos Barrels
+        for (String url : urlsHackerNews) {
+            for (InterfaceBarrel barrel : barrels) {
+                barrel.indexar_URL(palavra, url);
+            }
         }
 
         for (String url : urlsUnicas) {
@@ -682,5 +704,42 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             barrelsAtivosMap.put(barrel, tamanho);
         });
         return barrelsAtivosMap;
-}
+    }
+
+    /**
+     * Busca as "top stories" do Hacker News e retorna URLs que contenham o termo de pesquisa no título ou URL.
+     *
+     * @param termo Termo de pesquisa a ser usado para filtrar as histórias.
+     * @return Lista de URLs das histórias que correspondem ao termo.
+     */
+    private List<String> buscarTopStoriesHackerNews(String termo) {
+        List<String> urlsEncontradas = new ArrayList<>();
+        try {
+            // Endpoint para obter IDs das top stories
+            String topStoriesUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
+            Document topStoriesDoc = Jsoup.connect(topStoriesUrl).ignoreContentType(true).get();
+            String[] ids = topStoriesDoc.body().text().replace("[", "").replace("]", "").split(",");
+
+            // Iterar sobre os IDs e buscar detalhes das histórias
+            for (int i = 0; i < Math.min(ids.length, 50); i++) { // Limitar a 50 histórias para evitar sobrecarga
+                String storyUrl = "https://hacker-news.firebaseio.com/v0/item/" + ids[i].trim() + ".json";
+                Document storyDoc = Jsoup.connect(storyUrl).ignoreContentType(true).get();
+                String storyJson = storyDoc.body().text();
+
+                // Extrair título e URL da história
+                if (storyJson.contains("\"title\"") && storyJson.contains("\"url\"")) {
+                    String title = storyJson.split("\"title\":\"")[1].split("\",")[0];
+                    String url = storyJson.split("\"url\":\"")[1].split("\",")[0];
+
+                    // Verificar se o termo está no título ou URL
+                    if (title.toLowerCase().contains(termo.toLowerCase()) || url.toLowerCase().contains(termo.toLowerCase())) {
+                        urlsEncontradas.add(url);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+        }
+        return urlsEncontradas;
+    }
 }
