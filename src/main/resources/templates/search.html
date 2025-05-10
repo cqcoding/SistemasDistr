@@ -160,26 +160,28 @@
             <div class="results-container" th:if="${results != null}">
                 <h2>Resultados da Busca</h2>
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action" th:each="result : ${results}">
+                    <a href="#" class="list-group-item list-group-item-action" th:each="result : ${results}" th:href="${result.url}">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1" th:text="${result.title}">Título do Resultado</h5>
-                            <small th:text="${result.date}">Data</small>
+                            <h5 class="mb-1" th:text="${result.title}">Título</h5>
                         </div>
-                        <p class="mb-1" th:text="${result.description}">Descrição do resultado da busca...</p>
+                        <p class="mb-1" th:text="${result.citation}">Citação</p>
                         <small th:text="${result.url}">URL</small>
                     </a>
                 </div>
             </div>
+
+            <!-- Error message -->
+            <div class="alert alert-danger mt-4" th:if="${error != null}" th:text="${error}"></div>
         </div>
     </main>
 
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
-            <span class="text-muted">© 2024 Googol. Todos os direitos reservados.</span>
+            <span class="text-muted">© 2025 Googol. Todos os direitos reservados.</span>
         </div>
     </footer>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

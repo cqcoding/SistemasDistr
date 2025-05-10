@@ -4,6 +4,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import com.InterfaceBarrel; 
 
 public class TesteBarrels {
     public static void main(String[] args) throws MalformedURLException {

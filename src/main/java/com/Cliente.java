@@ -1,3 +1,5 @@
+package com;
+
 import java.io.InputStream;
 import java.rmi.Naming;
 import java.util.List;

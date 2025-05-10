@@ -3,6 +3,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+import com.InterfaceGatewayServer;
+
 
 public class TesteGatewayServer {
     public static void main(String[] args) throws MalformedURLException {

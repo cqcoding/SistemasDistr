@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
+import java.rmi.Naming;
+import com.InterfaceGatewayServer;
+
 
 @Controller
 public class SearchController {
@@ -20,23 +23,43 @@ public class SearchController {
             return "search";
         }
 
-        // Simulação de resultados de busca
         List<SearchResult> results = new ArrayList<>();
+        try {
+            // Conectar ao servidor RMI
+            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
+            String server = "rmi://" + serverIp + "/server";
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+
+            // Realizar a pesquisa
+            List<String> resultadosBrutos = gateway.pesquisar(q);
+
+
+            // Converter os resultados para objetos SearchResult
+            for (String resultadoBruto : resultadosBrutos) {
+                String[] linhas = resultadoBruto.split("\n");
+                String titulo = "Título não disponível";
+                String url = "URL não disponível";
+                String citacao = "Citação não disponível";
+            
+                for (String linha : linhas) {
+                    if (linha.startsWith("Título: ")) {
+                        titulo = linha.substring(8).trim();
+                    } else if (linha.startsWith("URL: ")) {
+                        url = linha.substring(5).trim();
+                    } else if (linha.startsWith("Citação: ")) {
+                        citacao = linha.substring(11).trim();
+                    } 
+                }
+            
+                // Adiciona o resultado, mesmo que algum campo esteja vazio
+                results.add(new SearchResult(titulo, url, citacao));
+            }
+
         
-        // Adiciona alguns resultados de exemplo
-        results.add(new SearchResult(
-            "Exemplo de Resultado 1",
-            "Este é um exemplo de descrição para o primeiro resultado da busca.",
-            "https://exemplo.com/resultado1",
-            "2024-03-20"
-        ));
-        
-        results.add(new SearchResult(
-            "Exemplo de Resultado 2",
-            "Aqui temos outro exemplo de descrição para demonstrar os resultados da busca.",
-            "https://exemplo.com/resultado2",
-            "2024-03-19"
-        ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
+        }
 
         model.addAttribute("query", q);
         model.addAttribute("exact", exact);
@@ -53,20 +76,17 @@ public class SearchController {
 
 class SearchResult {
     private String title;
-    private String description;
     private String url;
-    private String date;
+    private String citation;
 
-    public SearchResult(String title, String description, String url, String date) {
+    public SearchResult(String title, String url, String citation) {
         this.title = title;
-        this.description = description;
         this.url = url;
-        this.date = date;
+        this.citation= citation;
     }
 
     // Getters
     public String getTitle() { return title; }
-    public String getDescription() { return description; }
     public String getUrl() { return url; }
-    public String getDate() { return date; }
-} 
+    public String getCitation() { return citation; }
+}
