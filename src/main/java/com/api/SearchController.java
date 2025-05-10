@@ -92,7 +92,7 @@ public class SearchController {
 
         Map response = this.webClient.post()
             .uri("/chat/completions")
-            .header("Authorization", "Bearer " + System.getenv("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")) // recomendado usar variável de ambiente
+            .header("Authorization", "Bearer " + System.getenv("my_api_key")) // recomendado usar variável de ambiente
             .header("Content-Type", "application/json")
             .bodyValue(requestBody)
             .retrieve()
