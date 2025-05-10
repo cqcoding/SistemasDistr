@@ -8,14 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+//import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.HashSet;
 
 /** 
  * Implementação do servidor Barrel, responsável por indexar URLs associadas a palavras-chaves e gerenciar uma fila de URLs para download.
@@ -23,15 +24,15 @@ import java.util.Set;
 class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private final Map<String, Set<String>> urlsIndexados;
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private final Queue<String> urlQueue;
-    private final String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
+    private Queue<String> urlQueue;
+    private String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
 
     /**
      * Construtor do BarrelServer.
      * @param nome 
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
-    protected BarrelServer(String nome) throws RemoteException, IOException {
+    protected BarrelServer(String nome) throws RemoteException {
         super();
         this.nome = nome;
         urlsIndexados = new HashMap<>();        // estrutura de dados que guarda chave (palavra pesquisada) e valor(url).
@@ -70,15 +71,18 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      *
      * @param palavra Palavra-chave a ser indexada.
      * @param url URL associada à palavra.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
     @Override
-    public void indexar_URL(String palavra, String url) {
+    public void indexar_URL(String palavra, String url) throws RemoteException {
         urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>());
         Set<String> urls = urlsIndexados.get(palavra);
+
         if (urls.add(url)) { // retorna true se a URL não estava presente
             salvarURLs();
-            System.out.println("URL indexada: " + palavra + " -> " + url);
-        } else {
+            System.out.println("URL indexado: " + palavra + " -> " + url);
+        } 
+        else {
             System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
         }
     }
@@ -113,7 +117,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
         Set<String> urls = urlsIndexados.getOrDefault(palavra, new HashSet<>());
-        return new ArrayList<>(urls); // evita expor o Set diretamente
+        return new ArrayList<>(urls);
     }
 
     /**
@@ -142,12 +146,12 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
 
     /**
      * Sincroniza os dados entre os servidores Barrel.
-     * Aceita List<String>, mas armazena como Set<String>.
+     *
      * @param dados Contém as palavras-chave e suas URLs indexadas.
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
     @Override
-    public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException {
+    public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException { 
         for (Map.Entry<String, List<String>> entry : dados.entrySet()) {
             Set<String> urlsExistentes = urlsIndexados.computeIfAbsent(entry.getKey(), k -> new HashSet<>());
             for (String url : entry.getValue()) {
@@ -249,6 +253,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                     writer.newLine();
                 }
             }
+            System.out.println("URLs salvas com sucesso no arquivo.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -259,18 +264,19 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     private void carregarURLs() {
         File arquivo = new File(ArquivoURLS);
-        if (!arquivo.exists()) return;
+        if (!arquivo.exists()) return; // se o arquivo não existir, não há nada para carregar.
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ArquivoURLS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split(" -> ");
-                if (partes.length == 2) {
+                String[] partes = linha.split(" -> "); // separa a linha em duas partes, sendo uma de palavra e outra de URL.
+                if (partes.length == 2) {  // se tiver separada é porque a palavra está indexada.
                     String palavra = partes[0];
                     String url = partes[1];
-                    urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>()).add(url);
+                    urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>()).add(url); // se não estiver separada, computa uma nova URL.
                 }
             }
+            System.out.println("URLs carregadas do arquivo.");
         } catch (IOException e) {
             e.printStackTrace();
         }
