@@ -114,6 +114,33 @@
         .badge {
             font-weight: 500;
         }
+        .chat-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+        }
+        .chat-message.user {
+            text-align: right;
+            color: #0d47a1;
+        }
+        .chat-message.ai {
+            text-align: left;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
@@ -130,8 +157,60 @@
         <div th:if="${statistics == null}">
             <p class="text-center">Não há estatísticas disponíveis no momento.</p>
         </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <h3 class="text-center">Chat com OpenAI</h3>
+            <div id="chat-box" class="chat-box">
+                <!-- Mensagens do chat aparecerão aqui -->
+            </div>
+            <form id="chat-form">
+                <div class="input-group">
+                    <input type="text" id="user-input" class="form-control" placeholder="Digite sua mensagem..." required>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userMessage = userInput.value;
+
+            // Adiciona a mensagem do usuário ao chat
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'chat-message user';
+            userMessageElement.textContent = `Você: ${userMessage}`;
+            chatBox.appendChild(userMessageElement);
+
+            // Limpa o campo de entrada
+            userInput.value = '';
+
+            // Faz a requisição para o backend
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: userMessage })
+            });
+
+            const data = await response.text();
+
+            // Adiciona a resposta da OpenAI ao chat
+            const aiMessageElement = document.createElement('div');
+            aiMessageElement.className = 'chat-message ai';
+            aiMessageElement.textContent = `OpenAI: ${data}`;
+            chatBox.appendChild(aiMessageElement);
+
+            // Rola o chat para a última mensagem
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
 </html>

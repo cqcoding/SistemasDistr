@@ -170,6 +170,16 @@
                 </div>
             </div>
 
+            <!-- OpenAI Results section -->
+            <div class="results-container" th:if="${aiResults != null}">
+                <h2>Resultados da OpenAI</h2>
+                <div class="list-group">
+                    <div class="list-group-item" th:each="aiResult : ${aiResults}">
+                        <p class="mb-1" th:text="${aiResult}">Resposta da OpenAI</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Error message -->
             <div class="alert alert-danger mt-4" th:if="${error != null}" th:text="${error}"></div>
         </div>
