@@ -14,4 +14,6 @@ public interface InterfaceGatewayServer extends Remote {
     String previous_page() throws RemoteException;              //voltar p/ página anterior
     List<String> links_to_page() throws RemoteException;        //retornar links associados à página atual
     String pagina_estatisticas() throws RemoteException;        //retornar estatísticas da pesquisa
+    List<String> obterPesquisasMaisFrequentes() throws RemoteException; //retornar as pesquisas mais frequentes
+    Map<String, Integer> obterBarrelsAtivos() throws RemoteException; //retornar os barrels ativos
 }

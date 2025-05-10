@@ -1,10 +1,10 @@
-guerra:12
+guerra:15
+wikidata:11
 bruna:8
-wikidata:7
+livros:3
+oito:2
 cinco:2
 kayanne:2
 um:2
 tres:2
-pesquisa:1
 prepare:1
-oito:1

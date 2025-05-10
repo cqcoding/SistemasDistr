@@ -650,4 +650,37 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<String> obterPesquisasMaisFrequentes() throws RemoteException {
+        List<String> pesquisasMaisFrequentes = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoPesquisas))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] partes = linha.split(":");
+                if (partes.length == 2) {
+                    String palavra = partes[0];
+                    int frequencia = Integer.parseInt(partes[1]);
+                    pesquisasFrequentes.put(palavra, frequencia);
+                }
+            }
+            // Ordenar e pegar as 10 mais frequentes
+            pesquisasFrequentes.entrySet().stream()
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                .limit(10)
+                .forEach(entry -> pesquisasMaisFrequentes.add(entry.getKey() + " (" + entry.getValue() + ")"));
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar pesquisas frequentes: " + e.getMessage());
+        }
+        return pesquisasMaisFrequentes;
+    }
+
+    @Override
+    public Map<String, Integer> obterBarrelsAtivos() throws RemoteException {
+        Map<String, Integer> barrelsAtivosMap = new HashMap<>();
+        barrelsAtivos.forEach((barrel, tamanho) -> {
+            barrelsAtivosMap.put(barrel, tamanho);
+        });
+        return barrelsAtivosMap;
+}
 }
