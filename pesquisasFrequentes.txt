@@ -1,0 +1,10 @@
+bruna:5
+cinco:2
+kayanne:2
+um:2
+tres:2
+prepare:1
+oito:1
+deus:1
+sair:1
+quatro:1
