@@ -1,3 +1,6 @@
+package com;
+
+
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.Properties;
@@ -14,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.rmi.registry.LocateRegistry;
 import java.io.InputStream;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -81,6 +84,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;                       
 
+
         conectarBarrels(barrelUrls);
         carregarURLs();
         carregarPesquisasFrequentes(); 
@@ -92,17 +96,21 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             try {
                 /** Carrega propriedades do arquivo. */
                 Properties properties = new Properties();
-                try (InputStream input = new FileInputStream("config.properties")) {
-                    properties.load(input);
-                }
+               try (InputStream input = GatewayServer.class.getResourceAsStream("/config.properties")) {
+                    if (input == null) {
+                    throw new FileNotFoundException("Arquivo config.properties não encontrado no classpath.");
+                    }
+                properties.load(input);
+            }
     
                 /** Obtém o IP do servidor a partir das propriedades. */
                 String serverIp = properties.getProperty("server.ip", "localhost");
-    
+                
+                
                 /** Obtém as URLs dos barrels a partir das propriedades. */
                 String barrelUrlsString = properties.getProperty("barrel.urls");
                 List<String> barrelUrls = new ArrayList<>();
-                
+
                 if (barrelUrlsString != null && !barrelUrlsString.trim().isEmpty()) {
                     String[] urlsArray = barrelUrlsString.split(",");
                     for (String url : urlsArray) {
@@ -112,9 +120,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                 else {
                     System.err.println("Propriedade 'barrel.urls' não encontrada ou vazia em config.properties.");
                 }
-
+                
                 String objName = "rmi://" + serverIp + "/server";
-
+                
                 // Passa a lista de URLs lidas do arquivo para o construtor
                 server = new GatewayServer(serverIp, barrelUrls);
     
@@ -383,9 +391,13 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         for (InterfaceBarrel barrel : barrels) {
             long inicio = System.nanoTime();    //tempo em nanossegundos (1 segundo = 1.000.000.000 nanossegundos)
             
-            List<String> barrelResultados = barrel.pesquisar(palavra);
-            for (String url : barrelResultados) {
-                urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
+            try {
+                List<String> barrelResultados = barrel.pesquisar(palavra);
+                for (String url : barrelResultados) {
+                    urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
+                }
+            } catch (RemoteException e) {
+                System.err.println("Erro ao consultar o Barrel: " + e.getMessage());
             }
 
             long duracao = (System.nanoTime() - inicio) / 100000; //dividindo por 100.000 transformaria p 10 microsegundos depois no relatorio eu divido por mais 1000 pra virar decimos de segundo
@@ -394,6 +406,17 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             String nomeBarrel = barrel.getNomeBarrel();            // obtém o nome real do Barrel usado.
             temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
             temposResposta.get(nomeBarrel).add(duracao);
+        }
+
+            // Buscar URLs no Hacker News
+        List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra);
+        urlsUnicas.addAll(urlsHackerNews);
+
+        // Indexar URLs do Hacker News nos Barrels
+        for (String url : urlsHackerNews) {
+            for (InterfaceBarrel barrel : barrels) {
+                barrel.indexar_URL(palavra, url);
+            }
         }
 
         for (String url : urlsUnicas) {
@@ -414,9 +437,13 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
 
         for (String url : resultadosOrdenados) {
-            ResultadoPesquisa resultado = obterDetalhesDaURL(url);
-            if (resultado != null) {
-                resultadosComDetalhes.add(resultado);
+            try {
+                ResultadoPesquisa resultado = obterDetalhesDaURL(url);
+                if (resultado != null) {
+                    resultadosComDetalhes.add(resultado);
+                }
+            } catch (Exception e) {
+                System.err.println("Erro ao obter detalhes da URL: " + url + " - " + e.getMessage());
             }
         }
 
@@ -431,6 +458,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         List<String> resultadosFormatados = new ArrayList<>();
         for (ResultadoPesquisa resultado : resultadosPesquisa) {
             resultadosFormatados.add(resultado.toString());
+        }
+
+        System.out.println("Resultados brutos retornados pelo GatewayServer:");
+        for (String resultado : resultadosFormatados) {
+            System.out.println(resultado);
         }
 
         return resultadosFormatados;
@@ -639,4 +671,82 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             System.err.println("Erro ao carregar URLs indexadas: " + e.getMessage());
         }
     }
+
+    
+    /**
+     * Busca as "top stories" do Hacker News e retorna URLs que contenham o termo de pesquisa no título ou URL.
+     *
+     * @param termo Termo de pesquisa a ser usado para filtrar as histórias.
+     * @return Lista de URLs das histórias que correspondem ao termo.
+     */
+    private List<String> buscarTopStoriesHackerNews(String termo) {
+        List<String> urlsEncontradas = new ArrayList<>();
+        try {
+            // Endpoint para obter IDs das top stories
+            String topStoriesUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
+            Document topStoriesDoc = Jsoup.connect(topStoriesUrl).ignoreContentType(true).get();
+            String[] ids = topStoriesDoc.body().text().replace("[", "").replace("]", "").split(",");
+
+            // Iterar sobre os IDs e buscar detalhes das histórias
+            for (int i = 0; i < Math.min(ids.length, 50); i++) { // Limitar a 50 histórias para evitar sobrecarga
+                String storyUrl = "https://hacker-news.firebaseio.com/v0/item/" + ids[i].trim() + ".json";
+                Document storyDoc = Jsoup.connect(storyUrl).ignoreContentType(true).get();
+                String storyJson = storyDoc.body().text();
+
+                // Extrair título e URL da história
+                if (storyJson.contains("\"title\"") && storyJson.contains("\"url\"")) {
+                    String title = storyJson.split("\"title\":\"")[1].split("\",")[0];
+                    String url = storyJson.split("\"url\":\"")[1].split("\",")[0];
+
+                    // Verificar se o termo está no título ou URL
+                    if (title.toLowerCase().contains(termo.toLowerCase()) || url.toLowerCase().contains(termo.toLowerCase())) {
+                        urlsEncontradas.add(url);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+        }
+        return urlsEncontradas;
+    }
+
+    @Override
+    public List<String> obterPesquisasMaisFrequentes() throws RemoteException {
+        List<String> pesquisas = new ArrayList<>();
+        pesquisasFrequentes.entrySet().stream()
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+            .limit(10)
+            .forEach(entry -> pesquisas.add(entry.getKey() + ": " + entry.getValue()));
+        return pesquisas;
+    }
+    
+    @Override
+    public Map<String, Integer> obterBarrelsAtivos() throws RemoteException {
+        return new HashMap<>(barrelsAtivos);
+    }
+    
+    @Override
+    public Map<String, Double> obterTemposResposta() throws RemoteException {
+        Map<String, Double> temposMedios = new HashMap<>();
+
+        for (var entry : temposResposta.entrySet()) {
+            String barrel = entry.getKey();
+            List<Long> tempos = entry.getValue();
+            
+            if (tempos.isEmpty()) {
+                temposMedios.put(barrel, 0.0); // Sem dados, retorna 0.0
+            } else {
+                long soma = 0;
+                for (Long tempo : tempos) {
+                    soma += tempo;
+                }
+                double media = (double) soma / tempos.size(); // Média em nanossegundos
+                temposMedios.put(barrel, media);
+            }
+        }
+        return temposMedios;
+    }
+
+
+
 }

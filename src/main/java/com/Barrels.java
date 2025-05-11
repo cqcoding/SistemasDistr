@@ -1,3 +1,5 @@
+package com;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.HashSet;
@@ -115,7 +118,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     public List<String> pesquisar(String palavra) throws RemoteException {
         Set<String> urls = urlsIndexados.getOrDefault(palavra, new HashSet<>());
         return new ArrayList<>(urls);
-
     }
 
     /**
@@ -199,15 +201,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         return urlQueue.poll();
     }
 
-    /**
-     * Verifica se a fila de URLs está vazia.
-     *
-     * @return true se a fila estiver vazia, false caso contrário.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
-     */
-    public boolean filaVazia() throws RemoteException {
-        return urlQueue.isEmpty();
-    }
 
     /**
      * Retorna o tamanho da fila de URLs.

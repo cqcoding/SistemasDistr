@@ -1,3 +1,5 @@
+package com;
+
 public class StopwordClassificador {
 
     public static boolean ehProvavelStopword(String palavra, int frequencia, int numPaginas) {
