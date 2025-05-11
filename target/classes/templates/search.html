@@ -66,6 +66,13 @@
             color: #1a237e;
             margin-bottom: 1.5rem;
         }
+
+        .analysis-container h2 {
+            font-size: 1.8rem;
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+        }
+
         .list-group-item {
             transition: transform 0.2s;
             font-size: 0.95rem;
@@ -170,14 +177,22 @@
                 </div>
             </div>
 
-            <!-- OpenAI Results section -->
-            <div class="results-container" th:if="${aiResults != null}">
-                <h2>Resultados da OpenAI</h2>
+
+            <!-- Additional Results section -->
+            <div class="results-container" th:if="${resultados != null}">
+                <h2>Resultados da Pesquisa</h2>
                 <div class="list-group">
-                    <div class="list-group-item" th:each="aiResult : ${aiResults}">
-                        <p class="mb-1" th:text="${aiResult}">Resposta da OpenAI</p>
-                    </div>
+                    <a href="#" class="list-group-item list-group-item-action" th:each="result : ${resultados}" th:href="${result.url}">
+                        <h5 th:text="${result.title}">Título</h5>
+                        <p th:text="${result.citation}">Citação</p>
+                    </a>
                 </div>
+            </div>
+
+            <!-- Analysis section -->
+            <div class="analysis-container" th:if="${analysis != null}">
+                <h2>Análise Contextualizada</h2>
+                <p th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
             </div>
 
             <!-- Error message -->

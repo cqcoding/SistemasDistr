@@ -12,68 +12,82 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.GatewayServer;
 import com.InterfaceGatewayServer;
 
-
 @Controller
+@RequestMapping
 public class SearchController {
 
+    public SearchController(GatewayServer gatewayServer) {
+    }
+
     @GetMapping("/search")
-    public String search(@RequestParam(required = false) String q,
-                        @RequestParam(required = false) boolean exact,
-                        Model model) {
-        
-        // Se não houver termo de busca, apenas mostra a página
-        if (q == null || q.trim().isEmpty()) {
-            return "search";
-        }
+public String search(@RequestParam(required = false) String q,
+                     @RequestParam(required = false) boolean exact,
+                     Model model) {
 
-        List<SearchResult> results = new ArrayList<>();
-        try {
-            // Conectar ao servidor RMI
-            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
-            String server = "rmi://" + serverIp + "/server";
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
-
-            // Realizar a pesquisa
-            List<String> resultadosBrutos = gateway.pesquisar(q);
-
-
-            // Converter os resultados para objetos SearchResult
-            for (String resultadoBruto : resultadosBrutos) {
-                String[] linhas = resultadoBruto.split("\n");
-                String titulo = "Título não disponível";
-                String url = "URL não disponível";
-                String citacao = "Citação não disponível";
-            
-                for (String linha : linhas) {
-                    if (linha.startsWith("Título: ")) {
-                        titulo = linha.substring(8).trim();
-                    } else if (linha.startsWith("URL: ")) {
-                        url = linha.substring(5).trim();
-                    } else if (linha.startsWith("Citação: ")) {
-                        citacao = linha.substring(11).trim();
-                    } 
-                }
-            
-                // Adiciona o resultado, mesmo que algum campo esteja vazio
-                results.add(new SearchResult(titulo, url, citacao));
-            }
-
-        
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
-        }
-
-        model.addAttribute("query", q);
-        model.addAttribute("exact", exact);
-        model.addAttribute("results", results);
-        
+    // Se não houver termo de busca, apenas mostra a página
+    if (q == null || q.trim().isEmpty()) {
         return "search";
     }
+
+    List<SearchResult> results = new ArrayList<>();
+    String analiseContextualizada = null;
+
+    try {
+        // Conectar ao servidor RMI
+        String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
+        String server = "rmi://" + serverIp + "/server";
+        InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+
+        // Realizar a pesquisa
+        List<String> resultadosBrutos = gateway.pesquisar(q);
+
+        // Converter os resultados para objetos SearchResult
+        List<String> citacoes = new ArrayList<>();
+        for (String resultadoBruto : resultadosBrutos) {
+            String[] linhas = resultadoBruto.split("\n");
+            String titulo = "Título não disponível";
+            String url = "URL não disponível";
+            String citacao = "Citação não disponível";
+
+            for (String linha : linhas) {
+                if (linha.startsWith("Título: ")) {
+                    titulo = linha.substring(8).trim();
+                } else if (linha.startsWith("URL: ")) {
+                    url = linha.substring(5).trim();
+                } else if (linha.startsWith("Citação: ")) {
+                    citacao = linha.substring(11).trim();
+                }
+            }
+
+            // Adiciona a citação para análise
+            citacoes.add(citacao);
+
+            // Adiciona o resultado, mesmo que algum campo esteja vazio
+            results.add(new SearchResult(titulo, url, citacao));
+        }
+
+        // Gerar análise contextualizada usando a API da OpenAI
+        analiseContextualizada = gateway.gerarAnaliseContextualizada(q, citacoes);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
+    }
+
+    // Adicionar os resultados e a análise ao modelo
+    model.addAttribute("query", q);
+    model.addAttribute("exact", exact);
+    model.addAttribute("results", results);
+    model.addAttribute("analysis", analiseContextualizada);
+
+    return "search";
+}
 
     @GetMapping("/statistics")
     public String statistics(Model model) {

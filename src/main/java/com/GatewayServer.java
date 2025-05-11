@@ -1,28 +1,30 @@
 package com;
 
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.Properties;
-import java.util.Set;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.rmi.registry.LocateRegistry;
-import java.io.InputStream;
-import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * GatewayServer é responsável por gerenciar a comunicação entre os clientes e os servidores Barrel.
@@ -30,6 +32,7 @@ import java.io.IOException;
  * Essa classe implementa a interface InterfaceGatewayServer e estende UnicastRemoteObject, permitindo chamadas remotas via remota.
  */
 
+@Component
 public class GatewayServer extends UnicastRemoteObject implements InterfaceGatewayServer {
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
@@ -68,13 +71,15 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
+    private final WebClient webClient;
+
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
      * Protegido para garantir que só classes filhas ou dentro do mesmo pacote possam instanciar o objeto diretamente.
      * @throws RemoteException -> caso ocorrer um erro de comunicação remota.
      */
-    protected GatewayServer(String serverIp, List<String> barrelUrls) throws RemoteException {    
+    public GatewayServer(String serverIp, List<String> barrelUrls) throws RemoteException {    
         super();              // NOTE: exporta o objeto remoto automaticamente, sem isso, o objeto não ficaria disponível para chamadas remotas.
         this.barrels = new ArrayList<>();
         this.urlsIndexados = new ArrayList<>();    
@@ -83,7 +88,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;                       
-
+        this.webClient = WebClient.builder()
+            .baseUrl("https://api.openai.com/v1")
+            .defaultHeader("Authorization", "Bearer CHAVE_AQUI") // Substitua pela sua chave válida
+            .defaultHeader("Content-Type", "application/json")
+            .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
+            .build();
 
         conectarBarrels(barrelUrls);
         carregarURLs();
@@ -468,6 +478,21 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return resultadosFormatados;
     }
 
+    public Map<String, Object> pesquisarComAnalise(String palavra) throws RemoteException {
+        List<String> resultados = pesquisar(palavra); // Método existente para obter os resultados
+        List<String> citacoes = resultados.stream()
+            .map(url -> obterDetalhesDaURL(url).citacao) // Extrair as citações
+            .collect(Collectors.toList());
+
+        String analise = gerarAnaliseContextualizada(palavra, citacoes);
+
+        // Retornar os resultados e a análise
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("resultados", resultados);
+        resposta.put("analise", analise);
+        return resposta;
+    }
+
     /** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
     private String normalizarURL(String url) {
         if (url == null) return "";
@@ -744,5 +769,35 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             }
         }
         return temposMedios;
+    }
+
+    @Override
+    public String gerarAnaliseContextualizada(String termo, List<String> citacoes) {
+        try {
+            // Formatar o prompt para a OpenAI
+            String prompt = "Baseado no termo de pesquisa '" + termo + "' e nas seguintes citações:\n" +
+                            String.join("\n", citacoes) +
+                            "\nGere uma análise contextualizada.";
+
+            // Fazer a requisição para a API da OpenAI
+            var response = this.webClient.post()
+                .uri("/chat/completions")
+                .bodyValue(Map.of(
+                    "model", "gpt-3.5-turbo",
+                    "messages", List.of(Map.of("role", "user", "content", prompt))
+                ))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+            // Extrair a resposta gerada pela OpenAI
+            return ((List<Map<String, Object>>) response.get("choices"))
+                    .get(0)
+                    .get("message")
+                    .toString();
+        } catch (Exception e) {
+            System.err.println("Erro ao gerar análise contextualizada: " + e.getMessage());
+            return "Não foi possível gerar a análise contextualizada.";
+        }
     }
 }
