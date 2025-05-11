@@ -1,6 +1,14 @@
 {
     "java.project.referencedLibraries": [
+<<<<<<< Updated upstream
         "libs/jsoup-1.19.1.jar"
         "libs/commons-io-2.18.0.jar"
     ]
+=======
+        "libs/jsoup-1.19.1.jar",
+        "libs/commons-io-2.18.0.jar",
+        "libs/weka.jar",
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+>>>>>>> Stashed changes
 }
