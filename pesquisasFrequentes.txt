@@ -1,8 +1,8 @@
-guerra:16
+guerra:18
 wikidata:11
-bruna:8
+bruna:9
+e:4
 para:3
-e:3
 livros:3
 cinco:2
 kayanne:2
