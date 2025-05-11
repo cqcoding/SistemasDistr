@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estatísticas do Sistema</title>
-
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -114,103 +115,252 @@
         .badge {
             font-weight: 500;
         }
-        .chat-container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .chat-box {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 20px;
-            background: #f8f9fa;
-        }
-        .chat-message {
-            margin-bottom: 10px;
-        }
-        .chat-message.user {
-            text-align: right;
-            color: #0d47a1;
-        }
-        .chat-message.ai {
-            text-align: left;
-            color: #2c3e50;
-        }
     </style>
 </head>
 <body>
+    <!-- Botão Voltar -->
     <a href="/search" class="btn back-btn">
         <i class="fas fa-arrow-left"></i> Voltar para Busca
     </a>
 
     <div class="container py-5">
         <h1 class="text-center mb-5">Estatísticas do Sistema</h1>
-
-        <div th:if="${statistics != null}">
-            <pre th:text="${statistics}" style="white-space: pre-wrap; font-family: monospace;"></pre>
-        </div>
-        <div th:if="${statistics == null}">
-            <p class="text-center">Não há estatísticas disponíveis no momento.</p>
-        </div>
-
-        <!-- Chat Interface -->
-        <div class="chat-container">
-            <h3 class="text-center">Chat com OpenAI</h3>
-            <div id="chat-box" class="chat-box">
-                <!-- Mensagens do chat aparecerão aqui -->
-            </div>
-            <form id="chat-form">
-                <div class="input-group">
-                    <input type="text" id="user-input" class="form-control" placeholder="Digite sua mensagem..." required>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+        
+        <!-- Cards de Estatísticas Gerais -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total de Pesquisas</h5>
+                        <h2 class="display-4" id="totalPesquisas">0</h2>
+                    </div>
                 </div>
-            </form>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Barrels Ativos</h5>
+                        <h2 class="display-4" id="barrelsAtivos">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">URLs Indexadas</h5>
+                        <h2 class="display-4" id="urlsIndexadas">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top 10 Pesquisas</h5>
+                        <div class="chart-container">
+                            <canvas id="pesquisasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tempo Médio de Resposta</h5>
+                        <div class="chart-container">
+                            <canvas id="tempoRespostaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Barrels -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Status dos Barrels</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Barrel</th>
+                                <th>Status</th>
+                                <th>URLs Indexadas</th>
+                                <th>Tempo Médio (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="barrelsTable">
+                            <!-- Dados serão inseridos via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        const chatBox = document.getElementById('chat-box');
-        const chatForm = document.getElementById('chat-form');
-        const userInput = document.getElementById('user-input');
+    <!-- Botão de Atualização -->
+    <button class="btn btn-primary refresh-btn" onclick="atualizarEstatisticas()">
+        <i class="fas fa-sync-alt"></i> Atualizar
+    </button>
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const userMessage = userInput.value;
-
-            // Adiciona a mensagem do usuário ao chat
-            const userMessageElement = document.createElement('div');
-            userMessageElement.className = 'chat-message user';
-            userMessageElement.textContent = `Você: ${userMessage}`;
-            chatBox.appendChild(userMessageElement);
-
-            // Limpa o campo de entrada
-            userInput.value = '';
-
-            // Faz a requisição para o backend
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: userMessage })
-            });
-
-            const data = await response.text();
-
-            // Adiciona a resposta da OpenAI ao chat
-            const aiMessageElement = document.createElement('div');
-            aiMessageElement.className = 'chat-message ai';
-            aiMessageElement.textContent = `OpenAI: ${data}`;
-            chatBox.appendChild(aiMessageElement);
-
-            // Rola o chat para a última mensagem
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
-    </script>
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>
+        // Dados de exemplo (substituir por dados reais posteriormente)
+        const dadosExemplo = {
+            pesquisasFrequentes: {
+                "java": 150,
+                "python": 120,
+                "javascript": 100,
+                "c++": 80,
+                "ruby": 60,
+                "php": 50,
+                "swift": 40,
+                "kotlin": 30,
+                "rust": 20,
+                "go": 10
+            },
+            barrelsAtivos: {
+                "Barrel1": 1000,
+                "Barrel2": 800,
+                "Barrel3": 600
+            },
+            temposResposta: {
+                "Barrel1": 150,
+                "Barrel2": 180,
+                "Barrel3": 200
+            }
+        };
+
+        // Inicialização dos gráficos
+        function inicializarGraficos() {
+            // Gráfico de Pesquisas
+            const ctxPesquisas = document.getElementById('pesquisasChart').getContext('2d');
+            new Chart(ctxPesquisas, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dadosExemplo.pesquisasFrequentes),
+                    datasets: [{
+                        label: 'Número de Pesquisas',
+                        data: Object.values(dadosExemplo.pesquisasFrequentes),
+                        backgroundColor: 'rgba(26, 35, 126, 0.8)',
+                        borderColor: 'rgba(13, 71, 161, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Tempo de Resposta
+            const ctxTempo = document.getElementById('tempoRespostaChart').getContext('2d');
+            new Chart(ctxTempo, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(dadosExemplo.temposResposta),
+                    datasets: [{
+                        label: 'Tempo Médio (ms)',
+                        data: Object.values(dadosExemplo.temposResposta),
+                        borderColor: 'rgba(26, 35, 126, 1)',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Atualizar estatísticas
+        function atualizarEstatisticas() {
+            document.getElementById('loading').style.display = 'flex';
+            
+            // Simular atualização (substituir por chamada real à API)
+            setTimeout(() => {
+                atualizarCards();
+                atualizarTabelaBarrels();
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+        }
+
+        // Atualizar cards de estatísticas
+        function atualizarCards() {
+            const totalPesquisas = Object.values(dadosExemplo.pesquisasFrequentes).reduce((a, b) => a + b, 0);
+            const totalBarrels = Object.keys(dadosExemplo.barrelsAtivos).length;
+            const totalUrls = Object.values(dadosExemplo.barrelsAtivos).reduce((a, b) => a + b, 0);
+
+            document.getElementById('totalPesquisas').textContent = totalPesquisas;
+            document.getElementById('barrelsAtivos').textContent = totalBarrels;
+            document.getElementById('urlsIndexadas').textContent = totalUrls;
+        }
+
+        // Atualizar tabela de barrels
+        function atualizarTabelaBarrels() {
+            const tbody = document.getElementById('barrelsTable');
+            tbody.innerHTML = '';
+
+            Object.entries(dadosExemplo.barrelsAtivos).forEach(([barrel, urls]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${barrel}</td>
+                    <td><span class="badge bg-success">Ativo</span></td>
+                    <td>${urls}</td>
+                    <td>${dadosExemplo.temposResposta[barrel]} ms</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Inicializar página
+        window.onload = function() {
+            inicializarGraficos();
+            atualizarCards();
+            atualizarTabelaBarrels();
+        };
+    </script>
 </body>
 </html>
