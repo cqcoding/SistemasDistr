@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.GatewayServer;
@@ -145,6 +146,28 @@ public String search(@RequestParam(required = false) String q,
     
         return "statistics";
     }
+
+    @RequestMapping(value = "/relacoes", method = {RequestMethod.GET, RequestMethod.POST})
+    public String consultarRelacoes(@RequestParam(required = false) String url, Model model) {
+        if (url == null || url.isEmpty()) {
+            //model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
+            return "relacoes";
+        }
+
+        try {
+            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
+            String server = "rmi://" + serverIp + "/server";
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+
+            List<String> relacoes = gateway.consultarRelacoes(url);
+            model.addAttribute("url", url);
+            model.addAttribute("relacoes", relacoes);
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
+        }
+        return "relacoes"; // Nome do arquivo HTML para exibir as relações
+    }
+
 }
 
 class SearchResult {

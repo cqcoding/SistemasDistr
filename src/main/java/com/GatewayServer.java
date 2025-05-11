@@ -73,6 +73,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     private final WebClient webClient;
 
+    private Map<String, List<String>> urlRelations;
+
+    
+    
+
+
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -97,6 +103,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         conectarBarrels(barrelUrls);
         carregarURLs();
+
+        // Carregar relações entre URLs usando a nova classe
+        RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
+        this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); // Substitua pelo caminho correto
+        
         carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
@@ -799,5 +810,10 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             System.err.println("Erro ao gerar análise contextualizada: " + e.getMessage());
             return "Não foi possível gerar a análise contextualizada.";
         }
+    }
+
+    @Override
+    public List<String> consultarRelacoes(String url) throws RemoteException {
+        return urlRelations.getOrDefault(url, new ArrayList<>());
     }
 }
