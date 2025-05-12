@@ -3,6 +3,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+import com.InterfaceGatewayServer;
+
 
 /**
  * Classe de teste para a comunicação com um servidor Gateway via RMI.

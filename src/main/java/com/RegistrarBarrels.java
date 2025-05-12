@@ -1,18 +1,15 @@
-import java.io.InputStream;
+package com;
+
+
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.Properties;
+import java.io.InputStream;
 
-/**
- * Classe responsável por registrar os servidores Barrel no RMI.
- * Cria e registra três instâncias de BarrelServer, tornando-as disponíveis para comunicação remota.
- * O registro é feito utilizando o protocolo RMI e a classe Naming.
- * A classe garante que, caso haja algum erro durante o processo de registro, seja tratado e uma mensagem de erro seja exibida.
- */
 public class RegistrarBarrels {
     public static void main(String[] args) {
         try {
-            /** Carregar propriedades usando o ClassLoader. */
+            // Carregar propriedades usando o ClassLoader
             Properties properties = new Properties();
             try (InputStream input = RegistrarBarrels.class.getClassLoader().getResourceAsStream("config.properties")) {
                 if (input == null) {
@@ -22,11 +19,13 @@ public class RegistrarBarrels {
                 properties.load(input);
             }
 
-            /** Obter o IP do servidor a partir das propriedades. */
+            // Obter o IP do servidor a partir das propriedades
             String serverIp = properties.getProperty("server.ip", "localhost");
+
+            // Criar o RMI Registry
             LocateRegistry.createRegistry(1099);
 
-            /** Criar e registrar os BarrelServers. */
+            // Criar e registrar os BarrelServers
             for (int i = 1; i <= 3; i++) {
                 String nomeBarrel = "Barrel" + i;
                 BarrelServer barrel = new BarrelServer(nomeBarrel);

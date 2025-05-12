@@ -4,6 +4,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import com.InterfaceBarrel; 
 
 /**
      * Classe de teste para a comunicação com um servidor Barrel via RMI.

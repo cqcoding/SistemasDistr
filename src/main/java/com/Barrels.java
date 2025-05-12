@@ -1,3 +1,5 @@
+package com;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,13 +13,16 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Set;
+import java.util.HashSet;
 
 /** 
  * Implementação do servidor Barrel, responsável por indexar URLs associadas a palavras-chaves e gerenciar uma fila de URLs para download.
  */ 
 class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
-    private Map<String, List<String>> urlsIndexados;
+    private final Map<String, Set<String>> urlsIndexados;
     private static final String ArquivoURLS = "urlsIndexados.txt";
     private Queue<String> urlQueue;
     private String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
@@ -55,7 +60,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     @Override
     public int getTamanhoIndice() throws RemoteException {
         int total = 0;
-        for (List<String> urls : urlsIndexados.values()) {  //passa por todo o urlsIndexados 
+        for (Set<String> urls : urlsIndexados.values()) {  //passa por todo o urlsIndexados 
             total += urls.size();                           // \_> soma o tamanho da lista e depois retorna esse tamanho
         }
         return total;
@@ -70,9 +75,16 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void indexar_URL(String palavra, String url) throws RemoteException {
-        urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url);     //forma compacta de verificar se a chave existe, criar a lista, e adicionar — tudo em uma linha --> Evita nulos e simplifica o código
-        salvarURLs();
-        System.out.println("URL indexado: " + palavra + " -> " + url);
+        urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>());
+        Set<String> urls = urlsIndexados.get(palavra);
+
+        if (urls.add(url)) { // retorna true se a URL não estava presente
+            salvarURLs();
+            System.out.println("URL indexado: " + palavra + " -> " + url);
+        } 
+        else {
+            System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
+        }
     }
 
     /**
@@ -83,19 +95,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public String get_url() throws RemoteException {
-        return urlQueue.poll();
-    }
-
-    /**
-     * Adiciona uma nova URL à fila.
-     *
-     * @param url URL a ser adicionada.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
-     */
-    @Override
-    public void put_url(String url) throws RemoteException {
-        urlQueue.add(url);
-        System.out.println("Nova URL adicionada à fila: " + url);
+        //return urlQueue.poll();
+        System.out.println(nome + ": get_url chamada. Tamanho atual da fila: " + urlQueue.size());
+        String url = urlQueue.poll();
+        System.out.println(nome + ": get_url retornando: " + url);
+        return url;
     }
 
     /**
@@ -112,7 +116,8 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
 
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        return urlsIndexados.getOrDefault(palavra, new ArrayList<>());
+        Set<String> urls = urlsIndexados.getOrDefault(palavra, new HashSet<>());
+        return new ArrayList<>(urls);
     }
 
     /**
@@ -147,7 +152,12 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException { 
-        urlsIndexados.putAll(dados); // adiciona ou substitui os dados no mapa urlIndexados.
+        for (Map.Entry<String, List<String>> entry : dados.entrySet()) {
+            Set<String> urlsExistentes = urlsIndexados.computeIfAbsent(entry.getKey(), k -> new HashSet<>());
+            for (String url : entry.getValue()) {
+                urlsExistentes.add(url); // como é Set, duplicadas não entram.
+            }
+        }
         salvarURLs();
         System.out.println("Dados sincronizados com sucesso.");
     }
@@ -160,7 +170,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public Map<String, List<String>> getIndexados() throws RemoteException {
-        return urlsIndexados;
+        Map<String, List<String>> copia = new HashMap<>();
+        for (Map.Entry<String, Set<String>> entry : urlsIndexados.entrySet()) {
+            copia.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        }
+        return copia;
     }
 
     /**
@@ -171,8 +185,9 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void adicionarURLNaFila(String url) throws RemoteException {
+        System.out.println(this.nome + ": Método adicionarURLNaFila chamado com URL: " + url + ". Tamanho atual da fila: " + urlQueue.size());
         urlQueue.add(url);
-        System.out.println("URL adicionada à fila: " + url);
+        System.out.println("URL adicionada à fila: " + url + ". Novo tamanho da fila: " + urlQueue.size());
     }
 
     /**
@@ -186,15 +201,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         return urlQueue.poll();
     }
 
-    /**
-     * Verifica se a fila de URLs está vazia.
-     *
-     * @return true se a fila estiver vazia, false caso contrário.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
-     */
-    public boolean filaVazia() throws RemoteException {
-        return urlQueue.isEmpty();
-    }
 
     /**
      * Retorna o tamanho da fila de URLs.
@@ -208,11 +214,30 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     }
 
     /**
+     * Retorna uma lista de palavras-chave que estão associadas à URL informada.
+     * Útil para descobrir quais palavras apontam para a URL (backlinks).
+     *
+     * @param url URL que está sendo consultada.
+     * @return Lista de palavras que têm essa URL associada.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
+     */
+    @Override
+    public List<String> obterPaginasApontandoPara(String url) throws RemoteException {
+        List<String> palavrasApontando = new ArrayList<>();
+        for (Map.Entry<String, Set<String>> entry : urlsIndexados.entrySet()) {
+            if (entry.getValue().contains(url)) {
+                palavrasApontando.add(entry.getKey());
+            }
+        }
+        return palavrasApontando;
+    }
+
+    /**
      * Salva as URLs indexadas no arquivo de texto.
      */
     private void salvarURLs() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ArquivoURLS))) {
-            for (Map.Entry<String, List<String>> entry : urlsIndexados.entrySet()) {
+            for (Map.Entry<String, Set<String>> entry : urlsIndexados.entrySet()) {
                 String palavra = entry.getKey();
                 for (String url : entry.getValue()) {
                     writer.write(palavra + " -> " + url);
@@ -239,7 +264,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                 if (partes.length == 2) {  // se tiver separada é porque a palavra está indexada.
                     String palavra = partes[0];
                     String url = partes[1];
-                    urlsIndexados.computeIfAbsent(palavra, k -> new ArrayList<>()).add(url); // se não estiver separada, computa uma nova URL.
+                    urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>()).add(url); // se não estiver separada, computa uma nova URL.
                 }
             }
             System.out.println("URLs carregadas do arquivo.");
