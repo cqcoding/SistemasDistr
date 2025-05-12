@@ -75,15 +75,20 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void indexar_URL(String palavra, String url) throws RemoteException {
-        urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>());
-        Set<String> urls = urlsIndexados.get(palavra);
+        String palavraChave = palavra.trim().toLowerCase(); // Convertido para minúsculas pra não ser case-sensitive
+        String urlParaIndexar = url.trim();
+       
+        synchronized (urlsIndexados) {
+            urlsIndexados.computeIfAbsent(palavraChave, k -> new HashSet<>());
+            Set<String> urls = urlsIndexados.get(palavraChave);
 
-        if (urls.add(url)) { // retorna true se a URL não estava presente
-            salvarURLs();
-            System.out.println("URL indexado: " + palavra + " -> " + url);
-        } 
-        else {
-            System.out.println("URL já estava indexada para a palavra: " + palavra + " -> " + url);
+            if (urls.add(url)) { // retorna true se a URL não estava presente
+                salvarURLs();
+                System.out.println("URL indexado: " + palavraChave + " -> " + urlParaIndexar);
+            } 
+            else {
+                System.out.println("URL já estava indexada para a palavra: " + palavraChave + " -> " + urlParaIndexar);
+            }
         }
     }
 
@@ -95,18 +100,15 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public String get_url() throws RemoteException {
-        //return urlQueue.poll();
         System.out.println(nome + ": get_url chamada. Tamanho atual da fila: " + urlQueue.size());
         String url = urlQueue.poll();
-        System.out.println(nome + ": get_url retornando: " + url);
         return url;
     }
 
     /**
-     * Pesquisa URLs associadas a uma palavra-chave.
+     * Verifica se a fila de URLs está vazia.
      *
-     * @param palavra Palavra-chave a ser pesquisada.
-     * @return Lista de URLs associadas à palavra.
+     * @return true se a fila estiver vazia, false caso contrário.
      * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
      */
     @Override
@@ -114,15 +116,29 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         return urlQueue.isEmpty();
     }
 
+    /**
+     * Pesquisa URLs associadas a uma palavra-chave.
+     * A palavra-chave da pesquisa é convertida para minúsculas.
+     *
+     * @param palavra Palavra-chave a ser pesquisada.
+     * @return Lista de URLs associadas à palavra.
+     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
+     */
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        Set<String> urls = urlsIndexados.getOrDefault(palavra, new HashSet<>());
+        if (palavra == null || palavra.trim().isEmpty()){
+            return new ArrayList<>(); // Retorna lista vazia se a palavra for nula ou vazia
+        }
+        
+        String palavraChave = palavra.trim().toLowerCase(); // Convertido para minúsculas
+        Set<String> urls = urlsIndexados.getOrDefault(palavraChave, new HashSet<>());
         return new ArrayList<>(urls);
     }
 
     /**
      * Verifica se a palavra e a URL estão indexadas corretamente.
-     *
+     * A palavra-chave é convertida para minúsculas.
+     * 
      * @param palavra Palavra-chave.
      * @param url URL a ser verificada.
      * @return true se a URL estiver indexada, false caso contrário.
@@ -130,7 +146,10 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public boolean confirmarRecebimento(String palavra, String url) throws RemoteException {
-        return urlsIndexados.containsKey(palavra) && urlsIndexados.get(palavra).contains(url);
+        String palavraChave = palavra.trim().toLowerCase(); // Convertido para minúsculas
+        String urlParaVerificar = url.trim();
+        
+        return urlsIndexados.containsKey(palavraChave) && urlsIndexados.get(palavraChave).contains(urlParaVerificar);
     }
 
     /**
@@ -153,9 +172,10 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     @Override
     public void sincronizarDados(Map<String, List<String>> dados) throws RemoteException { 
         for (Map.Entry<String, List<String>> entry : dados.entrySet()) {
-            Set<String> urlsExistentes = urlsIndexados.computeIfAbsent(entry.getKey(), k -> new HashSet<>());
+            String palavraChave = entry.getKey().trim().toLowerCase(); // Convertido para minúsculas
+            Set<String> urlsExistentes = urlsIndexados.computeIfAbsent(palavraChave, k -> new HashSet<>());
             for (String url : entry.getValue()) {
-                urlsExistentes.add(url); // como é Set, duplicadas não entram.
+                urlsExistentes.add(url.trim()); // como é Set, duplicadas não entram.
             }
         }
         salvarURLs();
@@ -185,8 +205,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      */
     @Override
     public void adicionarURLNaFila(String url) throws RemoteException {
-        System.out.println(this.nome + ": Método adicionarURLNaFila chamado com URL: " + url + ". Tamanho atual da fila: " + urlQueue.size());
-        urlQueue.add(url);
+        urlQueue.add(url.trim());
         System.out.println("URL adicionada à fila: " + url + ". Novo tamanho da fila: " + urlQueue.size());
     }
 
@@ -224,8 +243,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     @Override
     public List<String> obterPaginasApontandoPara(String url) throws RemoteException {
         List<String> palavrasApontando = new ArrayList<>();
+
+        String urlNormalizada = url.trim();
+
         for (Map.Entry<String, Set<String>> entry : urlsIndexados.entrySet()) {
-            if (entry.getValue().contains(url)) {
+            if (entry.getValue() != null && entry.getValue().contains(urlNormalizada)) {
                 palavrasApontando.add(entry.getKey());
             }
         }
@@ -238,9 +260,9 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private void salvarURLs() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ArquivoURLS))) {
             for (Map.Entry<String, Set<String>> entry : urlsIndexados.entrySet()) {
-                String palavra = entry.getKey();
+                String palavraChave = entry.getKey();
                 for (String url : entry.getValue()) {
-                    writer.write(palavra + " -> " + url);
+                    writer.write(palavraChave + " -> " + url);
                     writer.newLine();
                 }
             }
@@ -252,6 +274,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
 
     /**
      * Carrega as URLs indexadas do arquivo de texto.
+     * As palavras-chave lidas do arquivo são convertidas para minúsculas.
      */
     private void carregarURLs() {
         File arquivo = new File(ArquivoURLS);
@@ -260,11 +283,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         try (BufferedReader reader = new BufferedReader(new FileReader(ArquivoURLS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split(" -> "); // separa a linha em duas partes, sendo uma de palavra e outra de URL.
+                String[] partes = linha.split(" -> ", 2); // separa a linha em duas partes, sendo uma de palavra e outra de URL.
                 if (partes.length == 2) {  // se tiver separada é porque a palavra está indexada.
-                    String palavra = partes[0];
-                    String url = partes[1];
-                    urlsIndexados.computeIfAbsent(palavra, k -> new HashSet<>()).add(url); // se não estiver separada, computa uma nova URL.
+                    String palavraChave = partes[0].trim().toLowerCase(); // Convertido para minúsculas
+                    String url = partes[1].trim();
+                    urlsIndexados.computeIfAbsent(palavraChave, k -> new HashSet<>()).add(url); // se não estiver separada, computa uma nova URL.
                 }
             }
             System.out.println("URLs carregadas do arquivo.");
