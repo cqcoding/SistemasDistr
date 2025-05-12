@@ -38,9 +38,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** Lista de Barrels conectados ao Gateway. */
     private List<InterfaceBarrel> barrels;
 
-    /** Lista de palavras-chave utilizadas para indexação. */
-    private static final String[] palavras_chave = {""};
-
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
     private List<String> urlsIndexados;
@@ -844,6 +841,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return temposMedios;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public String gerarAnaliseContextualizada(String termo, List<String> citacoes) {
         try {
