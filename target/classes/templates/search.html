@@ -13,6 +13,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="/static/styles.css" rel="stylesheet">
+
     <style>
         /* Sticky footer styles */
         html {
@@ -66,13 +68,6 @@
             color: #1a237e;
             margin-bottom: 1.5rem;
         }
-
-        .analysis-container h2 {
-            font-size: 1.8rem;
-            color: #1a237e;
-            margin-bottom: 1.5rem;
-        }
-
         .list-group-item {
             transition: transform 0.2s;
             font-size: 0.95rem;
@@ -86,13 +81,21 @@
             font-weight: 600;
             color: #1a237e;
         }
+        .list-group-item small {
+        color: #007bff; /* Azul padrão de links */
+        text-decoration: underline; /* Adiciona sublinhado para parecer mais com um link */
+        }
         .navbar {
             background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%) !important;
             font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand {
             font-size: 1.4rem;
             font-weight: 700;
+            color:#ffffff;
+            letter-spacing: 1px;
+
         }
         .btn-primary {
             background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
@@ -129,7 +132,7 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Googol</a>
+            <a class="navbar-brand" href="/search">Googol</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -138,14 +141,21 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Início</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/relacoes">
+                            <i class="fas fa-link"></i> Lista de Páginas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/statistics">
+                            <i class="fas fa-chart-bar"></i> Estatísticas
+                        </a>
+                    </li>
                 </ul>
-                <a href="/statistics" class="btn btn-primary stats-btn">
-                    <i class="fas fa-chart-bar"></i> Estatísticas
-                </a>
-                
             </div>
         </div>
     </nav>
+
 
     <!-- Begin page content -->
     <main class="flex-shrink-0">
@@ -165,9 +175,9 @@
             </div>
 
             <!-- Results section -->
-            <div class="results-container" th:if="${results != null}">
-                <h2>Resultados da Busca</h2>
-                <div class="list-group">
+            <div class="results-container">
+                <h2 th:if="${results != null && !results.isEmpty()}">Resultados da Busca</h2>
+                <div class="list-group" th:if="${results != null && !results.isEmpty()}">
                     <a href="#" class="list-group-item list-group-item-action" th:each="result : ${results}" th:href="${result.url}">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" th:text="${result.title}">Título</h5>
@@ -176,17 +186,9 @@
                         <small th:text="${result.url}">URL</small>
                     </a>
                 </div>
-            </div>
 
-            <!-- Lista de Páginas -->
-            <div class="list-pages-container mt-4">
-                <a href="/relacoes" class="btn btn-secondary">
-                    <i class="fas fa-link"></i> Lista de Páginas
-                </a>
-            </div>
-
-            <!-- Additional Results section -->
-            <div class="results-container" th:if="${resultados != null}">
+             <!-- Additional Results section -->
+             <div class="results-container" th:if="${resultados != null}">
                 <h2>Resultados da Pesquisa</h2>
                 <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action" th:each="result : ${resultados}" th:href="${result.url}">
@@ -202,8 +204,40 @@
                 <p th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
             </div>
 
+            <div class="pagination-container mt-4 text-center">
+                <a href="/search/previous" class="btn btn-secondary" th:if="${results != null && !results.isEmpty()}">
+                    <i class="fas fa-arrow-left"></i> Página Anterior
+                </a>
+                <a href="/search/next" class="btn btn-primary" th:if="${results != null && !results.isEmpty()}">
+                    Próxima Página <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+                <!-- Mensagem para quando não houverem resultados -->
+                <div class="alert alert-warning mt-4" th:if="${results != null && results.isEmpty()}">
+                    Sem resultados para essa busca.
+                </div>
+            </div>
+
             <!-- Error message -->
             <div class="alert alert-danger mt-4" th:if="${error != null}" th:text="${error}"></div>
+
+            <!-- Index URL section -->
+            <div class="index-url-container mt-5">
+                 <div div class="search-box">
+                    <form th:action="@{/index-url}" method="post">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" name="url" placeholder="Digite a URL para indexar" required>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fas fa-plus"></i> Indexar
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Mensagem de sucesso ou erro -->
+                    <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+                    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+                </div>
+             </div>
         </div>
     </main>
 

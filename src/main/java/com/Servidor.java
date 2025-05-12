@@ -42,7 +42,7 @@ public class Servidor {
             
             String objName = "rmi://" + serverIp + "/server";
 
-            GatewayServer server = new GatewayServer(serverIp, barrelUrls);   // Instancia o servidor com os argumentos necessários
+            GatewayServer server = new GatewayServer(serverIp, barrelUrls);   // Instancia o servidor
 
             System.out.println("Registrando objeto no RMIRegistry...");
 

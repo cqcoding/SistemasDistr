@@ -201,15 +201,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         return urlQueue.poll();
     }
 
-    /**
-     * Verifica se a fila de URLs está vazia.
-     *
-     * @return true se a fila estiver vazia, false caso contrário.
-     * @throws RemoteException -> caso ocorrer um erro de comunicação RMI.
-     */
-    public boolean filaVazia() throws RemoteException {
-        return urlQueue.isEmpty();
-    }
 
     /**
      * Retorna o tamanho da fila de URLs.
