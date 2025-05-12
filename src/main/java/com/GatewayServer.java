@@ -9,6 +9,8 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.web.reactive.function.client.WebClient;
+
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +70,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
+     private final WebClient webClient;
+
+    private Map<String, List<String>> urlRelations;
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -82,11 +87,21 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.barrelsAtivos = new HashMap<>();
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
-        this.paginaAtual = 0;                       
+        this.paginaAtual = 0;
+        this.webClient = WebClient.builder()
+        .baseUrl("https://api.openai.com/v1")
+        .defaultHeader("Authorization", "Bearer SUA_CHAVE") // Substitua pela sua chave v
+        .defaultHeader("Content-Type", "application/json")
+        .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
+        .build();
+                   
 
 
         conectarBarrels(barrelUrls);
         carregarURLs();
+        // Carregar relações entre URLs usando a nova classe
+        RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
+        this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
         carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
@@ -296,20 +311,22 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public void indexar_URL(String url) throws RemoteException {
-        if (!urlsIndexados.contains(url)) {
-            
-            /** Distribui a indexação para os Barrels. */
-            for (InterfaceBarrel barrel : barrels) {
-                for (String palavra : palavras_chave) {
-                    barrel.indexar_URL(palavra, url);      // indexar a URL em cada Barrel.
-                }
-            }
+        System.out.println("GatewayServer: Recebendo solicitação para indexar URL: " + url);
 
-            urlsIndexados.add(url);
-            System.out.println("URL indexada em todos os barrels: " + url);
-        } 
-        else {
-            System.out.println("URL já foi indexado.");
+        // Verificar se a URL já foi processada
+        if (urlsIndexados.contains(url)) {
+            System.out.println("GatewayServer: URL já indexada: " + url);
+            return;
+        }
+    
+        // Adicionar a URL ao arquivo e processá-la
+        try {
+            Downloader downloader = new Downloader(10); // Número de threads
+            downloader.comecaProcessarURL(url); // Processar a URL diretamente
+            System.out.println("GatewayServer: URL enviada para processamento: " + url);
+        } catch (Exception e) {
+            System.err.println("GatewayServer: Erro ao processar URL: " + e.getMessage());
+            throw new RemoteException("Erro ao processar URL", e);
         }
     }
 
@@ -394,7 +411,13 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             try {
                 List<String> barrelResultados = barrel.pesquisar(palavra);
                 for (String url : barrelResultados) {
-                    urlsUnicas.add(normalizarURL(url)); // Deduplicando com normalização
+                    if (url != null && !url.isBlank()) {
+                        try {
+                            urlsUnicas.add(normalizarURL(url));
+                        } catch (Exception e) {
+                            System.err.println("Erro ao processar URL: " + url + " - " + e.getMessage());
+                        }
+                    }
                 }
             } catch (RemoteException e) {
                 System.err.println("Erro ao consultar o Barrel: " + e.getMessage());
@@ -460,7 +483,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             resultadosFormatados.add(resultado.toString());
         }
 
-        System.out.println("Resultados brutos retornados pelo GatewayServer:");
+
         for (String resultado : resultadosFormatados) {
             System.out.println(resultado);
         }
@@ -551,12 +574,34 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * @return sublista dos resultados da pesquisa, correspondente à página atual.
      */
     private List<ResultadoPesquisa> getResultadosPaginaAtual() {
-        if (resultadosPesquisa == null) {
+        if (resultadosPesquisa == null || resultadosPesquisa.isEmpty()) {
             return new ArrayList<>();
         }
 
+            // Garantir que paginaAtual esteja dentro do intervalo válido
+        int totalPaginas = (int) Math.ceil((double) resultadosPesquisa.size() / TAMANHO_PAGINA);
+        if (paginaAtual >= totalPaginas) {
+            paginaAtual = totalPaginas - 1; // Ajustar para a última página válida
+        } else if (paginaAtual < 0) {
+            paginaAtual = 0; // Ajustar para a primeira página
+        }
+
+
         int inicio = paginaAtual * TAMANHO_PAGINA;
         int fim = Math.min(inicio + TAMANHO_PAGINA, resultadosPesquisa.size());
+
+            // Verificar se os índices são válidos
+        if (inicio >= resultadosPesquisa.size() || inicio < 0 || fim < 0 || fim > resultadosPesquisa.size()) {
+            System.err.println("Índices inválidos: início=" + inicio + ", fim=" + fim);
+            return new ArrayList<>();
+        }
+
+        System.out.println("Página atual: " + paginaAtual);
+        System.out.println("Total de resultados: " + resultadosPesquisa.size());
+        System.out.println("Índice de início: " + inicio);
+        System.out.println("Índice de fim: " + fim);
+
+
         return resultadosPesquisa.subList(inicio, fim);
     }
 
@@ -747,6 +792,38 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         return temposMedios;
     }
 
+    @Override
+    public String gerarAnaliseContextualizada(String termo, List<String> citacoes) {
+        try {
+            // Formatar o prompt para a OpenAI
+            String prompt = "Baseado no termo de pesquisa '" + termo + "' e nas seguintes citações:\n" +
+                            String.join("\n", citacoes) +
+                            "\nGere uma análise contextualizada.";
 
+            // Fazer a requisição para a API da OpenAI
+            var response = this.webClient.post()
+                .uri("/chat/completions")
+                .bodyValue(Map.of(
+                    "model", "gpt-3.5-turbo",
+                    "messages", List.of(Map.of("role", "user", "content", prompt))
+                ))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
 
+            // Extrair a resposta gerada pela OpenAI
+            return ((List<Map<String, Object>>) response.get("choices"))
+                    .get(0)
+                    .get("message")
+                    .toString();
+        } catch (Exception e) {
+            System.err.println("Erro ao gerar análise contextualizada: " + e.getMessage());
+            return "Não foi possível gerar a análise contextualizada.";
+        }
+    }
+
+    @Override
+    public List<String> consultarRelacoes(String url) throws RemoteException {
+        return urlRelations.getOrDefault(url, new ArrayList<>());
+    }
 }

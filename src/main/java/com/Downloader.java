@@ -437,6 +437,63 @@ public class Downloader{
         System.out.println("Downloader encerrado.");
     }
 
+    public void comecaProcessarURL(String url) {
+        System.out.println("Downloader: Processando URL diretamente: " + url);
+
+        try {
+            // Verifica se a URL já foi processada
+            if (!urlsProcessadas.add(url)) {
+                System.out.println("Downloader: URL já processada: " + url);
+                return;
+            }
+
+            // Baixar a página
+            Document doc = Jsoup.connect(url)
+                                .userAgent("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)")
+                                .timeout(10000)
+                                .ignoreHttpErrors(true)
+                                .followRedirects(true)
+                                .get();
+
+            if (doc.connection().response().statusCode() >= 200 && doc.connection().response().statusCode() < 300) {
+                // Extrair palavras e indexá-las
+                String textoCompleto = doc.text();
+                String[] palavras = textoCompleto.toLowerCase().split("\\s+");
+
+                for (String palavra : palavras) {
+                    palavra = palavra.replaceAll("[^a-zA-Z0-9áéíóúâêîôûãõç]", "");
+
+                    if (palavra.length() > 3 && !stopWords.contains(palavra) && !palavra.trim().isEmpty()) {
+                        contagemPalavras.computeIfAbsent(palavra, k -> new AtomicInteger(0)).incrementAndGet();
+                        String chaveUnica = palavra + "_" + url;
+
+                        if (palavrasProcessadas.add(chaveUnica)) {
+                            try {
+                                // Enviar para um Barrel aleatório
+                                if (!barrels.isEmpty()) {
+                                    int barrelEscolhidoAleatoriamente = random.nextInt(barrels.size());
+                                    InterfaceBarrel barrelDestino = barrels.get(barrelEscolhidoAleatoriamente);
+                                    barrelDestino.indexar_URL(palavra, url);
+                                    salvarURLNoArquivo(palavra, url); // Salvar no arquivo
+                                } else {
+                                    System.err.println("Downloader: Não há barrels disponíveis para indexar.");
+                                }
+                            } catch (RemoteException e) {
+                                System.err.println("Downloader: Erro ao indexar '" + palavra + "' para " + url + ": " + e.getMessage());
+                                palavrasProcessadas.remove(chaveUnica); // Desfazer se falhar
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Downloader: Ignorando URL com status " + doc.connection().response().statusCode() + ": " + url);
+            }
+        } catch (Exception e) {
+            System.err.println("Downloader: Erro ao processar URL: " + url);
+            e.printStackTrace();
+        }
+    }
+
     //INCIAR O DOWNLODER
     public static void main(String[] args) {
         int numThreads = 10; //num de threads

@@ -1,21 +1,24 @@
 package com.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value; // Para injetar propriedades
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.InterfaceBarrel;
 import com.InterfaceGatewayServer;
@@ -23,14 +26,14 @@ import com.api.services.RealTimeUpdateService;
 
 import jakarta.annotation.PostConstruct;
 
+
 @Controller
 public class SearchController {
-
     // Campos para o cliente RMI e o serviço WebSocket
     private InterfaceGatewayServer gateway;
     private final RealTimeUpdateService realTimeUpdateService;
 
-    // Injetar URLs RMI e IP do servidor Gateway a partir de application.properties
+     // Injetar URLs RMI e IP do servidor Gateway a partir de application.properties
     @Value("${rmi.gateway.server.ip:localhost}") 
     private String gatewayServerIp;
 
@@ -60,6 +63,57 @@ public class SearchController {
         }
     }
 
+        @GetMapping("/search/next")
+    public String nextPage(Model model) {
+        try {
+            if (this.gateway != null) {
+                String resultados = this.gateway.next_page();
+                model.addAttribute("results", parseResultados(resultados));
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao carregar a próxima página: " + e.getMessage());
+        }
+        return "search";
+    }
+
+        @GetMapping("/search/previous")
+    public String previousPage(Model model) {
+        try {
+            if (this.gateway != null) {
+                String resultados = this.gateway.previous_page();
+                model.addAttribute("results", parseResultados(resultados));
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao carregar a página anterior: " + e.getMessage());
+        }
+        return "search";
+    }
+
+    // Método auxiliar para converter os resultados em objetos SearchResult
+    private List<SearchResult> parseResultados(String resultados) {
+        List<SearchResult> results = new ArrayList<>();
+        String[] blocos = resultados.split("\n\n");
+        for (String bloco : blocos) {
+            String[] linhas = bloco.split("\n");
+            String titulo = "Título não disponível";
+            String url = "URL não disponível";
+            String citacao = "Citação não disponível";
+
+            for (String linha : linhas) {
+                if (linha.startsWith("Título: ")) {
+                    titulo = linha.substring(8).trim();
+                } else if (linha.startsWith("URL: ")) {
+                    url = linha.substring(5).trim();
+                } else if (linha.startsWith("Citação: ")) {
+                    citacao = linha.substring(11).trim();
+                }
+            }
+            results.add(new SearchResult(titulo, url, citacao));
+        }
+        return results;
+    }
+
+
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String q,
                         @RequestParam(required = false) boolean exact,
@@ -79,30 +133,34 @@ public class SearchController {
 
         List<SearchResult> results = new ArrayList<>();
         try {
-            // Realizar a pesquisa - usa this.gateway já iniciado
+           // Realizar a pesquisa
             List<String> resultadosBrutos = this.gateway.pesquisar(q);
 
-            // Converter os resultados para objetos SearchResult
-            for (String resultadoBruto : resultadosBrutos) {
-                String[] linhas = resultadoBruto.split("\n");
-                String titulo = "Título não disponível";
-                String url = "URL não disponível";
-                String citacao = "Citação não disponível";
-            
-                for (String linha : linhas) {
-                    if (linha.startsWith("Título: ")) {
-                        titulo = linha.substring(8).trim();
-                    } else if (linha.startsWith("URL: ")) {
-                        url = linha.substring(5).trim();
-                    } else if (linha.startsWith("Citação: ")) {
-                        citacao = linha.substring(11).trim();
-                    } 
+            if (resultadosBrutos != null && !resultadosBrutos.isEmpty()) {
+                for (String resultadoBruto : resultadosBrutos) {
+                    try {
+                        String[] linhas = resultadoBruto.split("\n");
+                        String titulo = "Título não disponível";
+                        String url = "URL não disponível";
+                        String citacao = "Citação não disponível";
+                    
+                        for (String linha : linhas) {
+                            if (linha.startsWith("Título: ")) {
+                                titulo = linha.substring(8).trim();
+                            } else if (linha.startsWith("URL: ")) {
+                                url = linha.substring(5).trim();
+                            } else if (linha.startsWith("Citação: ")) {
+                                citacao = linha.substring(11).trim();
+                            } 
+                        }
+                    
+                        // Adiciona o resultado, mesmo que algum campo esteja vazio
+                        results.add(new SearchResult(titulo, url, citacao));
+                    } catch (Exception e) {
+                        System.err.println("Erro ao processar resultado: " + resultadoBruto + " - " + e.getMessage());
+                    }
                 }
-            
-                // Adiciona o resultado, mesmo que algum campo esteja vazio
-                results.add(new SearchResult(titulo, url, citacao));
             }
-
         
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,11 +265,13 @@ public class SearchController {
             // Calcular o total de pesquisas realizadas 
             int totalPesquisas = 0;
             if (pesquisasFrequentes != null) {
-                 totalPesquisas = pesquisasFrequentes.stream()
-                    .mapToInt(p -> {
-                        try {
-                            return Integer.parseInt(p.split(":")[1].trim());
-                        } catch (Exception e) { return 0; } // Tratar erro de parse
+                totalPesquisas = pesquisasFrequentes.stream()
+                .mapToInt(p -> {
+                    try {
+                        return Integer.parseInt(p.split(":")[1].trim());
+                        } catch (Exception e) {
+                        return 0; }
+                        
                     })
                     .sum();
             }
@@ -251,6 +311,49 @@ public class SearchController {
         }
         return "statistics";
     }
+
+    @RequestMapping(value = "/relacoes", method = {RequestMethod.GET, RequestMethod.POST})
+    public String consultarRelacoes(@RequestParam(required = false) String url, Model model) {
+        if (url == null || url.isEmpty()) {
+            //model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
+            return "relacoes";
+        }
+
+        try {
+            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
+            String server = "rmi://" + serverIp + "/server";
+            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+
+            List<String> relacoes = gateway.consultarRelacoes(url);
+            model.addAttribute("url", url);
+            model.addAttribute("relacoes", relacoes);
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
+        }
+        return "relacoes"; // Nome do arquivo HTML para exibir as relações
+    }
+
+        @RequestMapping(value = "/index-url", method = RequestMethod.POST)
+    public String indexUrl(@RequestParam("url") String url, Model model) {
+        try {
+            if (this.gateway != null) {
+                this.gateway.indexar_URL(url);
+                model.addAttribute("success", "URL indexada com sucesso: " + url);
+            } else {
+                model.addAttribute("error", "Serviço indisponível. Não foi possível indexar a URL.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao indexar a URL: " + e.getMessage());
+        }
+        return "search"; // Retorna para a página de busca
+    }
+
+        @GetMapping("/")
+    public String redirectToSearch() {
+        return "redirect:/search";
+    }
+
+
 }
 
 class SearchResult {
