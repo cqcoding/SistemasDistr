@@ -268,14 +268,10 @@ public class SearchController {
                 totalPesquisas = pesquisasFrequentes.stream()
                 .mapToInt(p -> {
                     try {
-                        String[] partes = p.split(":");
-                        if (partes.length > 1) {
-                            return Integer.parseInt(partes[1].trim());
-                        }
+                        return Integer.parseInt(p.split(":")[1].trim());
                         } catch (Exception e) {
-                            System.err.println("Erro ao processar pesquisa: " + p + " - " + e.getMessage());
-                        }
-                        return 0; 
+                        return 0; }
+                        
                     })
                     .sum();
             }
