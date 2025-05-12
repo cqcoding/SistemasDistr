@@ -1,5 +1,7 @@
 package com.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +14,54 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 
 import com.InterfaceBarrel;
 import com.InterfaceGatewayServer;
+import com.api.services.RealTimeUpdateService;
+
+import jakarta.annotation.PostConstruct;
 
 
 @Controller
 public class SearchController {
+
+
+
+    // Campos para o cliente RMI e o serviço WebSocket
+    private InterfaceGatewayServer gateway;
+    private final RealTimeUpdateService realTimeUpdateService;
+
+     // Injetar URLs RMI e IP do servidor Gateway a partir de application.properties
+    @Value("${rmi.gateway.server.ip:localhost}") 
+    private String gatewayServerIp;
+
+    @Value("${rmi.barrel.urls:}") 
+    private String[] barrelRmiUrls;
+
+
+    // 1. INJEÇÃO DE DEPENDÊNCIA VIA CONSTRUTOR
+    @Autowired
+    public SearchController(RealTimeUpdateService realTimeUpdateService) {
+        this.realTimeUpdateService = realTimeUpdateService;
+        // A inicialização do RMI será feita no método initRmi com @PostConstruct
+    }
+
+    // 2. INICIALIZAÇÃO DO CLIENTE RMI
+    // Este método será chamado pelo Spring após a construção do bean e injeção de dependências.
+    @PostConstruct
+    private void initRmiClient() {
+        try {
+            String serverUrl = "rmi://" + gatewayServerIp + "/server"; // "/server" é o nome com o qual o GatewayServer foi registado
+            this.gateway = (InterfaceGatewayServer) Naming.lookup(serverUrl);
+            System.out.println("SearchController: Conectado ao Gateway RMI em " + serverUrl);
+        } catch (Exception e) {
+            System.err.println("SearchController: Erro Crítico - Falha ao conectar ao Gateway RMI: " + e.getMessage());
+            // Em caso de falha, o gateway permanecerá null
+            this.gateway = null;
+        }
+    }
+
 
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String q,
@@ -30,15 +73,17 @@ public class SearchController {
             return "search";
         }
 
+        // Verifica se o gateway RMI (this.gateway) está disponível
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço de pesquisa indisponível no momento. Tente mais tarde.");
+            model.addAttribute("query", q);
+            return "search";
+        }
+
         List<SearchResult> results = new ArrayList<>();
         try {
-            // Conectar ao servidor RMI
-            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
-            String server = "rmi://" + serverIp + "/server";
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
-
-            // Realizar a pesquisa
-            List<String> resultadosBrutos = gateway.pesquisar(q);
+           // Realizar a pesquisa
+            List<String> resultadosBrutos = this.gateway.pesquisar(q);
 
 
             // Converter os resultados para objetos SearchResult
@@ -77,46 +122,126 @@ public class SearchController {
 
     @GetMapping("/statistics")
     public String statistics(Model model) {
+
+        // Verificar se o gateway RMI (this.gateway) está disponível
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço de estatísticas indisponível no momento. Tente mais tarde.");
+            // Fornecer valores padrão para o template não quebrar
+            model.addAttribute("pesquisasFrequentes", new ArrayList<>());
+            model.addAttribute("barrelsAtivos", new HashMap<>());
+            model.addAttribute("temposResposta", new HashMap<>());
+            model.addAttribute("totalUrlsIndexadas", 0);
+            model.addAttribute("totalPesquisasGlobal", 0); 
+            model.addAttribute("tamanhoIndices", new HashMap<>()); 
+            return "statistics";
+        }
+
         try {
-            // Conectar ao servidor RMI
-            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
-            String server = "rmi://" + serverIp + "/server";
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
-    
-        
-            List<String> pesquisasFrequentes = gateway.obterPesquisasMaisFrequentes();
-            Map<String, Integer> barrelsAtivos = gateway.obterBarrelsAtivos();
-            Map<String, Double> temposResposta = gateway.obterTemposResposta();
+            // USA A INSTÂNCIA 'this.gateway' JÁ INICIALIZADA
+            List<String> pesquisasFrequentes = this.gateway.obterPesquisasMaisFrequentes();
+            Map<String, Integer> barrelsAtivos = this.gateway.obterBarrelsAtivos();
 
-            // Sincronizar temposResposta com barrelsAtivos
-            Map<String, Double> temposRespostaSincronizados = new HashMap<>();
-            for (String barrel : barrelsAtivos.keySet()) {
-                temposRespostaSincronizados.put(barrel, temposResposta.getOrDefault(barrel, 0.0));
-            }
+            Map<String, Long> temposRespostaMs = new HashMap<>(); // O JavaScript espera Long (ms)
 
-                // Calcular o total de pesquisas realizadas
-            int totalPesquisas = pesquisasFrequentes.stream()
-            .mapToInt(p -> Integer.parseInt(p.split(":")[1].trim())) // Extrai o número após ":"
-            .sum();
-
-            // Contar o número total de URLs indexadas no arquivo
-            int totalUrlsIndexadas = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader("urlsIndexados.txt"))) {
-                while (reader.readLine() != null) {
-                    totalUrlsIndexadas++;
+            try {
+                Map<String, Double> rawTemposResposta = this.gateway.obterTemposResposta(); 
+                if (rawTemposResposta != null) {
+                    rawTemposResposta.forEach((barrelName, tempoDouble) -> {
+                        if (tempoDouble != null) {
+                            // o tempoDouble está em nanosegundos, aqui converte para milissegundos
+                            temposRespostaMs.put(barrelName, (long) (tempoDouble / 10.0)); 
+                        }
+                    });
                 }
-            } catch (IOException e) {
-                System.err.println("Erro ao ler o arquivo urlsIndexados.txt: " + e.getMessage());
+            } 
+            catch (RemoteException re) {
+                System.err.println("Erro ao chamar this.gateway.obterTemposResposta(): " + re.getMessage());
+            } 
+            catch (Exception e) { 
+                 System.err.println("Erro inesperado ao processar tempos de resposta do gateway: " + e.getMessage());
             }
-                
+
+
+            Map<String, Integer> tamanhoIndicesMap = new HashMap<>(); 
+            int totalUrlsIndexadasCalculado = 0;
+
+            // obter tamanhoIndicesMap e totalUrlsIndexadasCalculado
+            // Se o GatewayServer já fornecer estas informações de forma agregada, use-as.
+            // Caso contrário, iterar sobre os barrels é uma opção:
+            if (this.barrelRmiUrls != null && barrelsAtivos != null && !barrelsAtivos.isEmpty()) {
+                for (String barrelUrl : this.barrelRmiUrls) {
+                    try {
+                        InterfaceBarrel barrelClient = (InterfaceBarrel) Naming.lookup(barrelUrl);
+                        String nomeBarrel = barrelClient.getNomeBarrel(); 
+
+                        if (barrelsAtivos.containsKey(nomeBarrel)) { 
+                            int tamanhoIndice = barrelClient.getTamanhoIndice(); 
+                            tamanhoIndicesMap.put(nomeBarrel, tamanhoIndice);
+                            totalUrlsIndexadasCalculado += tamanhoIndice;
+
+                            // Se obterTemposResposta do gateway não funcionar ou não incluir todos os barrels ativos,
+                            // você pode ter um fallback aqui para calcular a latência, como antes:
+                            if (!temposRespostaMs.containsKey(nomeBarrel)) {
+                                long startTime = System.currentTimeMillis();
+                                barrelClient.estaAtivo(); 
+                                long endTime = System.currentTimeMillis();
+                                temposRespostaMs.put(nomeBarrel, endTime - startTime);
+                            }
+                        }
+                    } 
+                    catch (Exception e) {
+                        System.err.println("Erro ao obter dados do barrel " + barrelUrl + " para tamanho/índice: " + e.getMessage());
+                    }
+                }
+            }
             
-            // Adicionar dados ao modelo
+            // Fallback para totalUrlsIndexadasCalculado se não obtido dos barrels
+            if (totalUrlsIndexadasCalculado == 0 && (tamanhoIndicesMap.isEmpty())) { 
+                 try (BufferedReader reader = new BufferedReader(new FileReader("urlsIndexados.txt"))) {
+                    System.out.println("Recorrendo à leitura de urlsIndexados.txt para totalUrlsIndexadasCalculado.");
+                    while (reader.readLine() != null) {
+                        totalUrlsIndexadasCalculado++;
+                    }
+                } catch (IOException e) {
+                    System.err.println("Erro ao ler o arquivo urlsIndexados.txt: " + e.getMessage());
+                }
+            }
+
+
+            // Calcular o total de pesquisas realizadas 
+            int totalPesquisas = 0;
+            if (pesquisasFrequentes != null) {
+                 totalPesquisas = pesquisasFrequentes.stream()
+                    .mapToInt(p -> {
+                        try {
+                            return Integer.parseInt(p.split(":")[1].trim());
+                        } catch (Exception e) { return 0; } // Tratar erro de parse
+                    })
+                    .sum();
+            }
+            
+            // Adicionar dados ao modelo para renderização inicial
             model.addAttribute("pesquisasFrequentes", pesquisasFrequentes);
             model.addAttribute("barrelsAtivos", barrelsAtivos);
-            model.addAttribute("temposResposta", temposResposta);
-            model.addAttribute("totalUrlsIndexadas", totalUrlsIndexadas);
-            model.addAttribute("totalPesquisas", totalPesquisas);
-        } catch (Exception e) {
+            model.addAttribute("temposResposta", temposRespostaMs); 
+            model.addAttribute("totalUrlsIndexadas", totalUrlsIndexadasCalculado);
+            model.addAttribute("totalPesquisasGlobal", totalPesquisas); 
+            model.addAttribute("tamanhoIndices", tamanhoIndicesMap); 
+
+            Map<String, Object> statisticsDataForWebSocket = new HashMap<>();
+            statisticsDataForWebSocket.put("pesquisasFrequentes", pesquisasFrequentes);
+            statisticsDataForWebSocket.put("barrelsAtivos", barrelsAtivos); 
+            statisticsDataForWebSocket.put("temposResposta", temposRespostaMs); 
+            statisticsDataForWebSocket.put("totalUrlsIndexadas", totalUrlsIndexadasCalculado);
+            statisticsDataForWebSocket.put("totalPesquisasGlobal", totalPesquisas); 
+            statisticsDataForWebSocket.put("tamanhoIndices", tamanhoIndicesMap); 
+            
+            this.realTimeUpdateService.sendStatisticsUpdate(statisticsDataForWebSocket);
+            System.out.println("SearchController: Dados de estatísticas enviados via WebSocket.");
+            // --- FIM Do WEBSOCKET ---
+
+        } 
+        catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
             
@@ -125,10 +250,9 @@ public class SearchController {
             model.addAttribute("barrelsAtivos", new HashMap<>());
             model.addAttribute("temposResposta", new HashMap<>());
             model.addAttribute("totalUrlsIndexadas", 0);
-            model.addAttribute("totalPesquisas", 0);
+            model.addAttribute("totalPesquisasGlobal", 0);
+            model.addAttribute("tamanhoIndices", new HashMap<>());
         }
-   
-    
         return "statistics";
     }
 }

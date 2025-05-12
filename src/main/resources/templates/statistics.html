@@ -116,6 +116,17 @@
         .badge {
             font-weight: 500;
         }
+         /* Para notificações WebSocket */
+         #notificationsArea {
+            position: fixed;
+            top: 80px;                /* Abaixo do botão de voltar */
+            right: 20px;
+            width: 300px;
+            z-index: 1050;
+        }
+        .notification-toast {
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -123,6 +134,9 @@
     <a href="/search" class="btn back-btn">
         <i class="fas fa-arrow-left"></i> Voltar a Busca
     </a>
+    
+    <div id="notificationsArea" class="toast-container">
+        </div>
 
     <div class="container py-5">
         <h1 class="text-center mb-5">Estatísticas do Sistema</h1>
@@ -173,9 +187,12 @@
                             <tr th:each="entry : ${barrelsAtivos.entrySet()}" th:if="${barrelsAtivos != null}">
                                 <td th:text="${entry.key}">Barrel</td>
                                 <td><span class="badge bg-success">Ativo</span></td>
-                                <td th:text="${entry.value}">0</td>
-                                <td th:text="${temposResposta[entry.key]!= null ? temposResposta[entry.key] : '0.0'} + 'ns'">0 ns</td>
-                            </tr>
+                                <td th:text="${tamanhoIndices != null and tamanhoIndices[entry.key] != null ? tamanhoIndices[entry.key] : 'N/A'}">0</td>
+                                <td th:text="${temposResposta != null and temposResposta[entry.key] != null ? temposResposta[entry.key] : 'N/A'}">0 ms</td>
+                           </tr>
+                           <tr th:if="${barrelsAtivos == null or barrelsAtivos.isEmpty()}">
+                            <td colspan="4" class="text-center">Nenhum barrel ativo ou dados não disponíveis.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -184,34 +201,217 @@
     </div>
 
 
-        <!-- Gráficos -->
-        <h2 class="section-title text-center">Top 10 Pesquisas</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="pesquisa : ${pesquisasFrequentes}" th:text="${pesquisa}">Pesquisa</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="card mt-4">
+        <div class="card-body">
+             <h5 class="card-title text-center">Top 10 Pesquisas</h5>
+            <ul class="list-group list-group-flush" id="pesquisasFrequentesList">
+                <li class="list-group-item" th:each="pesquisa : ${pesquisasFrequentes}" th:if="${pesquisasFrequentes != null and !pesquisasFrequentes.isEmpty()}" th:text="${pesquisa}">Pesquisa</li>
+                <li class="list-group-item" th:if="${pesquisasFrequentes == null or pesquisasFrequentes.isEmpty()}">Nenhuma pesquisa frequente registada.</li>
+            </ul>
         </div>
-
+    </div>
         
     <!-- Botão de Atualização -->
-    <button class="btn btn-primary refresh-btn" onclick="atualizarEstatisticas()">
-        <i class="fas fa-sync-alt"></i> Atualizar
+    </div> <button class="btn btn-primary refresh-btn" onclick="requestManualUpdate()">
+        <i class="fas fa-sync-alt"></i> Atualizar Manualmente
     </button>
 
     <!-- Loading Overlay -->
     <div class="loading" id="loading">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Carregando...</span>
+            <span class="visually-hidden">A carregar...</span>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <!-- Daqui para baixo são configurações do websockets
+        - Conectar-se ao servidor WebSocket.
+        - Subscrever ao tópico /topic/statistics.
+        - Receber as mensagens de atualização.
+        - Atualizar dinamicamente os valores na página (total de pesquisas, barrels ativos, etc.).
+        - Mostrar notificações.
+    -->
+    <script th:inline="javascript">
+        
+        var stompClient = null;
+        const notificationsArea = document.getElementById('notificationsArea');
+
+        function connect() {
+            var socket = new SockJS('/ws'); // Endpoint configurado em WebSocketConfig.java
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Conectado ao WebSocket: ' + frame);
+                showNotification('Conectado ao servidor de atualizações!', 'success');
+
+                // Subscrever ao tópico de estatísticas
+                stompClient.subscribe('/topic/statistics', function (message) {
+                    console.log('Recebida atualização de estatísticas: ', message.body);
+                    try {
+                        var statisticsData = JSON.parse(message.body);
+                        updateStatisticsOnPage(statisticsData);
+                        showNotification('Estatísticas atualizadas!', 'info');
+                    } catch (e) {
+                        console.error("Erro ao processar mensagem de estatísticas: ", e);
+                        showNotification('Erro ao processar atualização de estatísticas.', 'danger');
+                    }
+                });
+
+            }, function(error) {
+                console.error('Erro de STOMP ao conectar: ' + error);
+                showNotification('Falha ao conectar ao servidor de atualizações. A tentar reconectar...', 'danger');
+                setTimeout(connect, 5000); // Tenta reconectar após 5 segundos
+            });
+        }
+
+        function disconnect() {
+            if (stompClient !== null) {
+                stompClient.disconnect(function() {
+                    console.log("Desconectado do WebSocket");
+                    showNotification('Desconectado do servidor de atualizações.', 'info');
+                });
+                stompClient = null; // Garante que o cliente seja limpo
+            }
+        }
+
+        function updateStatisticsOnPage(data) {
+            // Atualizar Total de Pesquisas 
+            const totalPesquisasEl = document.getElementById('totalPesquisasValor');
+            if (totalPesquisasEl && data.totalPesquisasGlobal !== undefined) {
+                totalPesquisasEl.textContent = data.totalPesquisasGlobal;
+            } 
+            else if (totalPesquisasEl) {
+                // totalPesquisasEl.textContent = data.pesquisasFrequentes ? data.pesquisasFrequentes.length : '0';
+            }
+
+            // Atualizar Contagem de Barrels Ativos
+            const barrelsAtivosCountEl = document.getElementById('barrelsAtivosCount');
+            if (barrelsAtivosCountEl && data.barrelsAtivos) {
+                barrelsAtivosCountEl.textContent = Object.keys(data.barrelsAtivos).length;
+            } 
+            else if (barrelsAtivosCountEl) {
+                barrelsAtivosCountEl.textContent = '0';
+            }
+
+            // Atualizar Total de URLs Indexadas
+            const totalUrlsIndexadasEl = document.getElementById('totalUrlsIndexadasValor');
+            if (totalUrlsIndexadasEl && data.totalUrlsIndexadas !== undefined) {
+                totalUrlsIndexadasEl.textContent = data.totalUrlsIndexadas;
+            } 
+            else if (totalUrlsIndexadasEl) {
+                totalUrlsIndexadasEl.textContent = '0';
+            }
+
+            // Atualizar Tabela de Barrels
+            const barrelsTableBody = document.getElementById('barrelsTableBody');
+            if (barrelsTableBody) {
+                barrelsTableBody.innerHTML = ''; // Limpar antes de adicionar
+                if (data.barrelsAtivos && Object.keys(data.barrelsAtivos).length > 0) {
+                    for (const barrelName in data.barrelsAtivos) {
+                        var row = barrelsTableBody.insertRow();
+                        row.insertCell().textContent = barrelName;
+                        
+                        const statusCell = row.insertCell();
+                        const statusBadge = document.createElement('span');
+                        statusBadge.className = 'badge bg-success';
+                        statusBadge.textContent = 'Ativo';
+                        statusCell.appendChild(statusBadge);
+                        statusCell.append(` (${data.barrelsAtivos[barrelName] || 0} itens)`);
+
+                        row.insertCell().textContent = (data.tamanhoIndices && data.tamanhoIndices[barrelName] !== undefined) ? data.tamanhoIndices[barrelName] : 'N/A';
+                        row.insertCell().textContent = (data.temposResposta && data.temposResposta[barrelName] !== undefined) ? data.temposResposta[barrelName] : 'N/A';
+                    }
+                } 
+                else {
+                    var row = barrelsTableBody.insertRow();
+                    var cell = row.insertCell();
+                    cell.colSpan = 4;
+                    cell.className = 'text-center';
+                    cell.textContent = "Nenhum barrel ativo ou dados não disponíveis.";
+                }
+            }
+            
+            // Atualizar Lista de Pesquisas Frequentes
+            const pesquisasList = document.getElementById('pesquisasFrequentesList');
+            if (pesquisasList) {
+                pesquisasList.innerHTML = ''; // Limpar antes de adicionar
+                if (data.pesquisasFrequentes && data.pesquisasFrequentes.length > 0) {
+                    data.pesquisasFrequentes.forEach(function(pesquisa) {
+                        var li = document.createElement('li');
+                        li.className = 'list-group-item';
+                        li.textContent = pesquisa;
+                        pesquisasList.appendChild(li);
+                    });
+                } 
+                else {
+                    var li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    li.textContent = 'Nenhuma pesquisa frequente registada.';
+                    pesquisasList.appendChild(li);
+                }
+            }
+        }
+        
+        // Função para exibir notificações (toast do Bootstrap)
+        function showNotification(message, type = 'info') { // type pode ser 'success', 'info', 'warning', 'danger'
+            const toastId = 'toast-' + new Date().getTime();
+            const toastHTML = `
+                <div id="${toastId}" class="toast notification-toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            notificationsArea.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = new bootstrap.Toast(document.getElementById(toastId));
+            toastElement.show();
+            // Remover o toast do DOM após ser escondido para evitar acumulação
+            document.getElementById(toastId).addEventListener('hidden.bs.toast', function () {
+                this.remove();
+            });
+        }
+
+        // Função para o botão de atualização manual (envia uma requisição GET para /statistics)
+        // Isto irá acionar o método no SearchController que, por sua vez, envia a atualização WebSocket.
+        function requestManualUpdate() {
+            document.getElementById('loading').style.display = 'flex'; // Mostrar loading
+            fetch('/statistics') // Faz uma requisição GET para o endpoint de estatísticas
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Falha ao solicitar atualização manual.');
+                    }
+                    // A atualização real da UI virá via WebSocket quando o controller processar.
+                    // Aqui, apenas escondemos o loading.
+                    console.log("Solicitação de atualização manual enviada.");
+                })
+                .catch(error => {
+                    console.error('Erro na atualização manual:', error);
+                    showNotification('Erro ao solicitar atualização manual.', 'danger');
+                })
+                .finally(() => {
+                     // Esconder o loading um pouco depois para dar tempo da atualização WebSocket chegar, se houver
+                    setTimeout(() => {
+                        document.getElementById('loading').style.display = 'none';
+                    }, 500);
+                });
+        }
+
+        // Conectar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            connect();
+        });
+
+        // Desconectar quando o utilizador sair da página (boa prática)
+        window.addEventListener('beforeunload', function() {
+            disconnect();
+        });
+    </script>
+
 </body>
 </html>
