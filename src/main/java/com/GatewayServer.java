@@ -82,7 +82,14 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.barrelsAtivos = new HashMap<>();
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
-        this.paginaAtual = 0;                       
+        this.paginaAtual = 0;
+        this.webClient = WebClient.builder()
+        .baseUrl("https://api.openai.com/v1")
+        .defaultHeader("Authorization", "Bearer SUA_CHAVE") // Substitua pela sua chave v
+        .defaultHeader("Content-Type", "application/json")
+        .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
+        .build();
+                   
 
 
         conectarBarrels(barrelUrls);
