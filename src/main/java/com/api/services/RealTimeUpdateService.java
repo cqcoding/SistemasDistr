@@ -33,11 +33,4 @@ public class RealTimeUpdateService {
         System.out.println("Enviando notificação via WebSocket: " + notificationPayload);
         messagingTemplate.convertAndSend("/topic/notifications", notificationPayload);
     }
-
-    // Pode adicionar mais métodos para diferentes tipos de atualizações em tempo real
-    // Por exemplo, para enviar resultados de pesquisa atualizados:
-    // public void sendSearchResultsUpdate(String searchTerm, List<com.api.SearchResult> results) {
-    //     Map<String, Object> payload = Map.of("searchTerm", searchTerm, "results", results);
-    //     messagingTemplate.convertAndSend("/topic/searchResults/" + searchTerm.replaceAll("\\s+", "_"), payload);
-    // }
 }
