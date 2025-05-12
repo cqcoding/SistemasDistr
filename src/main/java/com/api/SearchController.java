@@ -115,9 +115,8 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String q,
-                        @RequestParam(required = false) boolean exact,
-                        Model model) {
-        
+                         @RequestParam(required = false) boolean exact,
+                         Model model) {
         // Se não houver termo de busca, apenas mostra a página
         if (q == null || q.trim().isEmpty()) {
             return "search";
@@ -132,35 +131,34 @@ public class SearchController {
 
         List<SearchResult> results = new ArrayList<>();
         try {
-           // Realizar a pesquisa
+            // Realizar a pesquisa
             List<String> resultadosBrutos = this.gateway.pesquisar(q);
 
             if (resultadosBrutos != null && !resultadosBrutos.isEmpty()) {
                 for (String resultadoBruto : resultadosBrutos) {
-                    try {
-                        String[] linhas = resultadoBruto.split("\n");
-                        String titulo = "Título não disponível";
-                        String url = "URL não disponível";
-                        String citacao = "Citação não disponível";
-                    
-                        for (String linha : linhas) {
-                            if (linha.startsWith("Título: ")) {
-                                titulo = linha.substring(8).trim();
-                            } else if (linha.startsWith("URL: ")) {
-                                url = linha.substring(5).trim();
-                            } else if (linha.startsWith("Citação: ")) {
-                                citacao = linha.substring(11).trim();
-                            } 
+                    String[] linhas = resultadoBruto.split("\n");
+                    String titulo = "Título não disponível";
+                    String url = "URL não disponível";
+                    String citacao = "Citação não disponível";
+
+                    for (String linha : linhas) {
+                        if (linha.startsWith("Título: ")) {
+                            titulo = linha.substring(8).trim();
+                        } else if (linha.startsWith("URL: ")) {
+                            url = linha.substring(5).trim();
+                        } else if (linha.startsWith("Citação: ")) {
+                            citacao = linha.substring(11).trim();
                         }
-                    
-                        // Adiciona o resultado, mesmo que algum campo esteja vazio
-                        results.add(new SearchResult(titulo, url, citacao));
-                    } catch (Exception e) {
-                        System.err.println("Erro ao processar resultado: " + resultadoBruto + " - " + e.getMessage());
                     }
+                    results.add(new SearchResult(titulo, url, citacao));
                 }
             }
-        
+
+            // Gerar análise contextualizada com base somente no termo
+            String analise = this.gateway.gerarAnaliseContextualizada(q);
+            // Adicionar a análise ao modelo para exibição no frontend
+            model.addAttribute("analysis", analise);
+
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
@@ -169,7 +167,7 @@ public class SearchController {
         model.addAttribute("query", q);
         model.addAttribute("exact", exact);
         model.addAttribute("results", results);
-        
+
         return "search";
     }
 
@@ -318,19 +316,22 @@ public class SearchController {
             return "relacoes";
         }
 
-        try {
-            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
-            String server = "rmi://" + serverIp + "/server";
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço indisponível no momento. Tente novamente mais tarde.");
+            return "relacoes";
+        }
 
-            List<String> relacoes = gateway.consultarRelacoes(url);
+        try {
+            List<String> relacoes = this.gateway.consultarRelacoes(url);
             model.addAttribute("url", url);
             model.addAttribute("relacoes", relacoes);
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro inesperado: " + e.getMessage());
         }
-        return "relacoes"; // Nome do arquivo HTML para exibir as relações
-    }
+        return "relacoes";
+}
 
         @RequestMapping(value = "/index-url", method = RequestMethod.POST)
     public String indexUrl(@RequestParam("url") String url, Model model) {
@@ -347,27 +348,13 @@ public class SearchController {
         return "search"; // Retorna para a página de busca
     }
 
-        @GetMapping("/")
+    @GetMapping("/")
     public String redirectToSearch() {
         return "redirect:/search";
     }
 
-
-}
-
-class SearchResult {
-    private String title;
-    private String url;
-    private String citation;
-
-    public SearchResult(String title, String url, String citation) {
-        this.title = title;
-        this.url = url;
-        this.citation= citation;
+    @GetMapping("/mensagem")
+    public String mensagemPage() {
+        return "mensagem"; // Nome do arquivo HTML (mensagem.html)
     }
-
-    // Getters
-    public String getTitle() { return title; }
-    public String getUrl() { return url; }
-    public String getCitation() { return citation; }
 }

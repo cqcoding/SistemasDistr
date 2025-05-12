@@ -23,7 +23,6 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * GatewayServer é responsável por gerenciar a comunicação entre os clientes e os servidores Barrel.
@@ -35,14 +34,14 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
-    private List<InterfaceBarrel> barrels;
+    private final List<InterfaceBarrel> barrels;
 
     /** Lista de palavras-chave utilizadas para indexação. */
     private static final String[] palavras_chave = {""};
 
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private List<String> urlsIndexados;
+    private final List<String> urlsIndexados;
 
     /** Estruturas necessárias para armazenar estatísticas.
      * Contagem das pesquisas mais comuns.
@@ -69,7 +68,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
-     private final WebClient webClient;
+     //private final WebClient webClient;
 
     private Map<String, List<String>> urlRelations;
     /**
@@ -87,12 +86,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;
-        this.webClient = WebClient.builder()
+        /**this.webClient = WebClient.builder()
         .baseUrl("https://api.openai.com/v1")
         .defaultHeader("Authorization", "Bearer SUA_CHAVE") // Substitua pela sua chave v
         .defaultHeader("Content-Type", "application/json")
         .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
-        .build();
+        .build();**/
                    
 
 
@@ -106,7 +105,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     }
         public static void main(String[] args) {
-            GatewayServer server = null; 
+            GatewayServer server; 
             try {
                 /** Carrega propriedades do arquivo. */
                 Properties properties = new Properties();
@@ -154,8 +153,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     
                 System.out.println("Servidor RMI pronto...");
             } 
-            catch (Exception e) {
-                e.printStackTrace(); 
+            catch (IOException e) {
             } 
         }
 
@@ -174,7 +172,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             } 
             catch (Exception e) {
                 System.err.println("Erro ao conectar aos barrels " + barrelUrl);
-                e.printStackTrace();
             }
         }
     }
@@ -245,7 +242,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                         }
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }).start();                // isso é o que realmente faz a thread começar a compilar.
@@ -323,7 +319,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             Downloader downloader = new Downloader(10); // Número de threads
             downloader.comecaProcessarURL(url); // Processar a URL diretamente
             System.out.println("GatewayServer: URL enviada para processamento: " + url);
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             System.err.println("GatewayServer: Erro ao processar URL: " + e.getMessage());
             throw new RemoteException("Erro ao processar URL", e);
         }
@@ -360,14 +356,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     try {
                         writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
                     } catch (IOException e) {
-                        e.printStackTrace();
                     }
                 });
             System.out.println("Pesquisas frequentes salvas com sucesso.");
         } 
         catch (IOException e) {
             System.err.println("Erro ao salvar pesquisas frequentes: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -792,35 +786,16 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     }
 
     @Override
-    public String gerarAnaliseContextualizada(String termo, List<String> citacoes) {
+    public String gerarAnaliseContextualizada(String termo) {
         try {
-            // Formatar o prompt para a OpenAI
-            String prompt = "Baseado no termo de pesquisa '" + termo + "' e nas seguintes citações:\n" +
-                            String.join("\n", citacoes) +
-                            "\nGere uma análise contextualizada.";
-
-            // Fazer a requisição para a API da OpenAI
-            var response = this.webClient.post()
-                .uri("/chat/completions")
-                .bodyValue(Map.of(
-                    "model", "gpt-3.5-turbo",
-                    "messages", List.of(Map.of("role", "user", "content", prompt))
-                ))
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
-
-            // Extrair a resposta gerada pela OpenAI
-            return ((List<Map<String, Object>>) response.get("choices"))
-                    .get(0)
-                    .get("message")
-                    .toString();
+            // Delegar a geração da análise para o OpenRouterApiService
+            OpenRouterApi openRouterApiService = new OpenRouterApi();
+            return openRouterApiService.gerarAnaliseContextualizada(termo);
         } catch (Exception e) {
             System.err.println("Erro ao gerar análise contextualizada: " + e.getMessage());
             return "Não foi possível gerar a análise contextualizada.";
         }
-    }
-
+}
     @Override
     public List<String> consultarRelacoes(String url) throws RemoteException {
         return urlRelations.getOrDefault(url, new ArrayList<>());
