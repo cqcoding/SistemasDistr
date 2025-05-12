@@ -77,6 +77,13 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     public void indexar_URL(String palavra, String url) throws RemoteException {
         String palavraChave = palavra.trim().toLowerCase(); // Convertido para minúsculas pra não ser case-sensitive
         String urlParaIndexar = url.trim();
+
+        // Verificar se a palavra é uma stopword usando o método original com valores dummy
+        // Usamos 0 para frequencia e 1 para numPaginas (ou 0) para evitar as regras de frequência/página
+        if (StopwordClassificador.ehProvavelStopword(palavraChave, 0, 1)) {
+            System.out.println("Stopword ignorada na indexação: '" + palavraChave + "' para URL: " + urlParaIndexar);
+            return; // Não indexa a stopword
+        }
        
         synchronized (urlsIndexados) {
             urlsIndexados.computeIfAbsent(palavraChave, k -> new HashSet<>());

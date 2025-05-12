@@ -410,10 +410,26 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
         salvarPesquisasFrequentes(); // Salva após cada pesquisa
 
-        // 3. Dividir a pesquisa em termos individuais (ignora múltiplos espaços, converte para minúsculas)
-        String[] termosDaPesquisa = palavra.toLowerCase().split("\\s+");
-        if (termosDaPesquisa.length == 0 || (termosDaPesquisa.length == 1 && termosDaPesquisa[0].isEmpty())) {
-            System.out.println("Pesquisa continha apenas espaços.");
+        // 3. Dividir a pesquisa em termos individuais (ignora múltiplos espaços, converte para minúsculas) e FILTRAR stopwords usando ehProvavelStopword
+        String[] termosBrutos = palavra.toLowerCase().split("\\s+");
+        List<String> termosValidos = new ArrayList<>();
+        List<String> termosIgnorados = new ArrayList<>();
+
+        for (String termo : termosBrutos) {
+            String termoLimpo = termo.trim();
+            if (!termoLimpo.isEmpty()) {
+                // Chama ehProvavelStopword com valores dummy (0, 1)
+                if (StopwordClassificador.ehProvavelStopword(termoLimpo, 0, 1)) {
+                    termosIgnorados.add(termoLimpo);
+                } else {
+                    termosValidos.add(termoLimpo);
+                }
+            }
+        }
+
+        // Se a pesquisa só continha stopwords ou ficou vazia após filtrar
+        if (termosValidos.isEmpty()) {
+            System.out.println("Pesquisa '" + palavra + "' continha apenas stopwords ou ficou vazia (usando ehProvavelStopword). Termos ignorados: " + termosIgnorados);
             this.resultadosPesquisa = new ArrayList<>();
             this.paginaAtual = 0;
             return new ArrayList<>();
@@ -421,7 +437,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         // 4. Buscar resultados para CADA termo em TODOS os barrels
         List<Set<String>> resultadosPorTermo = new ArrayList<>();
-        for (String termoIndividual : termosDaPesquisa) {
+        for (String termoIndividual : termosValidos) {
             if (termoIndividual.isEmpty()) continue; // Pular strings vazias se houver espaços extras
 
             System.out.println("Buscando por termo: '" + termoIndividual + "'");
@@ -468,7 +484,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             for (int i = 1; i < resultadosPorTermo.size(); i++) {
                 urlsComuns.retainAll(resultadosPorTermo.get(i));
                 if (urlsComuns.isEmpty()) {
-                    System.out.println("Interseção zerou após termo: '" + termosDaPesquisa[i] + "'");
+                    System.out.println("Interseção zerou após termo: '" + termosValidos.get(i) + "'");
                     break;
                 }
             }
@@ -483,7 +499,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         if (!urlsHackerNews.isEmpty()) {
             System.out.println("Encontradas " + urlsHackerNews.size() + " URLs no Hacker News para indexar.");
             for (String urlHN : urlsHackerNews) {
-                for(String termoIndividual : termosDaPesquisa) { // Indexa para cada termo individual
+                for(String termoIndividual : termosValidos) { // Indexa para cada termo individual
                     if (termoIndividual.isEmpty()) continue;
                     for (InterfaceBarrel barrel : barrels) {
                         try {
