@@ -1,0 +1,98 @@
+/* Estilo geral */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Inter', sans-serif;
+    color: #2c3e50;
+    padding-top: 70px; /* Espaço para a navbar fixa */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #1a237e;
+}
+
+.navbar {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%) !important;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color:#ffffff;
+    letter-spacing: 1px;
+
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffcc00;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    color: #ffffff;
+}
+
+.stat-card h5 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .display-4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    color: #1a237e;
+}
+
+.table td {
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.btn-primary {
+    background-color: #1a237e;
+    border-color: #1a237e;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+}
+
+.top-10-card {
+    max-width: 1300px; 
+    margin: 0 auto; 
+}
