@@ -59,7 +59,7 @@
 
         <!-- Exibir relações -->
         <div th:if="${relacoes != null}">
-            <h2 style="font-size: 14px;" class="mt-2">Ligações apontadas para: <span th:text="${url}"></span></h2>
+            <h2 class="mt-2">Páginas que apontam para: <span th:text="${url}"></span></h2>
             <ul class="list-group mt-3">
                 <li class="list-group-item" th:each="relacao : ${relacoes}" th:text="${relacao}"></li>
             </ul>

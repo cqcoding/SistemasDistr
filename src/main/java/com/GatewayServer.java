@@ -33,11 +33,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
-    private List<InterfaceBarrel> barrels;
+    private final List<InterfaceBarrel> barrels;
 
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private List<String> urlsIndexados;
+    private final List<String> urlsIndexados;
 
     /** Estruturas necessárias para armazenar estatísticas.
      * Contagem das pesquisas mais comuns.
@@ -50,10 +50,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** Mapeia cada Barrel ao tempo médio de resposta. */
     private final Map<String, List<Long>> temposResposta;    
 
+
     /** Estruturas necessárias para nextpage, previous e link.
      * Lista contendo os resultados da última pesquisa. 
     */
-    private List<ResultadoPesquisa> resultadosPesquisa;           // usa list, pois não precisa estar associada a uma chave, são só URLs.
+    private List<ResultadoPesquisa> resultadosPesquisa; // usa list, pois não precisa estar associada a uma chave, são só URLs.
     
     /** Índice da página atual de resultados. */
     private int paginaAtual;
@@ -86,9 +87,16 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         .defaultHeader("Content-Type", "application/json")
         .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
         .build();**/
-                   
+        
         conectarBarrels(barrelUrls);
         carregarURLs();
+        // Carregar links de saída
+        LinksSaidaLoader links = new LinksSaidaLoader();
+        Map<String, List<String>> linksSaida = links.carregarLinksSaida("linksSaida.txt");
+
+        // Calcular backlinks
+        BacklinksCalculator calculator = new BacklinksCalculator();
+        calculator.calcularBacklinks(linksSaida);
         // Carregar relações entre URLs usando a nova classe
         RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
         this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
@@ -314,6 +322,21 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             Downloader downloader = new Downloader(10); // Número de threads
             downloader.comecaProcessarURL(url); // Processar a URL diretamente
             System.out.println("URL enviada para processamento: " + url);
+
+            // Atualizar o arquivo linksSaida.txt
+            atualizarLinksSaida(url);
+
+            // Recarregar os links de saída
+            LinksSaidaLoader linksLoader = new LinksSaidaLoader();
+            Map<String, List<String>> linksSaida = linksLoader.carregarLinksSaida("linksSaida.txt");
+
+            // Recalcular os backlinks
+            BacklinksCalculator calculator = new BacklinksCalculator();
+            this.urlRelations = calculator.calcularBacklinks(linksSaida);   
+
+            // Atualizar a lista de URLs indexadas
+            urlsIndexados.add(url);
+            
         } catch (Exception e) {
             System.err.println("Erro ao processar URL: " + e.getMessage());
             throw new RemoteException("Erro ao processar URL", e);
@@ -775,6 +798,35 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
+    /**
+     * Atualiza os links de saída para uma URL específica.
+     *
+     * @param url URL para a qual os links de saída serão atualizados.
+     */
+    private void atualizarLinksSaida(String url) {
+        try {
+            // Fazer o download do HTML da página
+            Document document = Jsoup.connect(url).get();
+
+            // Extrair todos os links da página
+            List<String> linksSaida = document.select("a[href]")
+                                              .stream()
+                                              .map(element -> element.attr("abs:href")) // Obter URLs absolutas
+                                              .filter(link -> !link.isEmpty()) // Filtrar links vazios
+                                              .distinct() // Remover duplicados
+                                              .toList();
+
+            // Salvar os links de saída no arquivo
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("linksSaida.txt", true))) {
+                writer.write(url + " -> " + String.join(", ", linksSaida));
+                writer.newLine();
+            }
+
+            System.out.println("Links de saída atualizados para a URL: " + url);
+        } catch (IOException e) {
+            System.err.println("Erro ao processar a URL: " + url + " - " + e.getMessage());
+        }
+    }
     
     /**
      * Busca as "top stories" do Hacker News e retorna URLs que contenham o termo de pesquisa no título ou URL.

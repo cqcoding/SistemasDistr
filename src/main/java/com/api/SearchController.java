@@ -322,7 +322,9 @@ public class SearchController {
         }
 
         try {
+            // Obter os links relacionados (backlinks) a partir do GatewayServer
             List<String> relacoes = this.gateway.consultarRelacoes(url);
+
             model.addAttribute("url", url);
             model.addAttribute("relacoes", relacoes);
         } catch (RemoteException e) {
@@ -331,9 +333,9 @@ public class SearchController {
             model.addAttribute("error", "Erro inesperado: " + e.getMessage());
         }
         return "relacoes";
-}
+    }
 
-        @RequestMapping(value = "/index-url", method = RequestMethod.POST)
+    @RequestMapping(value = "/index-url", method = RequestMethod.POST)
     public String indexUrl(@RequestParam("url") String url, Model model) {
         try {
             if (this.gateway != null) {
@@ -351,10 +353,5 @@ public class SearchController {
     @GetMapping("/")
     public String redirectToSearch() {
         return "redirect:/search";
-    }
-
-    @GetMapping("/mensagem")
-    public String mensagemPage() {
-        return "mensagem"; // Nome do arquivo HTML (mensagem.html)
     }
 }
