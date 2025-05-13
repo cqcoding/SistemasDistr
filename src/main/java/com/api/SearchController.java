@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +20,9 @@ import java.rmi.RemoteException;
 
 import com.InterfaceBarrel;
 import com.InterfaceGatewayServer;
+import com.api.services.RealTimeUpdateService;
+
+import jakarta.annotation.PostConstruct;
 import com.api.services.RealTimeUpdateService;
 
 import jakarta.annotation.PostConstruct;
@@ -116,9 +117,8 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(@RequestParam(required = false) String q,
-                        @RequestParam(required = false) boolean exact,
-                        Model model) {
-        
+                         @RequestParam(required = false) boolean exact,
+                         Model model) {
         // Se não houver termo de busca, apenas mostra a página
         if (q == null || q.trim().isEmpty()) {
             return "search";
@@ -131,9 +131,16 @@ public class SearchController {
             return "search";
         }
 
+        // Verifica se o gateway RMI (this.gateway) está disponível
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço de pesquisa indisponível no momento. Tente mais tarde.");
+            model.addAttribute("query", q);
+            return "search";
+        }
+
         List<SearchResult> results = new ArrayList<>();
         try {
-           // Realizar a pesquisa
+            // Realizar a pesquisa
             List<String> resultadosBrutos = this.gateway.pesquisar(q);
 
             if (resultadosBrutos != null && !resultadosBrutos.isEmpty()) {
@@ -161,7 +168,12 @@ public class SearchController {
                     }
                 }
             }
-        
+
+            // Gerar análise contextualizada com base somente no termo
+            String analise = this.gateway.gerarAnaliseContextualizada(q);
+            // Adicionar a análise ao modelo para exibição no frontend
+            model.addAttribute("analysis", analise);
+
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
@@ -170,7 +182,7 @@ public class SearchController {
         model.addAttribute("query", q);
         model.addAttribute("exact", exact);
         model.addAttribute("results", results);
-        
+
         return "search";
     }
 
@@ -249,6 +261,9 @@ public class SearchController {
                 }
             }
             
+
+
+            
             // Fallback para totalUrlsIndexadasCalculado se não obtido dos barrels
             if (totalUrlsIndexadasCalculado == 0 && (tamanhoIndicesMap.isEmpty())) { 
                  try (BufferedReader reader = new BufferedReader(new FileReader("urlsIndexados.txt"))) {
@@ -261,8 +276,6 @@ public class SearchController {
                 }
             }
 
-
-            // Calcular o total de pesquisas realizadas 
             int totalPesquisas = 0;
             if (pesquisasFrequentes != null) {
                 totalPesquisas = pesquisasFrequentes.stream()
@@ -275,7 +288,7 @@ public class SearchController {
                     })
                     .sum();
             }
-            
+        
             // Adicionar dados ao modelo para renderização inicial
             model.addAttribute("pesquisasFrequentes", pesquisasFrequentes);
             model.addAttribute("barrelsAtivos", barrelsAtivos);
@@ -296,19 +309,20 @@ public class SearchController {
             System.out.println("SearchController: Dados de estatísticas enviados via WebSocket.");
             // --- FIM Do WEBSOCKET ---
 
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
-            
-            // Inicializar variáveis vazias em caso de erro
-            model.addAttribute("pesquisasFrequentes", new ArrayList<>());
-            model.addAttribute("barrelsAtivos", new HashMap<>());
-            model.addAttribute("temposResposta", new HashMap<>());
-            model.addAttribute("totalUrlsIndexadas", 0);
-            model.addAttribute("totalPesquisasGlobal", 0);
-            model.addAttribute("tamanhoIndices", new HashMap<>());
         }
+            catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
+                
+                // Inicializar variáveis vazias em caso de erro
+                model.addAttribute("pesquisasFrequentes", new ArrayList<>());
+                model.addAttribute("barrelsAtivos", new HashMap<>());
+                model.addAttribute("temposResposta", new HashMap<>());
+                model.addAttribute("totalUrlsIndexadas", 0);
+                model.addAttribute("totalPesquisasGlobal", 0);
+                model.addAttribute("tamanhoIndices", new HashMap<>());
+            }
+      
         return "statistics";
     }
 
@@ -319,19 +333,22 @@ public class SearchController {
             return "relacoes";
         }
 
-        try {
-            String serverIp = "localhost"; // Substitua pelo IP do servidor, se necessário
-            String server = "rmi://" + serverIp + "/server";
-            InterfaceGatewayServer gateway = (InterfaceGatewayServer) Naming.lookup(server);
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço indisponível no momento. Tente novamente mais tarde.");
+            return "relacoes";
+        }
 
-            List<String> relacoes = gateway.consultarRelacoes(url);
+        try {
+            List<String> relacoes = this.gateway.consultarRelacoes(url);
             model.addAttribute("url", url);
             model.addAttribute("relacoes", relacoes);
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro inesperado: " + e.getMessage());
         }
-        return "relacoes"; // Nome do arquivo HTML para exibir as relações
-    }
+        return "relacoes";
+}
 
         @RequestMapping(value = "/index-url", method = RequestMethod.POST)
     public String indexUrl(@RequestParam("url") String url, Model model) {
@@ -348,27 +365,31 @@ public class SearchController {
         return "search"; // Retorna para a página de busca
     }
 
-        @GetMapping("/")
+    @GetMapping("/")
     public String redirectToSearch() {
         return "redirect:/search";
     }
 
-
-}
-
-class SearchResult {
-    private String title;
-    private String url;
-    private String citation;
-
-    public SearchResult(String title, String url, String citation) {
-        this.title = title;
-        this.url = url;
-        this.citation= citation;
+    @GetMapping("/mensagem")
+    public String mensagemPage() {
+        return "mensagem"; // Nome do arquivo HTML (mensagem.html)
     }
 
-    // Getters
-    public String getTitle() { return title; }
-    public String getUrl() { return url; }
-    public String getCitation() { return citation; }
+    @GetMapping("/hackernews")
+    public String buscarHackerNews(@RequestParam(required = false) String termo, Model model) {
+        try {
+            if (this.gateway != null) {
+                // Chama o método buscarTopStoriesHackerNews no GatewayServer
+                List<String> urlsHackerNews = this.gateway.buscarTopStoriesHackerNews(termo);
+                model.addAttribute("urlsHackerNews", urlsHackerNews);
+                model.addAttribute("termo", termo);
+            } else {
+                model.addAttribute("error", "Serviço indisponível. Não foi possível buscar histórias do Hacker News.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao buscar histórias do Hacker News: " + e.getMessage());
+        }
+        return "hackernews"; // Nome da nova página HTML
+    }
+
 }

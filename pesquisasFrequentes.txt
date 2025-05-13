@@ -5,6 +5,6 @@ livros:6
 concurso presencial:5
 banana:3
 oito:3
+para:3
 e:3
 postura ameaçada:3
-para:3
