@@ -9,7 +9,7 @@ import kong.unirest.UnirestException;
 
 public class OpenRouterApi {
 
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
     private static final String OPEN_ROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
     /**

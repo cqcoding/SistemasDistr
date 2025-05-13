@@ -1,6 +1,5 @@
 package com;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -34,14 +33,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
-    private final List<InterfaceBarrel> barrels;
-
-    /** Lista de palavras-chave utilizadas para indexação. */
-    private static final String[] palavras_chave = {""};
+    private List<InterfaceBarrel> barrels;
 
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private final List<String> urlsIndexados;
+    private List<String> urlsIndexados;
 
     /** Estruturas necessárias para armazenar estatísticas.
      * Contagem das pesquisas mais comuns.
@@ -68,8 +64,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
-     //private final WebClient webClient;
-
     private Map<String, List<String>> urlRelations;
     /**
      * Construtor da classe GatewayServer.
@@ -93,8 +87,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
         .build();**/
                    
-
-
         conectarBarrels(barrelUrls);
         carregarURLs();
         // Carregar relações entre URLs usando a nova classe
@@ -105,7 +97,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
     }
         public static void main(String[] args) {
-            GatewayServer server; 
+            GatewayServer server = null; 
             try {
                 /** Carrega propriedades do arquivo. */
                 Properties properties = new Properties();
@@ -153,7 +145,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     
                 System.out.println("Servidor RMI pronto...");
             } 
-            catch (IOException e) {
+            catch (Exception e) {
+                e.printStackTrace(); 
             } 
         }
 
@@ -172,6 +165,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             } 
             catch (Exception e) {
                 System.err.println("Erro ao conectar aos barrels " + barrelUrl);
+                e.printStackTrace();
             }
         }
     }
@@ -242,6 +236,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                         }
                     }
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();                // isso é o que realmente faz a thread começar a compilar.
@@ -306,11 +301,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public void indexar_URL(String url) throws RemoteException {
-        System.out.println("GatewayServer: Recebendo solicitação para indexar URL: " + url);
+        System.out.println("Recebendo solicitação para indexar URL: " + url);
 
         // Verificar se a URL já foi processada
         if (urlsIndexados.contains(url)) {
-            System.out.println("GatewayServer: URL já indexada: " + url);
+            System.out.println("URL já indexada: " + url);
             return;
         }
     
@@ -318,9 +313,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         try {
             Downloader downloader = new Downloader(10); // Número de threads
             downloader.comecaProcessarURL(url); // Processar a URL diretamente
-            System.out.println("GatewayServer: URL enviada para processamento: " + url);
-        } catch (RemoteException e) {
-            System.err.println("GatewayServer: Erro ao processar URL: " + e.getMessage());
+            System.out.println("URL enviada para processamento: " + url);
+        } catch (Exception e) {
+            System.err.println("Erro ao processar URL: " + e.getMessage());
             throw new RemoteException("Erro ao processar URL", e);
         }
     }
@@ -328,7 +323,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /**
       * Organizar os dados de cada resultado da pesquisa: URL, título e citação
       */
-      private static class ResultadoPesquisa {
+    private static class ResultadoPesquisa {
         String url;
         String titulo;
         String citacao;
@@ -356,12 +351,14 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
                     try {
                         writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
                     } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 });
             System.out.println("Pesquisas frequentes salvas com sucesso.");
         } 
         catch (IOException e) {
             System.err.println("Erro ao salvar pesquisas frequentes: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -393,95 +390,167 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
-        Set<String> urlsUnicas = new HashSet<>(); // Deduplicação de URLs
-        List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
-        Map<String, Integer> ligacoesPorUrl = new HashMap<>();
 
-        /** Consultar cada Barrel e combinar os resultados. */
-        for (InterfaceBarrel barrel : barrels) {
-            long inicio = System.nanoTime();    //tempo em nanossegundos (1 segundo = 1.000.000.000 nanossegundos)
-            
-            try {
-                List<String> barrelResultados = barrel.pesquisar(palavra);
-                for (String url : barrelResultados) {
-                    if (url != null && !url.isBlank()) {
+        // 1. Lida com pesquisa nula ou vazia
+        if (palavra == null || palavra.trim().isEmpty()) {
+            System.out.println("Pesquisa vazia recebida.");
+            this.resultadosPesquisa = new ArrayList<>(); // Limpa resultados anteriores
+            this.paginaAtual = 0;
+            return new ArrayList<>(); // Retorna lista vazia
+        }
+
+        // 2. Atualiza a contagem da palavra pesquisada - estatísticas. */
+        pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
+        salvarPesquisasFrequentes(); // Salva após cada pesquisa
+
+        // 3. Dividir a pesquisa em termos individuais (ignora múltiplos espaços, converte para minúsculas) e FILTRAR stopwords usando ehProvavelStopword
+        String[] termosBrutos = palavra.toLowerCase().split("\\s+");
+        List<String> termosValidos = new ArrayList<>();
+        List<String> termosIgnorados = new ArrayList<>();
+
+        for (String termo : termosBrutos) {
+            String termoLimpo = termo.trim();
+            if (!termoLimpo.isEmpty()) {
+                // Chama ehProvavelStopword com valores dummy (0, 1)
+                if (StopwordClassificador.ehProvavelStopword(termoLimpo, 0, 1)) {
+                    termosIgnorados.add(termoLimpo);
+                } else {
+                    termosValidos.add(termoLimpo);
+                }
+            }
+        }
+
+        // Se a pesquisa só continha stopwords ou ficou vazia após filtrar
+        if (termosValidos.isEmpty()) {
+            System.out.println("Pesquisa '" + palavra + "' continha apenas stopwords ou ficou vazia (usando ehProvavelStopword). Termos ignorados: " + termosIgnorados);
+            this.resultadosPesquisa = new ArrayList<>();
+            this.paginaAtual = 0;
+            return new ArrayList<>();
+        }
+
+        // 4. Buscar resultados para CADA termo em TODOS os barrels
+        List<Set<String>> resultadosPorTermo = new ArrayList<>();
+        for (String termoIndividual : termosValidos) {
+            if (termoIndividual.isEmpty()) continue; // Pular strings vazias se houver espaços extras
+
+            System.out.println("Buscando por termo: '" + termoIndividual + "'");
+            Set<String> urlsParaTermoAtual = new HashSet<>();
+            Map<String, Long> temposBarrelParaTermo = new HashMap<>(); // Rastrear tempo por barrel para este termo
+
+            for (InterfaceBarrel barrel : barrels) {
+                long inicio = System.nanoTime();
+                try {
+                    // 'termoIndividual' é a palavra individual que o barrel.pesquisar() espera
+                    List<String> barrelResultados = barrel.pesquisar(termoIndividual);
+                    if (barrelResultados != null) {
+                        for (String url : barrelResultados) {
+                            if (url != null && !url.isBlank()) {
+                                urlsParaTermoAtual.add(normalizarURL(url));
+                            }
+                        }
+                    }
+                    long duracao = System.nanoTime() - inicio;
+                    String nomeBarrel = barrel.getNomeBarrel();
+                    temposBarrelParaTermo.put(nomeBarrel, duracao);
+
+                } 
+                catch (RemoteException e) {
+                    System.err.println("Erro ao consultar o Barrel " + barrel.getNomeBarrel() + " para o termo '" + termoIndividual + "': " + e.getMessage());
+                }
+                catch (Exception e) {
+                    System.err.println("Erro Barrel " + barrel.getNomeBarrel() + " para o termo '" + termoIndividual + "': " + e.getMessage());
+                }
+            }
+            System.out.println("URLs encontradas para '" + termoIndividual + "': " + urlsParaTermoAtual.size());
+            resultadosPorTermo.add(urlsParaTermoAtual);
+
+            temposBarrelParaTermo.forEach((nomeBarrel, duracaoNano) -> {
+                temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
+                temposResposta.get(nomeBarrel).add(duracaoNano / 100000); 
+            });
+        }
+
+        // 5. Calcular a interseção dos resultados (URLs que contêm TODOS os termos)
+        Set<String> urlsComuns = new HashSet<>();
+        if (!resultadosPorTermo.isEmpty()) {
+            urlsComuns.addAll(resultadosPorTermo.get(0)); // Começa com os resultados do primeiro termo
+            for (int i = 1; i < resultadosPorTermo.size(); i++) {
+                urlsComuns.retainAll(resultadosPorTermo.get(i));
+                if (urlsComuns.isEmpty()) {
+                    System.out.println("Interseção zerou após termo: '" + termosValidos.get(i) + "'");
+                    break;
+                }
+            }
+        }
+        System.out.println("URLs comuns encontradas após interseção: " + urlsComuns.size());
+
+
+        //DAQUI PARA BAIXO LIDA COM AS URLS COMUNS
+
+        // 6. Buscar no Hacker News
+        List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra); // Usando a pesquisa original
+        if (!urlsHackerNews.isEmpty()) {
+            System.out.println("Encontradas " + urlsHackerNews.size() + " URLs no Hacker News para indexar.");
+            for (String urlHN : urlsHackerNews) {
+                for(String termoIndividual : termosValidos) { // Indexa para cada termo individual
+                    if (termoIndividual.isEmpty()) continue;
+                    for (InterfaceBarrel barrel : barrels) {
                         try {
-                            urlsUnicas.add(normalizarURL(url));
-                        } catch (Exception e) {
-                            System.err.println("Erro ao processar URL: " + url + " - " + e.getMessage());
+                            // O barrel.indexar_URL espera (palavra, url)
+                            barrel.indexar_URL(termoIndividual, urlHN);
+                        } catch (RemoteException e) {
+                            System.err.println("Erro ao indexar URL do HN '" + urlHN + "' para termo '" + termoIndividual + "' no barrel " + barrel.getNomeBarrel() + ": " + e.getMessage());
                         }
                     }
                 }
-            } catch (RemoteException e) {
-                System.err.println("Erro ao consultar o Barrel: " + e.getMessage());
-            }
-
-            long duracao = (System.nanoTime() - inicio) / 100000; //dividindo por 100.000 transformaria p 10 microsegundos depois no relatorio eu divido por mais 1000 pra virar decimos de segundo
-
-            /** Atualização de tempo de resposta no mapa por Barrel. */
-            String nomeBarrel = barrel.getNomeBarrel();            // obtém o nome real do Barrel usado.
-            temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
-            temposResposta.get(nomeBarrel).add(duracao);
-        }
-
-            // Buscar URLs no Hacker News
-        List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra);
-        urlsUnicas.addAll(urlsHackerNews);
-
-        // Indexar URLs do Hacker News nos Barrels
-        for (String url : urlsHackerNews) {
-            for (InterfaceBarrel barrel : barrels) {
-                barrel.indexar_URL(palavra, url);
             }
         }
 
-        for (String url : urlsUnicas) {
+        // 7. Calcular "popularidade" (backlinks) para as URLs comuns
+        Map<String, Integer> ligacoesPorUrl = new HashMap<>();
+        for (String url : urlsComuns) {
             int totalLigacoes = 0;
             for (InterfaceBarrel barrel : barrels) {
                 try {
                     List<String> apontadores = barrel.obterPaginasApontandoPara(url);
-                    totalLigacoes += apontadores.size();
-                } 
+                    totalLigacoes += (apontadores != null ? apontadores.size() : 0);
+                }
                 catch (RemoteException e) {
-                    System.err.println("Erro ao obter backlinks para " + url + ": " + e.getMessage());
+                    System.err.println("Erro ao obter backlinks para " + url + " no barrel " + barrel.getNomeBarrel() + ": " + e.getMessage());
                 }
             }
             ligacoesPorUrl.put(url, totalLigacoes);
         }
 
-        List<String> resultadosOrdenados = new ArrayList<>(urlsUnicas);
+        // 8. Ordenar as URLs comuns pela popularidade (backlinks)
+        List<String> resultadosOrdenados = new ArrayList<>(urlsComuns);
         resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
-
+        
+        // 9. Obter detalhes (Título, Citação) para as URLs ordenadas
+        List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
         for (String url : resultadosOrdenados) {
             try {
                 ResultadoPesquisa resultado = obterDetalhesDaURL(url);
                 if (resultado != null) {
                     resultadosComDetalhes.add(resultado);
+                } else {
+                    System.out.println("Não foi possível obter detalhes para: " + url);
                 }
             } catch (Exception e) {
                 System.err.println("Erro ao obter detalhes da URL: " + url + " - " + e.getMessage());
             }
         }
 
-        /** Atualiza a contagem da palavra pesquisada - estatísticas. */
-        pesquisasFrequentes.put(palavra, pesquisasFrequentes.getOrDefault(palavra, 0) + 1);
-        salvarPesquisasFrequentes(); // Salva após cada pesquisa
-
+        // 10. Preparar para paginação e retorno
         this.resultadosPesquisa = resultadosComDetalhes;
         this.paginaAtual = 0;
-        
-        // Converter para List<String> para manter a compatibilidade com a assinatura do método
-        List<String> resultadosFormatados = new ArrayList<>();
-        for (ResultadoPesquisa resultado : resultadosPesquisa) {
-            resultadosFormatados.add(resultado.toString());
+        System.out.println("Total de resultados finais com detalhes: " + this.resultadosPesquisa.size());
+
+        List<String> resultadosFormatadosPrimeiraPagina = new ArrayList<>();
+        for (ResultadoPesquisa res : getResultadosPaginaAtual()) {
+            resultadosFormatadosPrimeiraPagina.add(res.toString());
         }
-
-
-        for (String resultado : resultadosFormatados) {
-            System.out.println(resultado);
-        }
-
-        return resultadosFormatados;
+        return resultadosFormatadosPrimeiraPagina;
     }
 
     /** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
@@ -591,10 +660,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         System.out.println("Página atual: " + paginaAtual);
         System.out.println("Total de resultados: " + resultadosPesquisa.size());
-        System.out.println("Índice de início: " + inicio);
-        System.out.println("Índice de fim: " + fim);
-
-
         return resultadosPesquisa.subList(inicio, fim);
     }
 
@@ -784,7 +849,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
         return temposMedios;
     }
-
     @Override
     public String gerarAnaliseContextualizada(String termo) {
         try {
@@ -795,9 +859,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             System.err.println("Erro ao gerar análise contextualizada: " + e.getMessage());
             return "Não foi possível gerar a análise contextualizada.";
         }
-}
+ }
     @Override
     public List<String> consultarRelacoes(String url) throws RemoteException {
         return urlRelations.getOrDefault(url, new ArrayList<>());
-    }
+    }   
 }

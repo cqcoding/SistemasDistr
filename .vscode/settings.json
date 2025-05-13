@@ -7,5 +7,7 @@
         "libs/jsoup-1.20.1.jar",
         "libs/commons-io-2.18.0.jar",
         "libs/weka.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
 }
