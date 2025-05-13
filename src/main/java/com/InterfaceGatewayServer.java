@@ -5,11 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 
-/**
- * Interface que define os métodos para o Gateway Server, permitindo a comunicação remota para indexação de URLs, pesquisa, navegação de páginas de resultados
- * e envio de URLs para processamento em um Barrel.
- * Todos os métodos desta interface lançam a exceção RemoteException, pois eles são definidos para operação remota, exigindo comunicação via RMI.
- */
+//todos os metodos tem que lançar essa exceção "remoteexception" pra não dar erros, como é remoto né
 public interface InterfaceGatewayServer extends Remote {
     void indexar_URL(String url) throws RemoteException;          //indexar novo url
     List<String> pesquisar(String palavra) throws RemoteException;    //pesquisar algo e retornar lista com resultados
@@ -21,7 +17,7 @@ public interface InterfaceGatewayServer extends Remote {
     List<String> obterPesquisasMaisFrequentes() throws RemoteException; //obter pesquisas mais frequentes
     Map<String, Integer> obterBarrelsAtivos() throws RemoteException; //obter barrels ativos
     Map<String, Double> obterTemposResposta() throws RemoteException; //obter tempos de resposta
-    String gerarAnaliseContextualizada(String query, List<String> citacoes) throws RemoteException;
+    String gerarAnaliseContextualizada(String termo) throws RemoteException;
     List<String> consultarRelacoes(String url) throws RemoteException;
-
+    List<String> buscarTopStoriesHackerNews(String search) throws RemoteException; //buscar top stories do hacker news
 }
