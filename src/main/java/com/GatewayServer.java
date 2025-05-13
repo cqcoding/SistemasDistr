@@ -68,7 +68,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
-    private Map<String, List<String>> urlRelations;
+    private Map<String, List<String>> relacoesDeUrls;
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -84,18 +84,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         this.temposResposta = new HashMap<>();
         this.resultadosPesquisa = new ArrayList<>();
         this.paginaAtual = 0;
-        /**this.webClient = WebClient.builder()
-        .baseUrl("https://api.openai.com/v1")
-        .defaultHeader("Authorization", "Bearer SUA_CHAVE") // Substitua pela sua chave v
-        .defaultHeader("Content-Type", "application/json")
-        .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
-        .build();**/
                    
         conectarBarrels(barrelUrls);
         carregarURLs();
         // Carregar relações entre URLs usando a nova classe
         RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
-        this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
+        this.relacoesDeUrls = loader.carregarRelacoes("urlsIndexados.txt"); 
         carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
@@ -883,6 +877,42 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
  }
     @Override
     public List<String> consultarRelacoes(String url) throws RemoteException {
-        return urlRelations.getOrDefault(url, new ArrayList<>());
+        Set<String> urlsRelacionadas = new HashSet<>(); // Usar Set para evitar URLs duplicadas
+        if (url == null || url.trim().isEmpty() || !relacoesDeUrls.containsKey(url)) {
+            return new ArrayList<>(urlsRelacionadas); // Retorna lista vazia se a URL base for inválida ou não estiver no mapa
+        }
+
+        // Obtém a lista de palavras-chave que estão associadas à url.
+        // urlsIndexados.txt tem "java -> http://example.com/java"
+        // então para url="http://example.com/java", palavrasChaveDaUrlBase será ["java", "programming"]
+        List<String> palavrasChaveDaUrlBase = relacoesDeUrls.get(url);
+
+        if (palavrasChaveDaUrlBase == null || palavrasChaveDaUrlBase.isEmpty()) {
+            return new ArrayList<>(urlsRelacionadas);                               // Nenhuma palavra-chave associada à URL base, então não há URLs relacionadas por este critério.
+        }
+
+        // Agora, para cada URL candidata no mapa relacoesDeUrls,
+        // verifique se alguma das palavras-chave que apontam para a url também aponta para a URL candidata.
+        for (Map.Entry<String, List<String>> entry : relacoesDeUrls.entrySet()) {
+            String urlCandidata = entry.getKey();
+            List<String> palavrasChaveDaUrlCandidata = entry.getValue();
+
+            if (urlCandidata.equals(url)) {
+                continue; // Não relacionar uma URL consigo mesma
+            }
+
+            if (palavrasChaveDaUrlCandidata == null) {
+                continue;
+            }
+
+            // Verifica se há alguma palavra-chave em comum
+            for (String palavraChaveDaUrlOriginal : palavrasChaveDaUrlBase) {
+                if (palavrasChaveDaUrlCandidata.contains(palavraChaveDaUrlOriginal)) {
+                    urlsRelacionadas.add(urlCandidata); // Adiciona a URL candidata relacionada
+                    break; // Encontrou uma palavra-chave comum, passa para a próxima urlCandidata
+                }
+            }
+        }
+        return new ArrayList<>(urlsRelacionadas); // Retorna a lista de URLs relacionadas
     }   
 }

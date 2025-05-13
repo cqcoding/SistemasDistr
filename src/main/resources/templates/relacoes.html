@@ -61,11 +61,16 @@
         </form>
 
         <!-- Exibir relações -->
-        <div th:if="${relacoes != null}">
-            <h2 style="font-size: 14px;" class="mt-2">Ligações apontadas para: <span th:text="${url}"></span></h2>
+        <div th:if="${relacoes != null and not #lists.isEmpty(relacoes)}">
+            <h2 style="font-size: 14px;" class="mt-2">URLs relacionadas com: <span th:text="${url}"></span></h2>
             <ul class="list-group mt-3">
-                <li class="list-group-item" th:each="relacao : ${relacoes}" th:text="${relacao}"></li>
+                <li class="list-group-item" th:each="relacaoUrl : ${relacoes}">
+                    <a th:href="${relacaoUrl}" th:text="${relacaoUrl}" target="_blank"></a>
+                </li>
             </ul>
+        </div>
+        <div th:if="${relacoes != null and #lists.isEmpty(relacoes)}">
+            <h2 style="font-size: 14px;" class="mt-2">Nenhuma URL relacionada encontrada para: <span th:text="${url}"></span></h2>
         </div>
 
         <!-- Exibir mensagem de erro -->
