@@ -65,7 +65,8 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
-    private Map<String, List<String>> urlRelations;
+    /** Mapeia backlinks para cada URL. */
+    private Map<String, List<String>> backlinks = new HashMap<>();
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -96,10 +97,10 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         // Calcular backlinks
         BacklinksCalculator calculator = new BacklinksCalculator();
-        calculator.calcularBacklinks(linksSaida);
+        this.backlinks = calculator.calcularBacklinks(linksSaida);
         // Carregar relações entre URLs usando a nova classe
-        RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
-        this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
+        // RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
+        // this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
         carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
@@ -332,7 +333,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
             // Recalcular os backlinks
             BacklinksCalculator calculator = new BacklinksCalculator();
-            this.urlRelations = calculator.calcularBacklinks(linksSaida);   
+            this.backlinks = calculator.calcularBacklinks(linksSaida);   
 
             // Atualizar a lista de URLs indexadas
             urlsIndexados.add(url);
@@ -914,6 +915,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
  }
     @Override
     public List<String> consultarRelacoes(String url) throws RemoteException {
-        return urlRelations.getOrDefault(url, new ArrayList<>());
+        return backlinks.getOrDefault(url, new ArrayList<>());
     }   
 }

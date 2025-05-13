@@ -312,7 +312,7 @@ public class SearchController {
     @RequestMapping(value = "/relacoes", method = {RequestMethod.GET, RequestMethod.POST})
     public String consultarRelacoes(@RequestParam(required = false) String url, Model model) {
         if (url == null || url.isEmpty()) {
-            //model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
+            model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
             return "relacoes";
         }
 
@@ -322,11 +322,16 @@ public class SearchController {
         }
 
         try {
-            // Obter os links relacionados (backlinks) a partir do GatewayServer
+            // Obter os backlinks (links que apontam para a URL fornecida) a partir do GatewayServer
             List<String> relacoes = this.gateway.consultarRelacoes(url);
 
+            if (relacoes == null || relacoes.isEmpty()) {
+                model.addAttribute("message", "Nenhuma relação encontrada para a URL fornecida.");
+            } else {
+                model.addAttribute("relacoes", relacoes);
+            }
+
             model.addAttribute("url", url);
-            model.addAttribute("relacoes", relacoes);
         } catch (RemoteException e) {
             model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
         } catch (Exception e) {
