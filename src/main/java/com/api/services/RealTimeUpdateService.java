@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.api.services;
 
 import java.util.Map;
@@ -6,14 +5,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service; // Para enviar dados estruturados, como estatísticas
-=======
-package com.api.services; // Use o seu pacote de serviços
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
-import java.util.Map; // Para enviar dados estruturados, como estatísticas
->>>>>>> ceci
 
 @Service
 public class RealTimeUpdateService {

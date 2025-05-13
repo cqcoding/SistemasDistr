@@ -3,16 +3,8 @@ guerra:18
 bruna:8
 livros:6
 oito:3
-<<<<<<< HEAD
-e:3
 para:3
+e:3
 banana:2
 exercícios:2
 cinco:2
-=======
-para:3
-e:3
-banana:2
-cinco:2
-kayanne:2
->>>>>>> ceci

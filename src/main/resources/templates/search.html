@@ -202,9 +202,9 @@
             </div>
 
             <!-- Analysis section -->
-            <div class="analysis-container" th:if="${analysis != null}">
-                <h2>Análise Contextualizada</h2>
-                <p th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
+            <div class="analysis-container mt-5" th:if="${analysis != null}">
+                <h2 class="text-primary">Análise Contextualizada</h2>
+                <p class="alert alert-info" th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
             </div>
 
             <div class="pagination-container mt-4 text-center">
