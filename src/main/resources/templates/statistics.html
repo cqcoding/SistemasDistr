@@ -169,7 +169,7 @@
         <h1 class="text-center mb-5">Estatísticas do Sistema</h1>
         
         <!-- Cards de Estatísticas Gerais -->
-        <div class="row mb-4">
+        <div class="row mb-4 justify-content-center">
             <div class="col-md-4">
                 <div class="card stat-card">
                     <div class="card-body text-center">
@@ -182,14 +182,6 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Barrels Ativos</h5>
                         <h2 class="display-4" th:text="${barrelsAtivos != null ? barrelsAtivos.size() : 0}">0</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Palavras Indexadas</h5>
-                        <h2 class="display-4" th:text="${totalUrlsIndexadas}">0</h2>
                     </div>
                 </div>
             </div>
