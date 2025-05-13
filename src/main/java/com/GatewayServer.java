@@ -787,6 +787,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * @param termo Termo de pesquisa a ser usado para filtrar as histórias.
      * @return Lista de URLs das histórias que correspondem ao termo.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> buscarTopStoriesHackerNews(String termo) throws RemoteException {
         List<String> urlsEncontradas = new ArrayList<>();
