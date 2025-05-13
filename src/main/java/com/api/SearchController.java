@@ -355,7 +355,7 @@ public class SearchController {
         try {
             if (this.gateway != null) {
                 this.gateway.indexar_URL(url);
-                model.addAttribute("success", "URL indexada com sucesso: " + url);
+                model.addAttribute("success", "URL enviada para indexação: " + url);
             } else {
                 model.addAttribute("error", "Serviço indisponível. Não foi possível indexar a URL.");
             }

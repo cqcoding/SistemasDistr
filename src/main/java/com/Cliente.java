@@ -57,7 +57,7 @@ public class Cliente {
                     String url = scanner.nextLine();
 
                     gateway.enviarURLParaProcessamento(url);       //adiciona url à lista de processamento dos barrels
-                    System.out.println("URL indexada com sucesso!");      
+                    System.out.println("URL indexada enviada para indexação");      
                 }
 
                 else if (opcao == 3){

@@ -1,5 +1,5 @@
+guerra:27
 wikidata:22
-guerra:21
 bruna:11
 livros:6
 concurso presencial:5
