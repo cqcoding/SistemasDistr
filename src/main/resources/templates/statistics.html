@@ -141,7 +141,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/search">Início</a>
+                        <a class="nav-link" href="/search">Início</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/relacoes">
@@ -149,9 +149,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/statistics">
+                        <a class="nav-link active" href="/statistics">
                             <i class="fas fa-chart-bar"></i> Estatísticas
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hackernews">Hacker News</a>
                     </li>
                 </ul>
             </div>
@@ -166,7 +169,7 @@
         <h1 class="text-center mb-5">Estatísticas do Sistema</h1>
         
         <!-- Cards de Estatísticas Gerais -->
-        <div class="row mb-4 justify-content-center">
+        <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card stat-card">
                     <div class="card-body text-center">
@@ -179,6 +182,14 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Barrels Ativos</h5>
                         <h2 class="display-4" th:text="${barrelsAtivos != null ? barrelsAtivos.size() : 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Palavras Indexadas</h5>
+                        <h2 class="display-4" th:text="${totalUrlsIndexadas}">0</h2>
                     </div>
                 </div>
             </div>

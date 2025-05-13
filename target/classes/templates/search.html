@@ -151,6 +151,9 @@
                             <i class="fas fa-chart-bar"></i> Estatísticas
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hackernews">Hacker News</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -176,7 +179,7 @@
 
             <!-- Results section -->
             <div class="results-container">
-                <h2 th:if="${results != null && !results.isEmpty()}">Resultados da Busca:</h2>
+                <h2 th:if="${results != null && !results.isEmpty()}">Resultados da Busca</h2>
                 <div class="list-group" th:if="${results != null && !results.isEmpty()}">
                     <a href="#" class="list-group-item list-group-item-action" th:each="result : ${results}" th:href="${result.url}">
                         <div class="d-flex w-100 justify-content-between">
@@ -199,9 +202,9 @@
             </div>
 
             <!-- Analysis section -->
-            <div class="analysis-container mt-5" th:if="${analysis != null}">
-                <h2 class="text-primary">Análise Contextualizada</h2>
-                <p class="alert alert-info" th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
+            <div class="analysis-container" th:if="${analysis != null}">
+                <h2>Análise Contextualizada</h2>
+                <p th:text="${analysis}">Aqui será exibida a análise gerada pela OpenAI.</p>
             </div>
 
             <div class="pagination-container mt-4 text-center">

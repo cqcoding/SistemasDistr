@@ -146,4 +146,8 @@ try {
   catch { Write-Warning "Cannot remove $TMP_DOWNLOAD_DIR" }
 }
 
+<<<<<<< HEAD
 Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
+=======
+Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
+>>>>>>> ceci
