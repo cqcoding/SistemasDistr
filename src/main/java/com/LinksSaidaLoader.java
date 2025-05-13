@@ -10,6 +10,10 @@ import java.util.Map;
 
 public class LinksSaidaLoader {
 
+    // O método carregarLinksSaida lê um arquivo que contém links de saída no formato origem -> destino1, destino2, ... 
+    // e retorna um mapa (Map<String, List<String>>) onde a chave é a URL de origem e o valor é uma 
+    // lista de URLs de destino.
+    
     /**
      * Carrega os links de saída de cada página a partir de um arquivo.
      * @param filePath Caminho para o arquivo de links de saída.

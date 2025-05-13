@@ -24,8 +24,8 @@ import java.util.HashSet;
 class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
     private final Map<String, Set<String>> urlsIndexados;
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private Queue<String> urlQueue;
-    private String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
+    private final Queue<String> urlQueue;
+    private final String nome; // para poder dar os nomes certinhos e para aparecer nas estatísticas.
 
     /**
      * Construtor do BarrelServer.
@@ -273,12 +273,12 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                     writer.newLine();
 
                     // Atualizar links de saída no arquivo linksSaida.txt
-                    atualizarLinksSaida(url, new ArrayList<>());
+                    //atualizarLinksSaida(url, new ArrayList<>());
                 }
             }
             System.out.println("URLs salvas com sucesso no arquivo.");
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -302,7 +302,6 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
             }
             System.out.println("URLs carregadas do arquivo.");
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -312,7 +311,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
      * @param url URL principal.
      * @param linksSaida Lista de links de saída relacionados.
      */
-    private void atualizarLinksSaida(String url, List<String> linksSaida) {
+    /**private void atualizarLinksSaida(String url, List<String> linksSaida) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("linksSaida.txt", true))) {
             writer.write("URL: " + url);
             writer.newLine();
@@ -323,5 +322,5 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }**/
 }

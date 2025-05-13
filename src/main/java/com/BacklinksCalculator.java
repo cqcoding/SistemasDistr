@@ -7,6 +7,9 @@ import java.util.Map;
 
 public class BacklinksCalculator {
     
+    // O método calcularBacklinks recebe um mapa de links de saída (origem -> destinos) e 
+    // retorna um novo mapa onde a chave é uma URL de destino e o valor é uma lista de URLs 
+    // de origem que apontam para ela (backlinks).
 
     /**
      * Calcula os backlinks (links que apontam para uma página específica).

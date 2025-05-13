@@ -1,6 +1,6 @@
 package com;
 
-
+import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
@@ -35,9 +35,8 @@ public class RegistrarBarrels {
             }
 
             System.out.println("Todos os barrels registrados.");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Erro ao registrar os barrels: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }

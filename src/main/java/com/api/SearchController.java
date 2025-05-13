@@ -69,7 +69,7 @@ public class SearchController {
                 String resultados = this.gateway.next_page();
                 model.addAttribute("results", parseResultados(resultados));
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             model.addAttribute("error", "Erro ao carregar a próxima página: " + e.getMessage());
         }
         return "search";
@@ -82,7 +82,7 @@ public class SearchController {
                 String resultados = this.gateway.previous_page();
                 model.addAttribute("results", parseResultados(resultados));
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             model.addAttribute("error", "Erro ao carregar a página anterior: " + e.getMessage());
         }
         return "search";
@@ -159,8 +159,7 @@ public class SearchController {
             // Adicionar a análise ao modelo para exibição no frontend
             model.addAttribute("analysis", analise);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
         }
 
@@ -294,8 +293,7 @@ public class SearchController {
             // --- FIM Do WEBSOCKET ---
 
         } 
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IOException e) {
             model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
             
             // Inicializar variáveis vazias em caso de erro
@@ -312,7 +310,7 @@ public class SearchController {
     @RequestMapping(value = "/relacoes", method = {RequestMethod.GET, RequestMethod.POST})
     public String consultarRelacoes(@RequestParam(required = false) String url, Model model) {
         if (url == null || url.isEmpty()) {
-            model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
+            //model.addAttribute("error", "O parâmetro 'url' é obrigatório.");
             return "relacoes";
         }
 
