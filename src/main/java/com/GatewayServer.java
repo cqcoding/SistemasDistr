@@ -9,7 +9,10 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.api.HackerNewsItemRecord;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -724,35 +727,50 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      * @param termo Termo de pesquisa a ser usado para filtrar as histórias.
      * @return Lista de URLs das histórias que correspondem ao termo.
      */
-    private List<String> buscarTopStoriesHackerNews(String termo) {
+    @Override
+    public List<String> buscarTopStoriesHackerNews(String termo) throws RemoteException {
         List<String> urlsEncontradas = new ArrayList<>();
-        try {
-            // Endpoint para obter IDs das top stories
-            String topStoriesUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
-            Document topStoriesDoc = Jsoup.connect(topStoriesUrl).ignoreContentType(true).get();
-            String[] ids = topStoriesDoc.body().text().replace("[", "").replace("]", "").split(",");
+    try {
+        // Endpoint para obter IDs das top stories
+        String topStoriesEndpoint = "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
 
-            // Iterar sobre os IDs e buscar detalhes das histórias
-            for (int i = 0; i < Math.min(ids.length, 50); i++) { // Limitar a 50 histórias para evitar sobrecarga
-                String storyUrl = "https://hacker-news.firebaseio.com/v0/item/" + ids[i].trim() + ".json";
-                Document storyDoc = Jsoup.connect(storyUrl).ignoreContentType(true).get();
-                String storyJson = storyDoc.body().text();
+        // Obter os IDs das histórias principais
+        RestTemplate restTemplate = new RestTemplate();
+        List<Integer> topStoriesIds = restTemplate.getForObject(topStoriesEndpoint, List.class);
 
-                // Extrair título e URL da história
-                if (storyJson.contains("\"title\"") && storyJson.contains("\"url\"")) {
-                    String title = storyJson.split("\"title\":\"")[1].split("\",")[0];
-                    String url = storyJson.split("\"url\":\"")[1].split("\",")[0];
-
-                    // Verificar se o termo está no título ou URL
-                    if (title.toLowerCase().contains(termo.toLowerCase()) || url.toLowerCase().contains(termo.toLowerCase())) {
-                        urlsEncontradas.add(url);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+        if (topStoriesIds == null || topStoriesIds.isEmpty()) {
+            System.err.println("Nenhuma história encontrada no Hacker News.");
+            return urlsEncontradas;
         }
-        return urlsEncontradas;
+
+        System.out.println("IDs das top stories do Hacker News: " + topStoriesIds);
+
+        // Iterar sobre os primeiros 50 IDs (ou menos, se houver menos histórias)
+        for (int i = 0; i < Math.min(topStoriesIds.size(), 50); i++) {
+            Integer storyId = topStoriesIds.get(i);
+
+            // Endpoint para obter detalhes de cada história
+            String storyDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
+            HackerNewsItemRecord storyDetails = restTemplate.getForObject(storyDetailsEndpoint, HackerNewsItemRecord.class);
+
+            if (storyDetails == null || storyDetails.url() == null || storyDetails.title() == null) {
+                System.err.println("Detalhes da história " + storyId + " estão incompletos ou nulos.");
+                continue;
+            }
+
+            System.out.println("Detalhes da história " + storyId + ": " + storyDetails);
+
+            // Verificar se o termo está no título ou URL
+            if (termo == null || termo.isBlank() || 
+                storyDetails.title().toLowerCase().contains(termo.toLowerCase()) || 
+                storyDetails.url().toLowerCase().contains(termo.toLowerCase())) {
+                urlsEncontradas.add(storyDetails.url());
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+    }
+    return urlsEncontradas;
     }
 
     @Override

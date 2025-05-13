@@ -353,6 +353,22 @@ public class SearchController {
         return "redirect:/search";
     }
 
+    @GetMapping("/hackernews")
+    public String buscarHackerNews(@RequestParam(required = false) String termo, Model model) {
+        try {
+            if (this.gateway != null) {
+                // Chama o método buscarTopStoriesHackerNews no GatewayServer
+                List<String> urlsHackerNews = this.gateway.buscarTopStoriesHackerNews(termo);
+                model.addAttribute("urlsHackerNews", urlsHackerNews);
+                model.addAttribute("termo", termo);
+            } else {
+                model.addAttribute("error", "Serviço indisponível. Não foi possível buscar histórias do Hacker News.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao buscar histórias do Hacker News: " + e.getMessage());
+        }
+        return "hackernews"; // Nome da nova página HTML
+    }
 
 }
 
