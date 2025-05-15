@@ -22,6 +22,9 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.web.client.RestTemplate;
+
+import com.api.HackerNewsItemRecord;
 
 /**
  * GatewayServer é responsável por gerenciar a comunicação entre os clientes e os servidores Barrel.
@@ -33,11 +36,11 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 // NOTE: é necessário o -extends UnicastRemoteObject- pois ele faz automaticamente a exportação dos objetos remotos para que os clientes consigam chamá-lo remotamente.
     
     /** Lista de Barrels conectados ao Gateway. */
-    private final List<InterfaceBarrel> barrels;
+    private List<InterfaceBarrel> barrels;
 
     /** Lista de URLs que já foram indexadas. */
     private static final String ArquivoURLS = "urlsIndexados.txt";
-    private final List<String> urlsIndexados;
+    private List<String> urlsIndexados;
 
     /** Estruturas necessárias para armazenar estatísticas.
      * Contagem das pesquisas mais comuns.
@@ -50,11 +53,10 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** Mapeia cada Barrel ao tempo médio de resposta. */
     private final Map<String, List<Long>> temposResposta;    
 
-
     /** Estruturas necessárias para nextpage, previous e link.
      * Lista contendo os resultados da última pesquisa. 
     */
-    private List<ResultadoPesquisa> resultadosPesquisa; // usa list, pois não precisa estar associada a uma chave, são só URLs.
+    private List<ResultadoPesquisa> resultadosPesquisa;           // usa list, pois não precisa estar associada a uma chave, são só URLs.
     
     /** Índice da página atual de resultados. */
     private int paginaAtual;
@@ -65,8 +67,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     /** guardar as 10 pesqusias mais frequentes pra não perder quando fechar o cliente */
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
-    /** Mapeia backlinks para cada URL. */
-    private Map<String, List<String>> backlinks = new HashMap<>();
+    private Map<String, List<String>> urlRelations;
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -88,19 +89,12 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         .defaultHeader("Content-Type", "application/json")
         .defaultHeader("User-Agent", "JavaOpenAIClient/1.0") // Adiciona o cabeçalho User-Agent
         .build();**/
-        
+                   
         conectarBarrels(barrelUrls);
         carregarURLs();
-        // Carregar links de saída
-        LinksSaidaLoader links = new LinksSaidaLoader();
-        Map<String, List<String>> linksSaida = links.carregarLinksSaida("linksSaida.txt");
-
-        // Calcular backlinks
-        BacklinksCalculator calculator = new BacklinksCalculator();
-        this.backlinks = calculator.calcularBacklinks(linksSaida);
         // Carregar relações entre URLs usando a nova classe
-        // RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
-        // this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
+        RelacoesUrlsLoader loader = new RelacoesUrlsLoader();
+        this.urlRelations = loader.carregarRelacoes("urlsIndexados.txt"); 
         carregarPesquisasFrequentes(); 
         iniciarMonitoramento();
 
@@ -323,21 +317,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             Downloader downloader = new Downloader(10); // Número de threads
             downloader.comecaProcessarURL(url); // Processar a URL diretamente
             System.out.println("URL enviada para processamento: " + url);
-
-            // Atualizar o arquivo linksSaida.txt
-            atualizarLinksSaida(url);
-
-            // Recarregar os links de saída
-            LinksSaidaLoader linksLoader = new LinksSaidaLoader();
-            Map<String, List<String>> linksSaida = linksLoader.carregarLinksSaida("linksSaida.txt");
-
-            // Recalcular os backlinks
-            BacklinksCalculator calculator = new BacklinksCalculator();
-            this.backlinks = calculator.calcularBacklinks(linksSaida);   
-
-            // Atualizar a lista de URLs indexadas
-            urlsIndexados.add(url);
-            
         } catch (Exception e) {
             System.err.println("Erro ao processar URL: " + e.getMessage());
             throw new RemoteException("Erro ao processar URL", e);
@@ -511,24 +490,25 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
 
         //DAQUI PARA BAIXO LIDA COM AS URLS COMUNS
 
-        // 6. Buscar no Hacker News
-        List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra); // Usando a pesquisa original
-        if (!urlsHackerNews.isEmpty()) {
-            System.out.println("Encontradas " + urlsHackerNews.size() + " URLs no Hacker News para indexar.");
-            for (String urlHN : urlsHackerNews) {
-                for(String termoIndividual : termosValidos) { // Indexa para cada termo individual
-                    if (termoIndividual.isEmpty()) continue;
-                    for (InterfaceBarrel barrel : barrels) {
-                        try {
-                            // O barrel.indexar_URL espera (palavra, url)
-                            barrel.indexar_URL(termoIndividual, urlHN);
-                        } catch (RemoteException e) {
-                            System.err.println("Erro ao indexar URL do HN '" + urlHN + "' para termo '" + termoIndividual + "' no barrel " + barrel.getNomeBarrel() + ": " + e.getMessage());
-                        }
-                    }
+        // Buscar URLs no Hacker News
+    List<String> urlsHackerNews = buscarTopStoriesHackerNews(palavra);
+    if (urlsHackerNews != null && !urlsHackerNews.isEmpty()) {
+        System.out.println("URLs do Hacker News encontradas: " + urlsHackerNews);
+        urlsComuns.addAll(urlsHackerNews);
+
+        // Indexar URLs do Hacker News nos Barrels
+        for (String url : urlsHackerNews) {
+            for (InterfaceBarrel barrel : barrels) {
+                try {
+                    barrel.indexar_URL(palavra, url);
+                } catch (RemoteException e) {
+                    System.err.println("Erro ao indexar URL no Barrel: " + e.getMessage());
                 }
             }
         }
+    } else {
+        System.out.println("Nenhuma URL relevante encontrada no Hacker News para a palavra: " + palavra);
+    }
 
         // 7. Calcular "popularidade" (backlinks) para as URLs comuns
         Map<String, Integer> ligacoesPorUrl = new HashMap<>();
@@ -799,71 +779,58 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         }
     }
 
-    /**
-     * Atualiza os links de saída para uma URL específica.
-     *
-     * @param url URL para a qual os links de saída serão atualizados.
-     */
-    private void atualizarLinksSaida(String url) {
-        try {
-            // Fazer o download do HTML da página
-            Document document = Jsoup.connect(url).get();
-
-            // Extrair todos os links da página
-            List<String> linksSaida = document.select("a[href]")
-                                              .stream()
-                                              .map(element -> element.attr("abs:href")) // Obter URLs absolutas
-                                              .filter(link -> !link.isEmpty()) // Filtrar links vazios
-                                              .distinct() // Remover duplicados
-                                              .toList();
-
-            // Salvar os links de saída no arquivo
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("linksSaida.txt", true))) {
-                writer.write(url + " -> " + String.join(", ", linksSaida));
-                writer.newLine();
-            }
-
-            System.out.println("Links de saída atualizados para a URL: " + url);
-        } catch (IOException e) {
-            System.err.println("Erro ao processar a URL: " + url + " - " + e.getMessage());
-        }
-    }
     
-    /**
+     /**
      * Busca as "top stories" do Hacker News e retorna URLs que contenham o termo de pesquisa no título ou URL.
      *
      * @param termo Termo de pesquisa a ser usado para filtrar as histórias.
      * @return Lista de URLs das histórias que correspondem ao termo.
      */
-    private List<String> buscarTopStoriesHackerNews(String termo) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<String> buscarTopStoriesHackerNews(String termo) throws RemoteException {
         List<String> urlsEncontradas = new ArrayList<>();
-        try {
-            // Endpoint para obter IDs das top stories
-            String topStoriesUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
-            Document topStoriesDoc = Jsoup.connect(topStoriesUrl).ignoreContentType(true).get();
-            String[] ids = topStoriesDoc.body().text().replace("[", "").replace("]", "").split(",");
+    try {
+        // Endpoint para obter IDs das top stories
+        String topStoriesEndpoint = "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
 
-            // Iterar sobre os IDs e buscar detalhes das histórias
-            for (int i = 0; i < Math.min(ids.length, 50); i++) { // Limitar a 50 histórias para evitar sobrecarga
-                String storyUrl = "https://hacker-news.firebaseio.com/v0/item/" + ids[i].trim() + ".json";
-                Document storyDoc = Jsoup.connect(storyUrl).ignoreContentType(true).get();
-                String storyJson = storyDoc.body().text();
+        // Obter os IDs das histórias principais
+        RestTemplate restTemplate = new RestTemplate();
+        List<Integer> topStoriesIds = restTemplate.getForObject(topStoriesEndpoint, List.class);
 
-                // Extrair título e URL da história
-                if (storyJson.contains("\"title\"") && storyJson.contains("\"url\"")) {
-                    String title = storyJson.split("\"title\":\"")[1].split("\",")[0];
-                    String url = storyJson.split("\"url\":\"")[1].split("\",")[0];
-
-                    // Verificar se o termo está no título ou URL
-                    if (title.toLowerCase().contains(termo.toLowerCase()) || url.toLowerCase().contains(termo.toLowerCase())) {
-                        urlsEncontradas.add(url);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+        if (topStoriesIds == null || topStoriesIds.isEmpty()) {
+            System.err.println("Nenhuma história encontrada no Hacker News.");
+            return urlsEncontradas;
         }
-        return urlsEncontradas;
+
+        System.out.println("IDs das top stories do Hacker News: " + topStoriesIds);
+
+        // Iterar sobre os primeiros 50 IDs (ou menos, se houver menos histórias)
+        for (int i = 0; i < Math.min(topStoriesIds.size(), 50); i++) {
+            Integer storyId = topStoriesIds.get(i);
+
+            // Endpoint para obter detalhes de cada história
+            String storyDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
+            HackerNewsItemRecord storyDetails = restTemplate.getForObject(storyDetailsEndpoint, HackerNewsItemRecord.class);
+
+            if (storyDetails == null || storyDetails.url() == null || storyDetails.title() == null) {
+                System.err.println("Detalhes da história " + storyId + " estão incompletos ou nulos.");
+                continue;
+            }
+
+            System.out.println("Detalhes da história " + storyId + ": " + storyDetails);
+
+            // Verificar se o termo está no título ou URL
+            if (termo == null || termo.isBlank() || 
+                storyDetails.title().toLowerCase().contains(termo.toLowerCase()) || 
+                storyDetails.url().toLowerCase().contains(termo.toLowerCase())) {
+                urlsEncontradas.add(storyDetails.url());
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Erro ao buscar top stories do Hacker News: " + e.getMessage());
+    }
+    return urlsEncontradas;
     }
 
     @Override
@@ -915,6 +882,6 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
  }
     @Override
     public List<String> consultarRelacoes(String url) throws RemoteException {
-        return backlinks.getOrDefault(url, new ArrayList<>());
+        return urlRelations.getOrDefault(url, new ArrayList<>());
     }   
 }

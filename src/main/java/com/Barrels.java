@@ -271,14 +271,11 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
                 for (String url : entry.getValue()) {
                     writer.write(palavraChave + " -> " + url);
                     writer.newLine();
-
-                    // Atualizar links de saída no arquivo linksSaida.txt
-                    //atualizarLinksSaida(url, new ArrayList<>());
                 }
             }
             System.out.println("URLs salvas com sucesso no arquivo.");
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -302,25 +299,7 @@ class BarrelServer extends UnicastRemoteObject implements InterfaceBarrel {
             }
             System.out.println("URLs carregadas do arquivo.");
         } catch (IOException e) {
-        }
-    }
-
-    /**
-     * Atualiza os links de saída no arquivo linksSaida.txt.
-     *
-     * @param url URL principal.
-     * @param linksSaida Lista de links de saída relacionados.
-     */
-    /**private void atualizarLinksSaida(String url, List<String> linksSaida) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("linksSaida.txt", true))) {
-            writer.write("URL: " + url);
-            writer.newLine();
-            for (String link : linksSaida) {
-                writer.write(" -> " + link);
-                writer.newLine();
-            }
-        } catch (IOException e) {
             e.printStackTrace();
         }
-    }**/
+    }
 }

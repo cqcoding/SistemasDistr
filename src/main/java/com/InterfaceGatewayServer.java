@@ -20,4 +20,5 @@ public interface InterfaceGatewayServer extends Remote {
     Map<String, Double> obterTemposResposta() throws RemoteException; //obter tempos de resposta
     String gerarAnaliseContextualizada(String termo) throws RemoteException;
     List<String> consultarRelacoes(String url) throws RemoteException;
+    List<String> buscarTopStoriesHackerNews(String search) throws RemoteException; //buscar top stories do hacker news
 }

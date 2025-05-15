@@ -69,7 +69,7 @@ public class SearchController {
                 String resultados = this.gateway.next_page();
                 model.addAttribute("results", parseResultados(resultados));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             model.addAttribute("error", "Erro ao carregar a próxima página: " + e.getMessage());
         }
         return "search";
@@ -82,7 +82,7 @@ public class SearchController {
                 String resultados = this.gateway.previous_page();
                 model.addAttribute("results", parseResultados(resultados));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             model.addAttribute("error", "Erro ao carregar a página anterior: " + e.getMessage());
         }
         return "search";
@@ -129,6 +129,13 @@ public class SearchController {
             return "search";
         }
 
+        // Verifica se o gateway RMI (this.gateway) está disponível
+        if (this.gateway == null) {
+            model.addAttribute("error", "Serviço de pesquisa indisponível no momento. Tente mais tarde.");
+            model.addAttribute("query", q);
+            return "search";
+        }
+
         List<SearchResult> results = new ArrayList<>();
         try {
             // Realizar a pesquisa
@@ -136,21 +143,27 @@ public class SearchController {
 
             if (resultadosBrutos != null && !resultadosBrutos.isEmpty()) {
                 for (String resultadoBruto : resultadosBrutos) {
-                    String[] linhas = resultadoBruto.split("\n");
-                    String titulo = "Título não disponível";
-                    String url = "URL não disponível";
-                    String citacao = "Citação não disponível";
-
-                    for (String linha : linhas) {
-                        if (linha.startsWith("Título: ")) {
-                            titulo = linha.substring(8).trim();
-                        } else if (linha.startsWith("URL: ")) {
-                            url = linha.substring(5).trim();
-                        } else if (linha.startsWith("Citação: ")) {
-                            citacao = linha.substring(11).trim();
+                    try {
+                        String[] linhas = resultadoBruto.split("\n");
+                        String titulo = "Título não disponível";
+                        String url = "URL não disponível";
+                        String citacao = "Citação não disponível";
+                    
+                        for (String linha : linhas) {
+                            if (linha.startsWith("Título: ")) {
+                                titulo = linha.substring(8).trim();
+                            } else if (linha.startsWith("URL: ")) {
+                                url = linha.substring(5).trim();
+                            } else if (linha.startsWith("Citação: ")) {
+                                citacao = linha.substring(11).trim();
+                            } 
                         }
+                    
+                        // Adiciona o resultado, mesmo que algum campo esteja vazio
+                        results.add(new SearchResult(titulo, url, citacao));
+                    } catch (Exception e) {
+                        System.err.println("Erro ao processar resultado: " + resultadoBruto + " - " + e.getMessage());
                     }
-                    results.add(new SearchResult(titulo, url, citacao));
                 }
             }
 
@@ -159,7 +172,8 @@ public class SearchController {
             // Adicionar a análise ao modelo para exibição no frontend
             model.addAttribute("analysis", analise);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             model.addAttribute("error", "Erro ao realizar a pesquisa: " + e.getMessage());
         }
 
@@ -245,6 +259,9 @@ public class SearchController {
                 }
             }
             
+
+
+            
             // Fallback para totalUrlsIndexadasCalculado se não obtido dos barrels
             if (totalUrlsIndexadasCalculado == 0 && (tamanhoIndicesMap.isEmpty())) { 
                  try (BufferedReader reader = new BufferedReader(new FileReader("urlsIndexados.txt"))) {
@@ -257,8 +274,6 @@ public class SearchController {
                 }
             }
 
-
-            // Calcular o total de pesquisas realizadas 
             int totalPesquisas = 0;
             if (pesquisasFrequentes != null) {
                 totalPesquisas = pesquisasFrequentes.stream()
@@ -271,7 +286,7 @@ public class SearchController {
                     })
                     .sum();
             }
-            
+        
             // Adicionar dados ao modelo para renderização inicial
             model.addAttribute("pesquisasFrequentes", pesquisasFrequentes);
             model.addAttribute("barrelsAtivos", barrelsAtivos);
@@ -292,18 +307,20 @@ public class SearchController {
             System.out.println("SearchController: Dados de estatísticas enviados via WebSocket.");
             // --- FIM Do WEBSOCKET ---
 
-        } 
-        catch (IOException e) {
-            model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
-            
-            // Inicializar variáveis vazias em caso de erro
-            model.addAttribute("pesquisasFrequentes", new ArrayList<>());
-            model.addAttribute("barrelsAtivos", new HashMap<>());
-            model.addAttribute("temposResposta", new HashMap<>());
-            model.addAttribute("totalUrlsIndexadas", 0);
-            model.addAttribute("totalPesquisasGlobal", 0);
-            model.addAttribute("tamanhoIndices", new HashMap<>());
         }
+            catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("error", "Erro ao obter as estatísticas: " + e.getMessage());
+                
+                // Inicializar variáveis vazias em caso de erro
+                model.addAttribute("pesquisasFrequentes", new ArrayList<>());
+                model.addAttribute("barrelsAtivos", new HashMap<>());
+                model.addAttribute("temposResposta", new HashMap<>());
+                model.addAttribute("totalUrlsIndexadas", 0);
+                model.addAttribute("totalPesquisasGlobal", 0);
+                model.addAttribute("tamanhoIndices", new HashMap<>());
+            }
+      
         return "statistics";
     }
 
@@ -320,30 +337,23 @@ public class SearchController {
         }
 
         try {
-            // Obter os backlinks (links que apontam para a URL fornecida) a partir do GatewayServer
             List<String> relacoes = this.gateway.consultarRelacoes(url);
-
-            if (relacoes == null || relacoes.isEmpty()) {
-                model.addAttribute("message", "Nenhuma relação encontrada para a URL fornecida.");
-            } else {
-                model.addAttribute("relacoes", relacoes);
-            }
-
             model.addAttribute("url", url);
+            model.addAttribute("relacoes", relacoes);
         } catch (RemoteException e) {
             model.addAttribute("error", "Erro ao consultar relações: " + e.getMessage());
         } catch (Exception e) {
             model.addAttribute("error", "Erro inesperado: " + e.getMessage());
         }
         return "relacoes";
-    }
+}
 
-    @RequestMapping(value = "/index-url", method = RequestMethod.POST)
+        @RequestMapping(value = "/index-url", method = RequestMethod.POST)
     public String indexUrl(@RequestParam("url") String url, Model model) {
         try {
             if (this.gateway != null) {
                 this.gateway.indexar_URL(url);
-                model.addAttribute("success", "URL indexada com sucesso: " + url);
+                model.addAttribute("success", "URL enviada para indexação: " + url);
             } else {
                 model.addAttribute("error", "Serviço indisponível. Não foi possível indexar a URL.");
             }
@@ -356,5 +366,27 @@ public class SearchController {
     @GetMapping("/")
     public String redirectToSearch() {
         return "redirect:/search";
+    }
+
+    @GetMapping("/mensagem")
+    public String mensagemPage() {
+        return "mensagem"; // Nome do arquivo HTML (mensagem.html)
+    }
+
+    @GetMapping("/hackernews")
+    public String buscarHackerNews(@RequestParam(required = false) String termo, Model model) {
+        try {
+            if (this.gateway != null) {
+                // Chama o método buscarTopStoriesHackerNews no GatewayServer
+                List<String> urlsHackerNews = this.gateway.buscarTopStoriesHackerNews(termo);
+                model.addAttribute("urlsHackerNews", urlsHackerNews);
+                model.addAttribute("termo", termo);
+            } else {
+                model.addAttribute("error", "Serviço indisponível. Não foi possível buscar histórias do Hacker News.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao buscar histórias do Hacker News: " + e.getMessage());
+        }
+        return "hackernews"; // Nome da nova página HTML
     }
 }
