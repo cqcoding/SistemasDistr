@@ -1,10 +1,10 @@
-guerra:27
+guerra:32
 wikidata:22
 bruna:11
 livros:6
 concurso presencial:5
+oito:4
+e:4
 banana:3
-oito:3
 para:3
-e:3
 postura ameaçada:3

@@ -12,12 +12,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.*;
+
 
 import com.api.HackerNewsItemRecord;
 
@@ -69,6 +72,10 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     private static final String arquivoPesquisas = "pesquisasFrequentes.txt";
 
     private Map<String, List<String>> relacoesDeUrls;
+
+    /* cria uma cache para guardar pesquisas recentes e deixar mais rapido */
+    private final Map<String, List<ResultadoPesquisa>> cachePesquisas = new HashMap<>();
+    private final Map<String, HackerNewsItemRecord> cacheHackerNews = new ConcurrentHashMap<>();
     /**
      * Construtor da classe GatewayServer.
      * Inicializa as estruturas de dados e estabelece a conexão com os Barrels disponíveis.
@@ -388,6 +395,9 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
      */
     @Override
     public List<String> pesquisar(String palavra) throws RemoteException {
+        long inicioTotal = System.currentTimeMillis();
+        System.out.println("[Gateway] Iniciando pesquisa para: '" + palavra + "'");
+
 
         // 1. Lida com pesquisa nula ou vazia
         if (palavra == null || palavra.trim().isEmpty()) {
@@ -395,6 +405,21 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             this.resultadosPesquisa = new ArrayList<>(); // Limpa resultados anteriores
             this.paginaAtual = 0;
             return new ArrayList<>(); // Retorna lista vazia
+        }
+
+        // 2. Verifica o cache ANTES de processar
+        if (cachePesquisas.containsKey(palavra)) {
+            System.out.println("Resultado encontrado no cache para: " + palavra);
+            this.resultadosPesquisa = cachePesquisas.get(palavra);
+            this.paginaAtual = 0;
+            List<String> resultadosFormatadosPrimeiraPagina = new ArrayList<>();
+            for (ResultadoPesquisa res : getResultadosPaginaAtual()) {
+                resultadosFormatadosPrimeiraPagina.add(res.toString());
+            }
+            long fimCache = System.currentTimeMillis();
+            System.out.println("[Gateway] Pesquisa (cache) para '" + palavra + "' levou " + (fimCache - inicioTotal) + " ms");
+        
+            return resultadosFormatadosPrimeiraPagina;
         }
 
         // 2. Atualiza a contagem da palavra pesquisada - estatísticas. */
@@ -426,47 +451,66 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             return new ArrayList<>();
         }
 
-        // 4. Buscar resultados para CADA termo em TODOS os barrels
+        // 4. Buscar resultados para CADA termo em TODOS os barrels (paralelizado)
         List<Set<String>> resultadosPorTermo = new ArrayList<>();
+        ExecutorService executor = Executors.newFixedThreadPool(barrels.size());
+
         for (String termoIndividual : termosValidos) {
-            if (termoIndividual.isEmpty()) continue; // Pular strings vazias se houver espaços extras
+            if (termoIndividual.isEmpty()) continue;
 
             System.out.println("Buscando por termo: '" + termoIndividual + "'");
-            Set<String> urlsParaTermoAtual = new HashSet<>();
-            Map<String, Long> temposBarrelParaTermo = new HashMap<>(); // Rastrear tempo por barrel para este termo
+            Set<String> urlsParaTermoAtual = ConcurrentHashMap.newKeySet();
+            Map<String, Long> temposBarrelParaTermo = new ConcurrentHashMap<>();
 
+            List<Future<?>> futures = new ArrayList<>();
             for (InterfaceBarrel barrel : barrels) {
-                long inicio = System.nanoTime();
-                try {
-                    // 'termoIndividual' é a palavra individual que o barrel.pesquisar() espera
-                    List<String> barrelResultados = barrel.pesquisar(termoIndividual);
-                    if (barrelResultados != null) {
-                        for (String url : barrelResultados) {
-                            if (url != null && !url.isBlank()) {
-                                urlsParaTermoAtual.add(normalizarURL(url));
+                futures.add(executor.submit(() -> {
+                    long inicio = System.nanoTime();
+                    try {
+                        List<String> barrelResultados = barrel.pesquisar(termoIndividual);
+                        if (barrelResultados != null) {
+                            for (String url : barrelResultados) {
+                                if (url != null && !url.isBlank()) {
+                                    urlsParaTermoAtual.add(normalizarURL(url));
+                                }
                             }
                         }
+                        long duracao = System.nanoTime() - inicio;
+                        String nomeBarrel = barrel.getNomeBarrel();
+                        temposBarrelParaTermo.put(nomeBarrel, duracao);
+                    } catch (RemoteException e) {
+                        String nomeBarrel;
+                        try {
+                            nomeBarrel = barrel.getNomeBarrel();
+                        } catch (RemoteException ex) {
+                            nomeBarrel = "desconhecido (RemoteException)";
+                        }
+                        System.err.println("Erro ao consultar o Barrel " + nomeBarrel + " para o termo '" + termoIndividual + "': " + e.getMessage());
+                    } catch (Exception e) {
+                        String nomeBarrel;
+                        try {
+                            nomeBarrel = barrel.getNomeBarrel();
+                        } catch (RemoteException ex) {
+                            nomeBarrel = "desconhecido (RemoteException)";
+                        }
+                        System.err.println("Erro Barrel " + nomeBarrel + " para o termo '" + termoIndividual + "': " + e.getMessage());
                     }
-                    long duracao = System.nanoTime() - inicio;
-                    String nomeBarrel = barrel.getNomeBarrel();
-                    temposBarrelParaTermo.put(nomeBarrel, duracao);
-
-                } 
-                catch (RemoteException e) {
-                    System.err.println("Erro ao consultar o Barrel " + barrel.getNomeBarrel() + " para o termo '" + termoIndividual + "': " + e.getMessage());
-                }
-                catch (Exception e) {
-                    System.err.println("Erro Barrel " + barrel.getNomeBarrel() + " para o termo '" + termoIndividual + "': " + e.getMessage());
-                }
+                }));
             }
+            // Aguarda todas as tarefas terminarem
+            for (Future<?> f : futures) {
+                try { f.get(); } catch (Exception ignored) {}
+            }
+
             System.out.println("URLs encontradas para '" + termoIndividual + "': " + urlsParaTermoAtual.size());
             resultadosPorTermo.add(urlsParaTermoAtual);
 
             temposBarrelParaTermo.forEach((nomeBarrel, duracaoNano) -> {
                 temposResposta.putIfAbsent(nomeBarrel, new ArrayList<>());
-                temposResposta.get(nomeBarrel).add(duracaoNano / 100000); 
+                temposResposta.get(nomeBarrel).add(duracaoNano / 100000);
             });
         }
+        executor.shutdown();
 
         // 5. Calcular a interseção dos resultados (URLs que contêm TODOS os termos)
         Set<String> urlsComuns = new HashSet<>();
@@ -526,30 +570,44 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
         resultadosOrdenados.sort((url1, url2) -> ligacoesPorUrl.getOrDefault(url2, 0) - ligacoesPorUrl.getOrDefault(url1, 0));
         
         // 9. Obter detalhes (Título, Citação) para as URLs ordenadas
-        List<ResultadoPesquisa> resultadosComDetalhes = new ArrayList<>();
+        List<ResultadoPesquisa> resultadosComDetalhes = Collections.synchronizedList(new ArrayList<>());
+        ExecutorService detalhesExecutor = Executors.newFixedThreadPool(8); // Ajuste conforme seu hardware
+        List<Future<?>> detalhesFutures = new ArrayList<>();
         for (String url : resultadosOrdenados) {
-            try {
-                ResultadoPesquisa resultado = obterDetalhesDaURL(url);
-                if (resultado != null) {
-                    resultadosComDetalhes.add(resultado);
-                } else {
-                    System.out.println("Não foi possível obter detalhes para: " + url);
+            detalhesFutures.add(detalhesExecutor.submit(() -> {
+                try {
+                    ResultadoPesquisa resultado = obterDetalhesDaURL(url);
+                    if (resultado != null) {
+                        resultadosComDetalhes.add(resultado);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erro ao obter detalhes da URL: " + url + " - " + e.getMessage());
                 }
-            } catch (Exception e) {
-                System.err.println("Erro ao obter detalhes da URL: " + url + " - " + e.getMessage());
-            }
+            }));
         }
+        for (Future<?> f : detalhesFutures) {
+            try { f.get(); } catch (Exception ignored) {}
+        }
+        detalhesExecutor.shutdown();
 
         // 10. Preparar para paginação e retorno
         this.resultadosPesquisa = resultadosComDetalhes;
         this.paginaAtual = 0;
         System.out.println("Total de resultados finais com detalhes: " + this.resultadosPesquisa.size());
 
+        // Salva no cache para pesquisas futuras
+        cachePesquisas.put(palavra, resultadosComDetalhes);
+
         List<String> resultadosFormatadosPrimeiraPagina = new ArrayList<>();
         for (ResultadoPesquisa res : getResultadosPaginaAtual()) {
-            resultadosFormatadosPrimeiraPagina.add(res.toString());
-        }
-        return resultadosFormatadosPrimeiraPagina;
+                resultadosFormatadosPrimeiraPagina.add(res.toString());
+         }
+
+        long fimTotal = System.currentTimeMillis();
+        System.out.println("[Gateway] Pesquisa (processamento) para '" + palavra + "' levou " + (fimTotal - inicioTotal) + " ms");
+
+            return resultadosFormatadosPrimeiraPagina;
+        
     }
 
     /** Método auxiliar para normalizar URLs para deduplicação mais eficaz */
@@ -786,10 +844,7 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
     public List<String> buscarTopStoriesHackerNews(String termo) throws RemoteException {
         List<String> urlsEncontradas = new ArrayList<>();
     try {
-        // Endpoint para obter IDs das top stories
         String topStoriesEndpoint = "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
-
-        // Obter os IDs das histórias principais
         RestTemplate restTemplate = new RestTemplate();
         List<Integer> topStoriesIds = restTemplate.getForObject(topStoriesEndpoint, List.class);
 
@@ -798,28 +853,23 @@ public class GatewayServer extends UnicastRemoteObject implements InterfaceGatew
             return urlsEncontradas;
         }
 
-        System.out.println("IDs das top stories do Hacker News: " + topStoriesIds);
-
-        // Iterar sobre os primeiros 50 IDs (ou menos, se houver menos histórias)
-        for (int i = 0; i < Math.min(topStoriesIds.size(), 50); i++) {
+        int maxStories = 20; // Limite de histórias para reduzir requisições externas
+        for (int i = 0; i < Math.min(topStoriesIds.size(), maxStories); i++) {
             Integer storyId = topStoriesIds.get(i);
-
-            // Endpoint para obter detalhes de cada história
-            String storyDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
-            HackerNewsItemRecord storyDetails = restTemplate.getForObject(storyDetailsEndpoint, HackerNewsItemRecord.class);
-
-            if (storyDetails == null || storyDetails.url() == null || storyDetails.title() == null) {
-                System.err.println("Detalhes da história " + storyId + " estão incompletos ou nulos.");
-                continue;
+            HackerNewsItemRecord storyDetails = cacheHackerNews.get(storyId.toString());
+            if (storyDetails == null) {
+                String storyDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
+                storyDetails = restTemplate.getForObject(storyDetailsEndpoint, HackerNewsItemRecord.class);
+                if (storyDetails != null && storyDetails.url() != null) {
+                    cacheHackerNews.put(storyId.toString(), storyDetails);
+                }
             }
-
-            System.out.println("Detalhes da história " + storyId + ": " + storyDetails);
-
-            // Verificar se o termo está no título ou URL
-            if (termo == null || termo.isBlank() || 
-                storyDetails.title().toLowerCase().contains(termo.toLowerCase()) || 
-                storyDetails.url().toLowerCase().contains(termo.toLowerCase())) {
-                urlsEncontradas.add(storyDetails.url());
+            if (storyDetails != null && storyDetails.url() != null && storyDetails.title() != null) {
+                if (termo == null || termo.isBlank() ||
+                    storyDetails.title().toLowerCase().contains(termo.toLowerCase()) ||
+                    storyDetails.url().toLowerCase().contains(termo.toLowerCase())) {
+                    urlsEncontradas.add(storyDetails.url());
+                }
             }
         }
     } catch (Exception e) {
